@@ -6,7 +6,7 @@ Everything you need to read, modify, extend, and ship AgentHarness.
 
 ## 0. v0.14.1 release notes (2026-07-02) - Seven-Pillar Architecture
 
-Version: 0.18.6
+Version: 2026.07.25
 ### What changed
 
 This is a feature-rich patch release that adds the seventh mathematical
@@ -15,18 +15,18 @@ i18n to 12 languages, industrializes all polyglot bridges, and
 consolidates platform support.
 
 **Cross-cutting variables to keep in sync:**
-- `agent_harness/_version.py:VERSION` — **single source of truth**
+- `minxg/_version.py:VERSION` — **single source of truth**
 - `pyproject.toml` reads the version via setuptools dynamic
-- `agent_harness/__init__.__version__` imports from `_version`
+- `minxg/__init__.__version__` imports from `_version`
 - `CHANGELOG.md` top section
 - `README.md` version banner
 
-If any drift, `agent_harness doctor` and `tests/test_version_lock.py` will fire.
+If any drift, `minxg doctor` and `tests/test_version_lock.py` will fire.
 
 ### New: SymbDiff (seventh pillar)
 
 ```
-agent_harness/symbdiff/
+minxg/symbdiff/
 ├── __init__.py          # Jet, DiffPoly, VectorField, lie_bracket, find_integrating_factor
 ├── operators_symbdiff.py # JetOperator, LieBracketOperator, DiffIdealOperator, IntFactorOperator
 └── README.md            # Design doc + usage examples
@@ -43,7 +43,7 @@ between operator fields and reorder compositions for zero drift.
 
 Three selectable integration methods:
 ```python
-from agent_harness.driver.engine import DriverEngine
+from minxg.driver.engine import DriverEngine
 e1 = DriverEngine(method="euler")   # legacy explicit Euler
 e2 = DriverEngine(method="rk4")     # 4th-order Runge-Kutta
 e3 = DriverEngine(method="rk45", rtol=1e-6, atol=1e-9)  # adaptive RK45
@@ -75,12 +75,12 @@ eval, fib, prime, lin, matmul, ode, eigen, stats modes.
 
 A focused cleanup that:
 
-  - **Promotes eight subsystem modules to the top level.** `agent_harness.twin`,
-    `agent_harness.lens`, `agent_harness.lossless`, `agent_harness.self_evolution`,
-    `agent_harness.polyglot`, `agent_harness.driver`, `agent_harness.cap`, and `agent_harness.contracts`
-    are now attributes of the top-level `agent_harness` package — so
-    `import agent_harness; agent_harness.twin` works the same way as `import agent_harness;
-    agent_harness.ga`. `from agent_harness.<x> import ...` continues to work as before.
+  - **Promotes eight subsystem modules to the top level.** `minxg.twin`,
+    `minxg.lens`, `minxg.lossless`, `minxg.self_evolution`,
+    `minxg.polyglot`, `minxg.driver`, `minxg.cap`, and `minxg.contracts`
+    are now attributes of the top-level `minxg` package — so
+    `import minxg; minxg.twin` works the same way as `import minxg;
+    minxg.ga`. `from minxg.<x> import ...` continues to work as before.
   - **Removes the stale `docs/archive/` folder (10 files).** Includes the
     obsolete multi-AI negotiation file (`docs/archive/AGENTS.md`) that
     used to inject anti-loop directives into AI system prompts; that
@@ -89,24 +89,24 @@ A focused cleanup that:
     reflected inline in DEVELOPER.md and README.md.
   - **Adds five new experimental CLI verbs** under
     `multiligua_cli/experimental.py`:
-    - `agent_harness bench` — local perf snapshot of `lossless`, `driver`,
+    - `minxg bench` — local perf snapshot of `lossless`, `driver`,
       `twin`, `polyglot`, `operators`, and the experimental import path.
-    - `agent_harness replay <file>` — re-render an exported markdown chat log.
-    - `agent_harness theme [dark|colorful|minimal]` — get/set the active TUI
-      theme; state lives in `~/.agent_harness/theme.json`.
-    - `agent_harness safe-eval <expr>` — restricted arithmetic evaluator
+    - `minxg replay <file>` — re-render an exported markdown chat log.
+    - `minxg theme [dark|colorful|minimal]` — get/set the active TUI
+      theme; state lives in `~/.minxg/theme.json`.
+    - `minxg safe-eval <expr>` — restricted arithmetic evaluator
       (allowed-builtins-only, no attribute access, no comprehensions).
-    - `agent_harness ext-reload --all` — rescan extension sources without
+    - `minxg ext-reload --all` — rescan extension sources without
       restarting the interpreter.
     Every experimental verb prints an
-    `[EXPERIMENTAL] agent_harness <verb> — signature may change`
+    `[EXPERIMENTAL] minxg <verb> — signature may change`
     banner so users always know what they're getting into. The five
     verbs are exercised by `tests/test_experimental_cli.py` (added in
     this release) so a regression that breaks the dispatch path breaks
     CI.
   - **Documents the operator registry at runtime.** README §Mathematical
     pillars no longer references a phantom `docs/OPERATORS.md` file —
-    the canonical truth lives in `agent_harness.operators.OPERATOR_REGISTRY`,
+    the canonical truth lives in `minxg.operators.OPERATOR_REGISTRY`,
     which now exposes `total_operators` (376) and `list_categories()`
     (11 categories). A 4-line snippet replaces the dead link.
   - **Locks the ID-range claim to ground truth.** The `ga` pillar range
@@ -121,16 +121,16 @@ filled in when 0.14.0 ships; the ``Version:`` line below is what
 ``tests/test_version_lock.py`` reads to enforce cross-surface parity.
 
 **Cross-cutting variables to keep in sync when forking:**
-- `agent_harness/_version.py:VERSION` — **single source of truth**.
+- `minxg/_version.py:VERSION` — **single source of truth**.
 - `pyproject.toml` reads the version from the SSoT via setuptools dynamic.
-- `agent_harness/__init__.__version__` imports `from ._version import VERSION`.
-- `config/agent_harness.yaml:project.version` (if present).
+- `minxg/__init__.__version__` imports `from ._version import VERSION`.
+- `config/minxg.yaml:project.version` (if present).
 - `install.sh` brand echo + cheatsheet.
 - `README.md` ¶ "v0.X.Y release" highlight.
 - `CHANGELOG.md` top section.
 
-Version: 0.18.6
-If any of these drift, `agent_harness doctor` and the `tests/test_version_lock.py`
+Version: 2026.07.25
+If any of these drift, `minxg doctor` and the `tests/test_version_lock.py`
 test will fire. Now `413 + 1 skipped` v0.12.5 baseline expands to
 `>= 470` in this release.
 
@@ -138,22 +138,22 @@ test will fire. Now `413 + 1 skipped` v0.12.5 baseline expands to
 
 ## 0a. Historical — v0.11.0 release notes (2026-06-19)
 
-Cold-start hardening. No breaking-API changes; same `agent_harness` imports,
+Cold-start hardening. No breaking-API changes; same `minxg` imports,
 same worker count, same operator registry.
 
   - **Built-in extensions are now opt-in.** The legacy
     `ADB_AVAILABLE` / `ROOT_AVAILABLE` auto-detect ladder is gone;
     each built-in ships with `EXTENSION_ENABLED = False`. Opt-in via
-    `agent_harness ext add <slug>`, which writes
+    `minxg ext add <slug>`, which writes
     `extensions/user/<slug>.state`. This is the structural fix for
-    pitfalls 31 and 34 in `agent_harness-megarefactor-v1`.
-  - **`agent_harness doctor` ships.** `multiligua_cli/doctor.py` is a new
+    pitfalls 31 and 34 in `minxg-megarefactor-v1`.
+  - **`minxg doctor` ships.** `multiligua_cli/doctor.py` is a new
     self-check sub-command with a POSIX exit-code contract
     (0 OK, 1 fail, 2 warn) so users can wire it into startup scripts
     and bug-report templates.
   - **cpp_core build link error fixed.** `cpp_core/CMakeLists.txt`
-    now also links `c_core/text_engine.c` into `libagent_harness_core.so`,
-    so the dlopen error `cannot locate symbol "agent_harness_slugify"`
+    now also links `c_core/text_engine.c` into `libminxg_core.so`,
+    so the dlopen error `cannot locate symbol "minxg_slugify"`
     no longer fires on a fresh Termux install. Verified at runtime:
     `core_native.sha256(b"hi")` returns the expected hash.
   - **`py_workers` alias hardened.** Pillar aliases
@@ -165,12 +165,12 @@ same worker count, same operator registry.
 
 Cross-cutting variables to keep in sync when forking:
 
-  - `agent_harness.VERSION` (single source of truth).
+  - `minxg.VERSION` (single source of truth).
   - `pyproject.toml:version`.
-  - `config/agent_harness.yaml:project.version`.
+  - `config/minxg.yaml:project.version`.
   - `install.sh` brand echo + cheatsheet.
 
-If one of these drifts, run `agent_harness doctor` and check that `ai.base_url`
+If one of these drifts, run `minxg doctor` and check that `ai.base_url`
 plus the four `--version` surfaces are still pointing at one number.
 
 ---
@@ -179,7 +179,7 @@ plus the four `--version` surfaces are still pointing at one number.
 
 ```
 .
-├── agent_harness/                         the Python package (canonical import)
+├── minxg/                         the Python package (canonical import)
 │   ├── __init__.py                top-level API + pillar auto-registration
 │   ├── base.py                    BaseWorker, ToolDef, WorkerRegistry
 │   ├── operators.py               OperatorRegistry — math operator ID space
@@ -199,7 +199,7 @@ plus the four `--version` surfaces are still pointing at one number.
 │   ├── topo/                      Algebraic Topology operators
 │   ├── chaos/                     Dynamical Systems operators
 │   └── fiber/                     Fiber Bundle operators
-├── agent_harness/                         v1.2.0 self-developed subsystems
+├── minxg/                         v1.2.0 self-developed subsystems
 │   ├── contracts/                 Cell / Port / Registry framework (edit isolation)
 │   ├── driver/                    Temporal Operator-Field driver engine
 │   ├── self_evolution/            closed-loop self-improvement on driver drift
@@ -260,11 +260,11 @@ Replacing or removing a module never forces another module to change.
 Three mechanisms enforce this:
 
 * **Absolute imports** across the five pillars — no sibling-module
-  imports. Each worker imports `agent_harness.base` for the worker base class
+  imports. Each worker imports `minxg.base` for the worker base class
   and otherwise stands alone.
-* **Capability-based dispatch** in `agent_harness.contracts` — Cells declare what
+* **Capability-based dispatch** in `minxg.contracts` — Cells declare what
   they provide; queries match by capability, not by class.
-* **Operator registry** in `agent_harness.operators` — math operator IDs are
+* **Operator registry** in `minxg.operators` — math operator IDs are
   stable; adding new operators never changes existing IDs.
 
 ### Rule 3 — Native code is optional
@@ -295,7 +295,7 @@ If a worker fits two pillars, place it in the one closer to where it
 
 ## 4. Worker base class
 
-`agent_harness.base.BaseWorker` provides:
+`minxg.base.BaseWorker` provides:
 
 * `_register_tools()` — call once in `__init__` to wrap `@tool`-decorated
   methods into `ToolDef` entries.
@@ -305,7 +305,7 @@ If a worker fits two pillars, place it in the one closer to where it
   proxies for testing.
 
 ```python
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 class EchoWorker(BaseWorker):
     worker_id = "echo"
@@ -317,14 +317,14 @@ class EchoWorker(BaseWorker):
 ```
 
 The wrapper `WorkerRegistry.register(worker_instance)` makes the worker
-visible to the HTTP RPC layer (`agent_harness.server`) without changing the
+visible to the HTTP RPC layer (`minxg.server`) without changing the
 worker.
 
 ---
 
 ## 5. Driver engine — Temporal Operator-Field
 
-`agent_harness.driver` is AgentHarness's self-developed driver architecture. It treats
+`minxg.driver` is AgentHarness's self-developed driver architecture. It treats
 each operator as a *vector field* on a state manifold and integrates the
 state with explicit Euler steps.
 
@@ -354,7 +354,7 @@ Adding a new worker is a one-line `engine.add_operator(...)` change.
 ### Engine integration
 
 ```python
-from agent_harness.driver import (
+from minxg.driver import (
     State, DriverEngine, arithmetic_field,
     parametric_field, smoothing_field, clamp_field,
 )
@@ -400,7 +400,7 @@ step sizes.
 
 ## 6. Contracts — Cell-Registry-Plugin
 
-`agent_harness.contracts` formalises the "edit one, rest stays put" property.
+`minxg.contracts` formalises the "edit one, rest stays put" property.
 
 ```
 Cell       — capability-bearing, pluggable unit
@@ -412,7 +412,7 @@ Lifecycle  — BORN → MUTABLE → LIVE → QUIET → GONE
 ### Registering a Cell
 
 ```python
-from agent_harness.contracts import get_registry, CellMeta, capability
+from minxg.contracts import get_registry, CellMeta, capability
 
 class PricingCell(metaclass=CellMeta):
     cell_id = "pricing.shipping"
@@ -430,14 +430,14 @@ Cell adds a new entry, nothing else.
 ### Port for async I/O
 
 ```python
-from agent_harness.contracts import port
+from minxg.contracts import port
 
 @port("weather.lookup")
 async def fetch_weather(city: str) -> dict:
     return await some_api(city)
 
 # Caller
-from agent_harness.contracts import Registry, Request
+from minxg.contracts import Registry, Request
 reg = Registry()
 reg.register(fetch_weather)  # adapts the Port itself as a Cell-like entry
 result = await reg.get("weather.lookup").handler(city="Tokyo")
@@ -460,7 +460,7 @@ Six sub-packages install math-grounded operator libraries.
 
 Each pillar has an `operators_<pillar>.py` file with an idempotent
 `register_<pillar>_operators()` function. The top-level
-`agent_harness.__init__` runs them at import time and exposes
+`minxg.__init__` runs them at import time and exposes
 `GA_OPERATORS`, `CAT_OPERATORS`, etc., so tests can assert counts.
 
 Pillar code is **pure Python** — no numpy. All math runs on Termux.
@@ -469,7 +469,7 @@ Pillar code is **pure Python** — no numpy. All math runs on Termux.
 
 ## 8. Multiling layer
 
-`multiling/` is orchestration code that uses the `agent_harness` package as a
+`multiling/` is orchestration code that uses the `minxg` package as a
 library. The sub-modules are deliberately decoupled:
 
 * `agent/` — multi-agent runtime; agents are independent objects with
@@ -499,7 +499,7 @@ singletons for convenient use.
 
 `multiligua_cli/` provides the interactive terminal. The `update`
 subcommand has been removed in v0.11.0; use `pip install --upgrade
-agent_harness-beta` instead.
+minxg-beta` instead.
 
 ---
 
@@ -528,7 +528,7 @@ Android (Python 3.13).
 ## 11. Pitfalls
 
 * **Termux linker namespace** — `.so` files must live under
-  `/data/data/com.termux/files/usr/lib/`. `agent_harness.five_pillars.scalar.core_native._find_lib()`
+  `/data/data/com.termux/files/usr/lib/`. `minxg.five_pillars.scalar.core_native._find_lib()`
   auto-copies a found shared library to that path before `ctypes.CDLL`.
   The search starts at the project root (the directory containing
   `pyproject.toml`) and tries `cpp_core/build/`, then `cpp_core/`,
@@ -536,7 +536,7 @@ Android (Python 3.13).
   raises an explicit `OSError` rather than letting `ctypes.CDLL` emit
   a misleading `dlopen failed` against an un-discovered bare name.
 * **Pillar boundary** — never use relative imports across pillars. Use
-  the full `agent_harness.five_pillars.<pillar>.<name>` path even when importing
+  the full `minxg.five_pillars.<pillar>.<name>` path even when importing
   a sibling. This makes refactors mechanical.
 * **Operator IDs** — each mathematical-pillar operator lives in a
   disjoint numeric range. Current ranges:
@@ -544,10 +544,10 @@ Android (Python 3.13).
   `8000-8052` for TOPO, `8500-8522` for CHAOS, `6000-6052` for FIBER.
   Outside these pillars: `0-19` math, `2000-2018` text, `3500-3511`
   data, `5500-5512` logic, `9000-9005` system. Source of truth is
-  `config/agent_harness.yaml` § `operators.categories.*.id_range`. Extensions
+  `config/minxg.yaml` § `operators.categories.*.id_range`. Extensions
   start at `10000`.
 * **`platform.system()`** returns `Android` on Termux, not `Linux`. The
-  `agent_harness.five_pillars.dispatch.platform_registry` already handles this.
+  `minxg.five_pillars.dispatch.platform_registry` already handles this.
 * **4-quote strings** — first-run strip_comments may emit `""""` instead
   of `"""`. Run the normaliser `grep -lE '"{4,}|.{4,}'` to detect; the
   fix is `re.sub(r'"{4,}', '"""', src)`.
@@ -562,12 +562,12 @@ Android (Python 3.13).
   historical chain 196 → 413 → ≥ 470 across 0.12.0/0.12.5/0.14.0).
 * `python -m py_compile $(find . -name '*.py' -not -path '*/_legacy/*')`
   returns 0.
-* `python -c 'import agent_harness; print(agent_harness.VERSION)'` prints `0.14.0`.
-* All five pillar `__init__.py` re-exports match `agent_harness.__all__`.
+* `python -c 'import minxg; print(minxg.VERSION)'` prints `0.14.0`.
+* All five pillar `__init__.py` re-exports match `minxg.__all__`.
 * The eight subsystem modules
-  (`agent_harness.{twin,lens,lossless,self_evolution,polyglot,driver,cap,contracts}`)
-  are reachable both via `from agent_harness.<x> import …` **and** via the
-  top-level attribute (`import agent_harness; agent_harness.twin`).
+  (`minxg.{twin,lens,lossless,self_evolution,polyglot,driver,cap,contracts}`)
+  are reachable both via `from minxg.<x> import …` **and** via the
+  top-level attribute (`import minxg; minxg.twin`).
 * `docs/DRIVER.md`, `docs/PILLARS.md`, `docs/ARCHITECTURE.md` exist and
   match the code.
 * No `__pycache__` is committed.
@@ -582,7 +582,7 @@ contracts registry. Each is small (~200-400 LOC) and tightly tested.
 None of them is a rebrand of an existing library — they all use the
 driver's drift telemetry as their feedback signal.
 
-### 13.1 `agent_harness/self_evolution`
+### 13.1 `minxg/self_evolution`
 
 Closed-loop self-improvement. Four pieces:
 
@@ -603,7 +603,7 @@ The loop depends ONLY on the public driver API. It never reaches
 into engine internals. Editing `engine.step()` never breaks
 self-evolution.
 
-### 13.2 `agent_harness/polyglot`
+### 13.2 `minxg/polyglot`
 
 Multi-language source-to-graph normaliser. Output is a single
 `OperatorGraph` shape regardless of source language. **Python uses
@@ -611,7 +611,7 @@ real `ast`; Rust / JavaScript / Go / shell use regex-based structural
 heuristics.** Good for code-shape recognition, not a compiler front-end.
 
 ```python
-from agent_harness.polyglot import normalize
+from minxg.polyglot import normalize
 
 graph = normalize(source_string)  # auto-detects Python/Rust/JS/Go/shell
 for node in graph.topological_order():
@@ -621,7 +621,7 @@ for node in graph.topological_order():
 `detect_language(text)` uses regex heuristics; pass `language=`
 explicitly to skip detection.
 
-### 13.3 `agent_harness/lossless`
+### 13.3 `minxg/lossless`
 
 BIE-geometry byte-identical round-trip. Each byte becomes a unit-sphere
 point in (theta, phi); transitions between bytes are blades kept or
@@ -631,7 +631,7 @@ typically *larger* than the input on real-world data; this is not a
 competitor to zstd/gzip.
 
 ```python
-from agent_harness.lossless import LosslessCodec
+from minxg.lossless import LosslessCodec
 
 codec = LosslessCodec(curvature_threshold=0.05)
 blob = codec.compress(b"hello world") .payload
@@ -646,12 +646,12 @@ Format header is 11 bytes: magic(b"MINSKE" → 6 bytes), version
 (u8), length(u32 big-endian). Round-trip the codec immediately
 after writing it — bytes-only I/O bugs hide.
 
-### 13.4 `agent_harness/twin`
+### 13.4 `minxg/twin`
 
 Python ↔ Rust RTL emitter, no compilation dependencies.
 
 ```python
-from agent_harness.twin import python_to_rust, rust_to_python
+from minxg.twin import python_to_rust, rust_to_python
 
 src = python_to_rust('''
     def total(n: int) -> int:
@@ -668,15 +668,15 @@ elif / else, augmented assignments, bool / binop / compare /
 unary expressions, nested if-inside-orelse chains.
 
 Anything else raises `UnsupportedTwinOp(op_name, hint)`. The class
-name is exported via `agent_harness.TWIN_ERROR = "UnsupportedTwinOp"` so
-callers can `except agent_harness.UnsupportedTwinOp: ...` indirectly.
+name is exported via `minxg.TWIN_ERROR = "UnsupportedTwinOp"` so
+callers can `except minxg.UnsupportedTwinOp: ...` indirectly.
 
-### 13.5 `agent_harness/lens`
+### 13.5 `minxg/lens`
 
 Reverse docstring export.
 
 ```python
-from agent_harness.lens import Lens, LensConfig
+from minxg.lens import Lens, LensConfig
 
 batch = Lens(LensConfig(languages=("en", "zh"), output_dir=tmp)).render_doc(
     "", {"heading": "operator", "body": "advances the state"},
@@ -716,7 +716,7 @@ Compose through these.
 
 The GitHub `hot-reload` cycle (`git fetch && git reset --hard && pip
 install -e .`) was removed in v0.11.0. The lesson is in
-`docs/ARCHITECTURE.md` and `agent_harness-megarefactor-v1/references/`.
+`docs/ARCHITECTURE.md` and `minxg-megarefactor-v1/references/`.
 When a feature has shipped publicly and you decide it is wrong:
 
 1. `git rm <module>` — don't keep `.disabled` stubs.

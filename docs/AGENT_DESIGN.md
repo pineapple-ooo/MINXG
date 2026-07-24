@@ -9,20 +9,20 @@
 
 ## Project-Wide Optimization (Phases 144-240)
 Covered entire project, not just language runtimes:
-- `agent_harness/contracts/runtime/_exec.py` — execution engine, security, deployment, testing, data management, performance tuning
-- `agent_harness/contracts/runtime/installer.py` — installation pipeline, rollback, signing, sandbox, scanning, dependency resolution, artifact management
-- `agent_harness/contracts/runtime/manifest.py` — manifest analysis, dependency optimization, license audit, vulnerability scan, repository management, provenance tracking
-- `agent_harness/contracts/runtime/wasm.py` — WebAssembly componentization, optimization, memory management, infrastructure, debugging, plugin system
-- `agent_harness/contracts/runtime/scientific.py` — scientific computing full stack, ML/AI, quantum computing, chemistry/biology/climate simulation, workflow automation, experiment tracking
-- `agent_harness/contracts/runtime/__init__.py` — unified dispatcher, security, observability, integration, workflow engine, pipeline orchestration, data orchestration, compute orchestration
-- `agent_harness/five_pillars/polyglot/julia_worker.py` — Julia infrastructure, distributed computing, cloud integration, edge computing, stream processing, batch processing
-- `agent_harness/five_pillars/polyglot/datalog_worker.py` — Datalog reasoning, knowledge graph, stream reasoning, temporal reasoning, probabilistic reasoning, abductive/inductive reasoning, distributed evaluation, rule mining
+- `minxg/contracts/runtime/_exec.py` — execution engine, security, deployment, testing, data management, performance tuning
+- `minxg/contracts/runtime/installer.py` — installation pipeline, rollback, signing, sandbox, scanning, dependency resolution, artifact management
+- `minxg/contracts/runtime/manifest.py` — manifest analysis, dependency optimization, license audit, vulnerability scan, repository management, provenance tracking
+- `minxg/contracts/runtime/wasm.py` — WebAssembly componentization, optimization, memory management, infrastructure, debugging, plugin system
+- `minxg/contracts/runtime/scientific.py` — scientific computing full stack, ML/AI, quantum computing, chemistry/biology/climate simulation, workflow automation, experiment tracking
+- `minxg/contracts/runtime/__init__.py` — unified dispatcher, security, observability, integration, workflow engine, pipeline orchestration, data orchestration, compute orchestration
+- `minxg/five_pillars/polyglot/julia_worker.py` — Julia infrastructure, distributed computing, cloud integration, edge computing, stream processing, batch processing
+- `minxg/five_pillars/polyglot/datalog_worker.py` — Datalog reasoning, knowledge graph, stream reasoning, temporal reasoning, probabilistic reasoning, abductive/inductive reasoning, distributed evaluation, rule mining
 
 ## Autonomous Agent Platform (Bold Design)
 
 ### Module Structure
 ```
-agent_harness/contracts/agent/
+minxg/contracts/agent/
 ├── __init__.py              # Core runtime: AgentTask, AgentMemory, AgentPlan, AgentRuntime, AgentOrchestrator, SafetyConstitution
 ├── autonomous_engine.py     # Read code → detect issues → design plan → implement → verify → learn
 ├── collaboration.py         # Multi-agent: Architect, Implementer, Reviewer, Tester, DevOps, Researcher + Swarm

@@ -31,19 +31,19 @@ AgentHarness is an enterprise-grade AI orchestration platform with:
 
 ```bash
 # Install
-pip install agent_harness-beta
+pip install minxg-beta
 
 # Setup
-agent_harness setup
+minxg setup
 
 # Start chat
-agent_harness
+minxg
 
 # Start MCP server
-python -m agent_harness.mcp_server
+python -m minxg.mcp_server
 
 # Start web UI
-agent_harness web
+minxg web
 ```
 
 ## Installation
@@ -51,7 +51,7 @@ agent_harness web
 ### From PyPI
 
 ```bash
-pip install agent_harness-beta
+pip install minxg-beta
 ```
 
 ### From Source
@@ -72,7 +72,7 @@ pip install -e .
 
 ## Configuration
 
-Configuration is stored in `~/.agent_harness/config.yaml`.
+Configuration is stored in `~/.minxg/config.yaml`.
 
 ```yaml
 ai:
@@ -102,25 +102,25 @@ workers:
 
 | Command | Description |
 |---------|-------------|
-| `agent_harness` | Start TUI chat |
-| `agent_harness setup` | Run setup wizard |
-| `agent_harness config` | Show configuration |
-| `agent_harness status` | Show system status |
-| `agent_harness tools` | List available tools |
-| `agent_harness model [name]` | Set/view model |
-| `agent_harness api <url>` | Set API base URL |
-| `agent_harness key <key>` | Set API key |
-| `agent_harness lang [code]` | Switch language |
-| `agent_harness gateway` | API gateway |
-| `agent_harness doctor` | Self-diagnostic |
-| `agent_harness memory` | Memory dashboard |
-| `agent_harness cost` | Cost tracking |
-| `agent_harness compare` | Model comparison |
-| `agent_harness web` | Start web UI |
-| `agent_harness features` | Feature showcase |
-| `agent_harness themes` | Theme management |
-| `agent_harness export` | Export memories |
-| `agent_harness import` | Import memories |
+| `minxg` | Start TUI chat |
+| `minxg setup` | Run setup wizard |
+| `minxg config` | Show configuration |
+| `minxg status` | Show system status |
+| `minxg tools` | List available tools |
+| `minxg model [name]` | Set/view model |
+| `minxg api <url>` | Set API base URL |
+| `minxg key <key>` | Set API key |
+| `minxg lang [code]` | Switch language |
+| `minxg gateway` | API gateway |
+| `minxg doctor` | Self-diagnostic |
+| `minxg memory` | Memory dashboard |
+| `minxg cost` | Cost tracking |
+| `minxg compare` | Model comparison |
+| `minxg web` | Start web UI |
+| `minxg features` | Feature showcase |
+| `minxg themes` | Theme management |
+| `minxg export` | Export memories |
+| `minxg import` | Import memories |
 
 ### MCP Integration
 
@@ -129,11 +129,11 @@ Add to your Claude Desktop config:
 ```json
 {
   "mcpServers": {
-    "agent_harness": {
+    "minxg": {
       "command": "python",
-      "args": ["-m", "agent_harness.mcp_server"],
+      "args": ["-m", "minxg.mcp_server"],
       "env": {
-        "AgentHarness_HOME": "/path/to/.agent_harness"
+        "AgentHarness_HOME": "/path/to/.minxg"
       }
     }
   }
@@ -264,7 +264,7 @@ curl http://localhost:18080/v1/chat/completions \
 
 ### Common Issues
 
-**Issue: `agent_harness` command not found**
+**Issue: `minxg` command not found**
 
 ```bash
 # Ensure pip bin directory is in PATH
@@ -278,20 +278,20 @@ export PATH="$HOME/.local/bin:$PATH"
 pip install fastmcp
 
 # Test MCP server
-python -m agent_harness.mcp_server
+python -m minxg.mcp_server
 ```
 
 **Issue: Memory not persisting**
 
 ```bash
 # Check memory directory
-ls -la ~/.agent_harness/memory/
+ls -la ~/.minxg/memory/
 
 # Ensure proper permissions
-chmod 755 ~/.agent_harness/memory/
+chmod 755 ~/.minxg/memory/
 ```
 
 ### Getting Help
 
 - GitHub Issues: https://github.com/pineapple-ooo/AgentHarness-Beta/issues
-- Documentation: https://agent_harness.nousresearch.com/docs
+- Documentation: https://minxg.nousresearch.com/docs

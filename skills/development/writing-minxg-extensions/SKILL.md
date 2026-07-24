@@ -1,17 +1,17 @@
 ---
-name: writing-agent_harness-extensions
-description: How to write, register, and ship a AgentHarness extension (an executable Python plugin, distinct from a skill).
+name: writing-minxg-extensions
+description: How to write, register, and ship a MINXG extension (an executable Python plugin, distinct from a skill).
 version: 1.0.0
-author: agent_harness-core
+author: minxg-core
 tags: [development, extensions, python]
 category: development
 ---
 
-# Writing AgentHarness Extensions
+# Writing MINXG Extensions
 
 An **extension** is executable Python code that adds a new tool the
 chat agent can call — different from a **skill** (markdown
-instructions with no code; see the `writing-agent_harness-skills` skill for
+instructions with no code; see the `writing-minxg-skills` skill for
 that). Use an extension when the agent needs a new *capability*, not
 just new *knowledge*.
 
@@ -32,7 +32,7 @@ just new *knowledge*.
      (return `False` to hide it if a required dependency is missing).
    - A call to `registry.register(name=..., toolset=..., schema=...,
      handler=..., check_fn=..., emoji=..., max_result_size_chars=...)`
-     at module import time — see `tools/*.py` in the AgentHarness source for
+     at module import time — see `tools/*.py` in the MINXG source for
      real, working examples of this exact pattern.
 
 2. Validate locally before installing:
@@ -42,9 +42,9 @@ just new *knowledge*.
 
 3. Install it:
    ```
-   agent_harness ext add ./my_tool.py
-   agent_harness ext list        # confirm it shows up
-   agent_harness doctor           # confirm active tool count went up
+   minxg ext add ./my_tool.py
+   minxg ext list        # confirm it shows up
+   minxg doctor           # confirm active tool count went up
    ```
 
 4. If something in your extension needs a secret/token, read it from
@@ -53,7 +53,7 @@ just new *knowledge*.
 
 ## Notes / gotchas
 
-- Extensions execute with the same permissions as the rest of AgentHarness.
+- Extensions execute with the same permissions as the rest of MINXG.
   Only install extensions from sources you trust — there's no sandbox
   around them, by design (they need real system access to be useful).
 - Keep the handler's return value under whatever

@@ -39,7 +39,7 @@
 | Go | HTTP services, CLI wrappers | **boring + correct** |
 | WASM | Browser-adjacent compute | **runs anywhere** |
 
-The Rust core (`libagent_harness_rust.so`) is optional — AgentHarness ships a pure-Python
+The Rust core (`libminxg_rust.so`) is optional — AgentHarness ships a pure-Python
 fallback for every operation. Build the `.so` when you need the speed.
 
 ---
@@ -85,7 +85,7 @@ Typical latency: **80–200ms per round-trip** × N tools.
 dispatches all steps. **15–20ms total** for 2 independent steps, 0 AI calls.
 
 ```python
-from agent_harness.core.tool_chain import ToolChainExecutor, ToolStep, TOOL_REGISTRY
+from minxg.core.tool_chain import ToolChainExecutor, ToolStep, TOOL_REGISTRY
 
 steps = [
     ToolStep(tool="self_evolution.evolution_record", params={"event": "feature"}),
@@ -166,11 +166,11 @@ Everything in `hermes_cli/`, `agent/`, `gateway/`, `tools/`.
 ```
 Layer 1: multiligua_cli / gateway      ← user-facing
 Layer 2: multiling/                    ← agent brain
-Layer 3: agent_harness/                        ← five pillars + math pillars + polyglot
+Layer 3: minxg/                        ← five pillars + math pillars + polyglot
 Layer 4: rust_core · cpp_core · go_core ← optional native acceleration
 ```
 
-Pillars only import `agent_harness.base`. No cross-pillar imports. Three mechanical
+Pillars only import `minxg.base`. No cross-pillar imports. Three mechanical
 rules make AgentHarness **refactorable without cascade breaks:**
 1. No relative imports across pillars
 2. Capability-based dispatch (Cells advertise, callers don't import)

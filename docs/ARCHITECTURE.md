@@ -32,7 +32,7 @@ without rewriting your tools.
                              │
                              ▼
 ┌──────────────────────────────────────────────────────────────┐
-│  agent_harness  (the canonical package)                              │
+│  minxg  (the canonical package)                              │
 │                                                              │
 │  Five pillars:                   Standalone bits:            │
 │  ─────────────────              ─────────────────            │
@@ -70,7 +70,7 @@ pillars. Mess with one layer, the others don't care.
 | `transform` | AI tools, state sessions | Carries or modifies state |
 
 **Pillar rule: imports go only one way.** Siblings don't talk to each other.
-Every pillar touches `agent_harness.base` and nothing else. Add a new pillar? It
+Every pillar touches `minxg.base` and nothing else. Add a new pillar? It
 plugs in without breaking existing ones.
 
 ---
@@ -100,7 +100,7 @@ The driver treats every operation as a **vector field** on a shared state
 manifold and shoves the state through explicit Euler steps.
 
 ```python
-from agent_harness.driver import (
+from minxg.driver import (
     State, DriverEngine,
     arithmetic_field, parametric_field, smoothing_field, clamp_field,
 )
@@ -199,7 +199,7 @@ Done. No YAML, no config files, no boilerplate.
 | **Go** | HTTP services, CLI wrappers | Boring and correct |
 | **WASM** | Browser-adjacent compute | Runs anywhere |
 
-Rust core ships as `libagent_harness_rust.so` (or `.dylib` on Mac). If it isn't built,
+Rust core ships as `libminxg_rust.so` (or `.dylib` on Mac). If it isn't built,
 AgentHarness falls back to pure Python. No hard deps.
 
 ---
@@ -221,12 +221,12 @@ Old code still works via the compat layer:
 
 | Old flat name | Where it lives now |
 |---------------|-------------------|
-| `py_workers.fs_io` | `agent_harness.five_pillars.io.fs_io` |
-| `py_workers.system` | `agent_harness.five_pillars.dispatch.system` |
-| `py_workers.ai_tools` | `agent_harness.five_pillars.transform.ai_tools` |
-| `py_workers.crypto_tools` | `agent_harness.five_pillars.aggregate.crypto_tools` |
-| `py_workers.text_tools` | `agent_harness.five_pillars.scalar.text_tools` |
-| `py_workers.ga`, `.cat`, ... | `agent_harness.ga`, `agent_harness.cat`, ... (math pillars, unchanged) |
+| `py_workers.fs_io` | `minxg.five_pillars.io.fs_io` |
+| `py_workers.system` | `minxg.five_pillars.dispatch.system` |
+| `py_workers.ai_tools` | `minxg.five_pillars.transform.ai_tools` |
+| `py_workers.crypto_tools` | `minxg.five_pillars.aggregate.crypto_tools` |
+| `py_workers.text_tools` | `minxg.five_pillars.scalar.text_tools` |
+| `py_workers.ga`, `.cat`, ... | `minxg.ga`, `minxg.cat`, ... (math pillars, unchanged) |
 
 ---
 
@@ -258,7 +258,7 @@ Three rules make AgentHarness mechanically refactorable:
    `io/network.py` because `io/network.py` doesn't import it.
 2. **Capability-based dispatch.** Cells advertise what they do; nobody imports
    the class directly.
-3. **Stable operator IDs in `agent_harness.operators`.** Math IDs are declared once and
+3. **Stable operator IDs in `minxg.operators`.** Math IDs are declared once and
    never renumbered.
 
 ---

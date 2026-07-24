@@ -1,14 +1,14 @@
-# AgentHarness — AI Orchestration Platform
+# MINXG — AI Orchestration Platform
 
-**Version:** 0.18.6  
+**Version:** 2026.07.25  
 **Status:** Under active development  
 **License:** MIT
 
 ---
 
-## What is AgentHarness?
+## What is MINXG?
 
-AgentHarness is a modular AI orchestration platform written in Python. It provides:
+MINXG is a modular AI orchestration platform written in Python. It provides:
 
 - A **chat CLI** with streaming, tool calling, and multi-provider model support
 - An **OpenAI-compatible `/v1` API gateway** (MCP server mode included)
@@ -34,9 +34,9 @@ Platforms tested: Linux, macOS, Docker. Windows and Android/Termux are supported
 
 ## Honest Comparison
 
-We previously positioned AgentHarness against other tools with inflated claims and unnecessarily aggressive language. That was a mistake. Here's a sober look:
+We previously positioned MINXG against other tools with inflated claims and unnecessarily aggressive language. That was a mistake. Here's a sober look:
 
-| Capability | AgentHarness | Notes |
+| Capability | MINXG | Notes |
 |------------|-------|-------|
 | Tool breadth | 600+ tools across 59 workers | Wide but shallow in some categories |
 | MCP server | ✅ Yes | Exposes all workers as MCP tools |
@@ -59,34 +59,34 @@ We are **not** "better than everyone." We have genuine depth in math/science ope
 
 ```bash
 # The easy way
-pip install agent_harness-beta
-Successfully installed agent_harness-beta-0.18.6
+pip install minxg
+Successfully installed minxg-2026.07.25
 
 # The "from source" way
-git clone https://github.com/pineapple-ooo/AgentHarness-Beta.git
-cd AgentHarness-Beta
+git clone https://github.com/pineapple-ooo/MINXG.git
+cd MINXG
 pip install -e .
 
 # Verify installation
-agent_harness doctor
+minxg doctor
 ```
 
-Run `agent_harness` with no arguments to start the chat CLI. Use `agent_harness gateway --mcp` for the MCP server.
+Run `minxg` with no arguments to start the chat CLI. Use `minxg gateway --mcp` for the MCP server.
 
 ---
 
 ## Core Features
 
-### Chat CLI (`agent_harness`)
+### Chat CLI (`minxg`)
 - Streaming responses with tool-call visualization
 - 32+ model providers (OpenAI, Anthropic, Google, DeepSeek, xAI, local via Ollama, etc.)
 - Mid-conversation model switching (`/model`)
 - Multi-language UI (12 languages, live-switchable with `/lang`)
 - Theme system (8 built-in themes)
 
-### API Gateway (`agent_harness gateway`)
+### API Gateway (`minxg gateway`)
 - OpenAI-compatible `/v1/chat/completions` endpoint
-- MCP server mode: `agent_harness gateway --mcp`
+- MCP server mode: `minxg gateway --mcp`
 - All 59 workers exposed as callable tools
 - Cost tracking, rate limiting, request logging
 
@@ -118,15 +118,15 @@ Run `agent_harness` with no arguments to start the chat CLI. Use `agent_harness 
 | Rust | `rust_core/` | `agent_harness_rust_core` crate, ctypes |
 | Go | `go_core/` | JSON-RPC over stdio |
 | Java | `java_core/` | JVM daemon + vector engine |
-| Julia | `julia_worker.py` | `agent_harness.contracts.runtime.julia` |
+| Julia | `julia_worker.py` | `minxg.contracts.runtime.julia` |
 | R | `r_worker.py` + `r_scripts/` | Statistical computing |
 | WASM | `wasm_worker.py` | Wasmtime sandbox |
 | Datalog | `datalog_worker.py` | Clingo / pyDatalog |
 
-### Skill System (`agent_harness skill ...`)
+### Skill System (`minxg skill ...`)
 - Markdown `SKILL.md` files with YAML frontmatter
 - Local or remote catalogs (JSON file, raw GitHub URL works)
-- `agent_harness skill search / install / new / publish`
+- `minxg skill search / install / new / publish`
 - Also exposed to the chat agent as `skill_search`, `skill_install`, `skill_new` tools
 - **No code execution on install** — skills are instruction packs, not plugins
 
@@ -141,25 +141,25 @@ Run `agent_harness` with no arguments to start the chat CLI. Use `agent_harness 
 ## CLI Reference
 
 ```bash
-agent_harness                    # Start chat CLI (default)
-agent_harness setup              # Run setup wizard
-agent_harness config             # Show current configuration
-agent_harness status             # Runtime status
-agent_harness tools              # List available tools
-agent_harness model [name]       # Set or view model
-agent_harness api <url>          # Quick-set API base URL
-agent_harness key <key>          # Quick-set API key
-agent_harness lang [code]        # Switch display language
-agent_harness gateway [--detach] # API gateway (foreground default)
-agent_harness gateway --mcp      # MCP server mode
-agent_harness doctor             # Self-check (config + tools + extensions)
-agent_harness ext <sub>          # Extension management
-agent_harness skill <sub>        # Skill management
-agent_harness features           # Feature showcase
-agent_harness themes             # Theme management
-agent_harness export             # Export memories (json/markdown)
-agent_harness import <file>      # Import memories
-agent_harness help               # Show this cheatsheet
+minxg                    # Start chat CLI (default)
+minxg setup              # Run setup wizard
+minxg config             # Show current configuration
+minxg status             # Runtime status
+minxg tools              # List available tools
+minxg model [name]       # Set or view model
+minxg api <url>          # Quick-set API base URL
+minxg key <key>          # Quick-set API key
+minxg lang [code]        # Switch display language
+minxg gateway [--detach] # API gateway (foreground default)
+minxg gateway --mcp      # MCP server mode
+minxg doctor             # Self-check (config + tools + extensions)
+minxg ext <sub>          # Extension management
+minxg skill <sub>        # Skill management
+minxg features           # Feature showcase
+minxg themes             # Theme management
+minxg export             # Export memories (json/markdown)
+minxg import <file>      # Import memories
+minxg help               # Show this cheatsheet
 ```
 
 ---
@@ -171,8 +171,8 @@ Add to `claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
-    "agent_harness": {
-      "command": "agent_harness",
+    "minxg": {
+      "command": "minxg",
       "args": ["gateway", "--mcp"]
     }
   }
@@ -187,15 +187,15 @@ Same configuration; the `--mcp` flag exposes all workers as MCP tools.
 ## Platform Notes
 
 ### Windows
-- Install Python 3.10+, then `pip install agent_harness-beta`
+- Install Python 3.10+, then `pip install minxg`
 - Run in PowerShell or `cmd.exe`
-- `agent_harness doctor` reports missing capabilities
+- `minxg doctor` reports missing capabilities
 - Command execution routes through `cmd.exe` correctly
 - **Not tested on real hardware in this release** — CI mocks the Windows code paths. Please report issues.
 
 ### Android (Termux)
 - Install [Termux](https://termux.dev) from F-Droid
-- `pkg install python git && pip install agent_harness-beta`
+- `pkg install python git && pip install minxg`
 - Notifications use `termux-api` when available; fallback to log lines
 - Networking tools degrade gracefully without `inetutils`
 - **Not tested on real device in this release** — CI mocks Termux paths. Please report issues.
@@ -226,8 +226,8 @@ MIT. Use freely. We take no responsibility for what your AI does.
 
 ## A Note on Tone
 
-Earlier versions of this README (up to 0.18.3) used hyperbolic, aggressive, and profane language. That was unprofessional and misleading. We apologize. This rewrite aims for honesty about what AgentHarness does well, where it falls short, and what you can actually expect. If you find remaining instances of the old tone, please open an issue or PR.
+Earlier versions of this README (up to 0.18.3) used hyperbolic, aggressive, and profane language. That was unprofessional and misleading. We apologize. This rewrite aims for honesty about what MINXG does well, where it falls short, and what you can actually expect. If you find remaining instances of the old tone, please open an issue or PR.
 
 ---
 
-*Version 0.18.6 — built with care, tested honestly.*
+*Version 2026.07.25 — built with care, tested honestly.*

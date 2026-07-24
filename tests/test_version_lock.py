@@ -114,7 +114,7 @@ def test_init_py_re_exports_ssot():
 def _readme_drop_line() -> str:
     for line in _read(README).splitlines():
         m = re.match(
-            r"^Successfully installed minxg-beta-([0-9]+\.[0-9]+\.[0-9]+)$",
+            r"^Successfully installed minxg-([0-9]+\.[0-9]+\.[0-9]+)$",
             line.strip(),
         )
         if m:

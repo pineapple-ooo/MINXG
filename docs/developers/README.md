@@ -6,7 +6,7 @@
 ## The five-pillar layout
 
 ```
-agent_harness/
+minxg/
 ├── five_pillars/
 │   ├── scalar/       # math + text ops
 │   ├── aggregate/    # encoding, crypto, ML templates
@@ -19,7 +19,7 @@ agent_harness/
 ```
 
 **Rule zero: pillars don't talk to each other.** Each pillar imports only
-`agent_harness.base`. Sibling imports are fine within a pillar. Cross-pillar imports
+`minxg.base`. Sibling imports are fine within a pillar. Cross-pillar imports
 are a bug.
 
 ---
@@ -28,12 +28,12 @@ are a bug.
 
 1. Subclass `BaseWorker`
 2. Decorate public methods with `@tool`
-3. Register it in `agent_harness/five_pillars/<pillar>/__init__.py`
+3. Register it in `minxg/five_pillars/<pillar>/__init__.py`
 4. Write at least one test
 5. Run `pytest tests/` — green means done
 
 ```python
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 class DiskSpaceWorker(BaseWorker):
     """Checks disk space. Shocking, I know."""
@@ -74,7 +74,7 @@ Instead of making the AI call a tool, then calling the AI again, then another
 tool... you can pack multiple tool calls into one LLM response:
 
 ```python
-from agent_harness.core.tool_chain import ToolChainExecutor, ToolStep, TOOL_REGISTRY
+from minxg.core.tool_chain import ToolChainExecutor, ToolStep, TOOL_REGISTRY
 
 steps = [
     ToolStep(tool="self_evolution.evolution_record",  params={"event": "feature"}),
@@ -95,7 +95,7 @@ result = await executor.execute(steps)
 ## The Rust bridge — calling Rust from Python
 
 ```python
-from agent_harness.rust_bridge import signal_energy, lyapunov_logistic
+from minxg.rust_bridge import signal_energy, lyapunov_logistic
 
 # Rust FFT (falls back to pure Python if .so not built)
 energy = signal_energy([0.1, 0.2, 0.3])
@@ -109,7 +109,7 @@ To build the Rust .so (optional, falls back gracefully if absent):
 
 ```bash
 cd rust_core && cargo build --release
-# produces: rust_core/target/release/libagent_harness_rust.so
+# produces: rust_core/target/release/libminxg_rust.so
 ```
 
 ---
@@ -127,7 +127,7 @@ pytest tests/test_self_evolution.py tests/test_cli_tui.py -v
 pytest tests/ -q --watch
 ```
 
-Tests clean `~/.agent_harness/evolution.jsonl` before running — the self-evolution
+Tests clean `~/.minxg/evolution.jsonl` before running — the self-evolution
 log is cleared so each test gets a fresh slate.
 
 ---
@@ -139,9 +139,9 @@ log is cleared so each test gets a fresh slate.
 2. **Return dicts, not strings** — the AI gateway serializes dicts to JSON.
    A bare string becomes `{"result": "your string"}`.
 3. **Pillar imports** — don't reach across pillars. If two pillars need the
-   same thing, it belongs in `agent_harness.base`.
-4. **Evolution log** — each test run clears `~/.agent_harness/evolution.jsonl`. If you're
-   running `agent_harness` interactively, the log just keeps growing. That's normal.
+   same thing, it belongs in `minxg.base`.
+4. **Evolution log** — each test run clears `~/.minxg/evolution.jsonl`. If you're
+   running `minxg` interactively, the log just keeps growing. That's normal.
 5. **Rust .so missing** — AgentHarness falls back to pure Python automatically.
    Everything works, just slower. Build the .so when you need the speed.
 

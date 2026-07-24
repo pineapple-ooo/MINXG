@@ -31,7 +31,7 @@ This patch focuses on testable runtime stability, CLI compatibility fallbacks, a
 ---
 
 
-## [0.18.6] - 2026-07-20 (Commander framework — hierarchical multi-agent orchestration)
+## [2026.07.25] - 2026-07-20 (Commander framework — hierarchical multi-agent orchestration)
 
 New `multiling/commander/` package — a full hierarchical multi-agent
 orchestration system driven by a spec that demanded dynamic agent
@@ -129,12 +129,12 @@ failed, 0 warnings.
 
 ### Fixed — the extension system was end-to-end non-functional
 Four separate, chained bugs meant **no enabled extension's CLI command
-ever worked**, including the pre-existing `agent_harness-files`/`agent_harness-adb`/
-`agent_harness-root`, not just the new one added this pass:
+ever worked**, including the pre-existing `minxg-files`/`minxg-adb`/
+`minxg-root`, not just the new one added this pass:
 
 1. `register_hooks(registry)` — implemented by several extensions,
    with the right signature — was never actually called by anything.
-   Extensions were imported for `agent_harness ext list` metadata, but the
+   Extensions were imported for `minxg ext list` metadata, but the
    chat agent's live tool registry never heard from them.
    `multiling/model_tools.py::ensure_tools_discovered` now calls it
    for every *enabled* extension.
@@ -142,9 +142,9 @@ ever worked**, including the pre-existing `agent_harness-files`/`agent_harness-a
    correctly, also never called from `multiligua_cli/main.py`. Every
    extension-provided CLI verb failed argparse's "invalid choice"
    before even reaching `handle_command`.
-3. Once (2) was wired up, `agent_harness files browse` *still* silently
+3. Once (2) was wired up, `minxg files browse` *still* silently
    launched the interactive chat TUI instead of dispatching — the
-   dispatch map was keyed by `EXTENSION_NAME` (e.g. `"agent_harness-files"`),
+   dispatch map was keyed by `EXTENSION_NAME` (e.g. `"minxg-files"`),
    but every extension's `register_cli` registers a short, different
    argparse verb (`"files"`). `cmd in ext_map` never matched anything,
    silently falling through to whatever the top-level parser does
@@ -152,16 +152,16 @@ ever worked**, including the pre-existing `agent_harness-files`/`agent_harness-a
    `subparsers.choices` before/after each extension's own
    registration, so it always matches whatever verb(s) an extension
    actually adds.
-4. `agent_harness ext enable`/`disable` mutated `ext.module.EXTENSION_ENABLED`
+4. `minxg ext enable`/`disable` mutated `ext.module.EXTENSION_ENABLED`
    in memory and never persisted it — meaningless across process
-   boundaries, i.e. always, since every real `agent_harness` invocation is a
-   fresh process. `agent_harness ext list` also read that same never-persisted
+   boundaries, i.e. always, since every real `minxg` invocation is a
+   fresh process. `minxg ext list` also read that same never-persisted
    attribute directly instead of the state-file-aware `ext.enabled`,
    so it couldn't even report the (also-broken) state correctly. Both
    now go through the already-existing, already-correct
    `set_extension_enabled()`.
 5. `extensions/builtin/hello.py` (the reference example the
-   `writing-agent_harness-skills`/extensions docs point to) had two real bugs
+   `writing-minxg-skills`/extensions docs point to) had two real bugs
    of its own: a missing `EXTENSION_DESCRIPTION` that made
    `register_cli` throw on *every single CLI invocation* — that
    warning has been showing up quietly in the background this whole
@@ -185,19 +185,19 @@ pool, so a *shared* mutable orchestrator would leak one task's toolset
 restriction into another's) and actually drives a real conversation via
 `.chat()`. New coverage: `tests/test_delegate_tool.py` (15 tests).
 
-### Added — multi-agent coding crew (`agent_harness-multiagent` extension)
+### Added — multi-agent coding crew (`minxg-multiagent` extension)
 `extensions/builtin/multiagent_ext/` — Planner sub-agent breaks a goal
 into subtasks, Coder sub-agents implement them in parallel, a Reviewer
 sub-agent checks the combined result, flagged subtasks get
 re-delegated with the review feedback attached (bounded rounds). Built
 entirely on the now-real `delegate_tool.py` primitive above — this is
 orchestration *policy*, not a second execution engine. Ships disabled
-by default (`agent_harness ext add agent_harness-multiagent` or `agent_harness ext enable
-agent_harness-multiagent` to opt in, same convention as adb/root — this spins
+by default (`minxg ext add minxg-multiagent` or `minxg ext enable
+minxg-multiagent` to opt in, same convention as adb/root — this spins
 up multiple real, potentially costly AI calls once a provider is
 configured).
 
-Two ways to reach it: `agent_harness ext multiagent run "<goal>"` (standalone
+Two ways to reach it: `minxg ext multiagent run "<goal>"` (standalone
 CLI) and `multi_agent_code_task` (chat-agent tool, reachable
 mid-conversation once enabled — reachable at all only because of the
 extension-system fixes above). The coordination logic (planner/coder/
@@ -244,22 +244,22 @@ Full test suite: 1,005 passed, 9 skipped, 0 failed, 0 warnings (was
 884 passed / 15 failed / several silent warnings at the start of this
 pass).
 
-### Added — a real skill ecosystem (`agent_harness skill ...`)
-`agent_harness skill` was listed in `CORE_COMMANDS` and documented in the
+### Added — a real skill ecosystem (`minxg skill ...`)
+`minxg skill` was listed in `CORE_COMMANDS` and documented in the
 README, but was never actually registered with argparse — running it
 failed with "invalid choice: 'skill'". The LLM-facing implementation
 behind it (`tools/skill_manager_tool.py`) pointed at a `skills/`
 directory that didn't exist in the shipped package, so even the
 in-chat version silently returned nothing. Built the real thing:
 
-- `agent_harness/core_ops/skill_registry.py` — the shared engine: parse/validate
+- `minxg/core_ops/skill_registry.py` — the shared engine: parse/validate
   `SKILL.md` frontmatter, install from a local path / git URL (`git
   clone`, tested against a real throwaway repo, not mocked) / raw URL /
   catalog name, a content-hashed local lockfile, a courtesy secret-leak
-  scan for `agent_harness skill publish`, and a scaffold generator
-  (`agent_harness skill new`).
+  scan for `minxg skill publish`, and a scaffold generator
+  (`minxg skill new`).
 - `multiligua_cli/skill_cli.py` + real argparse wiring for
-  `agent_harness skill {list,view,search,install,new,remove,publish}` — fixes
+  `minxg skill {list,view,search,install,new,remove,publish}` — fixes
   the missing-subcommand bug above.
 - `skill_search` / `skill_install` / `skill_new` added as chat-agent
   tools too (`tools/skill_manager_tool.py`), same engine as the CLI.
@@ -271,23 +271,23 @@ in-chat version silently returned nothing. Built the real thing:
   working example catalog. Catalogs are just JSON — self-hostable via
   any raw file URL, no server required, matching the local-first shape
   of the rest of the project. See `ARCHITECTURE.md` and the
-  `writing-agent_harness-skills` skill for the full design rationale, including
+  `writing-minxg-skills` skill for the full design rationale, including
   why skills (markdown, not code) are a deliberately lower-risk
   ecosystem surface than extensions (executable Python).
 - 33 new tests in `tests/test_skill_registry.py`.
 - **Caught by actually building the wheel, not assumed**: `skills/`
   wasn't a Python package and wasn't in `pyproject.toml`'s package
-  list, so none of the above shipped through `pip install agent_harness-beta`
+  list, so none of the above shipped through `pip install minxg-beta`
   at all — only a git clone happened to have it. Verified by building
   a real wheel, installing it into a clean virtualenv, and confirming
-  `agent_harness skill list` found the bundled skills there before calling
+  `minxg skill list` found the bundled skills there before calling
   this done. `skills/` is now a proper package
   (`skills/__init__.py` + `package-data` glob for `**/*.md`/`*.json`)
   and its old `.gitignore` entry (a leftover from when it was a
   project-local scratch dir, not shipped content) is gone.
 
 ### Added — `ARCHITECTURE.md`
-A full physical reorg of the ~440-file tree (`agent_harness/` vs `multiling/`
+A full physical reorg of the ~440-file tree (`minxg/` vs `multiling/`
 vs `multiligua_cli/` vs `tools/` vs `agent/` vs `extensions/` vs
 `skills/` vs `src/ai/`) was considered for this pass and deliberately
 cut — the blast radius of updating every import in lockstep outweighed
@@ -305,7 +305,7 @@ contributor asks first.
   docs say to do. Existing tests in `test_cli_tui.py` had encoded the
   buggy behavior as correct (asserting `\]` was present); corrected
   them and added an end-to-end render check against real rich output.
-- `agent_harness/core_ops/skill_registry.py` `parse_skill_md()` — an empty
+- `minxg/core_ops/skill_registry.py` `parse_skill_md()` — an empty
   YAML frontmatter value (e.g. `author:` with nothing after it) parses
   to `None`, and `dict.get(key, default)` only falls back to `default`
   when the key is *missing*, not when it's present-but-`None` — so
@@ -317,16 +317,16 @@ contributor asks first.
 - `multiligua_cli/main.py` — two redundant local `import sys` statements
   inside `main()` shadowed the module-level import, making Python treat
   `sys` as local for the *entire* function and raising
-  `UnboundLocalError` on `agent_harness help` and other early-exit branches.
+  `UnboundLocalError` on `minxg help` and other early-exit branches.
 - `multiligua_cli/features.py` — the entire EXPERIMENTAL surface
   (`Spinner`, `SilentFeatures`, `SessionManager`, `get_silent`, etc.)
   was deleted wholesale during the 0.18.3 cleanup while its tests were
   left in place; restored from git history and merged with the feature
-  showcase. This also fixes `agent_harness features` itself, which crashed with
+  showcase. This also fixes `minxg features` itself, which crashed with
   `ImportError: cannot import name 'print_features'` on every call —
   a flagship, README-advertised command that had been broken since the
   0.18.3 release.
-- `agent_harness/rust_bridge.py` — missing `Dict`/`Any` import broke module
+- `minxg/rust_bridge.py` — missing `Dict`/`Any` import broke module
   collection entirely (`NameError` at import time), taking the whole
   `test_rust_bridge.py` file down with it.
 - `tests/test_twin.py` — `_rustc_available()` used
@@ -344,13 +344,13 @@ contributor asks first.
   `RuntimeWarning` in a *different*, unrelated test once garbage
   collection finally got to it.
 - `tests/test_experimental_cli.py` — `TopLevelSubsystemsTests.setUp()`
-  did `del sys.modules[name] for name starting with "agent_harness"` before
+  did `del sys.modules[name] for name starting with "minxg"` before
   every test, wiping out unrelated already-imported submodules (e.g.
-  `agent_harness.core_ops.*`). The next `import agent_harness` doesn't reattach
+  `minxg.core_ops.*`). The next `import minxg` doesn't reattach
   previously-cached submodules to the freshly created module object,
   splitting module identity and silently breaking
-  `monkeypatch.setattr("agent_harness.x.y", ...)` in *other* test files for the
-  rest of the session. Switched to `importlib.reload(agent_harness)`, which
+  `monkeypatch.setattr("minxg.x.y", ...)` in *other* test files for the
+  rest of the session. Switched to `importlib.reload(minxg)`, which
   re-runs the same promotion logic in place without the collateral
   damage.
 - `tests/test_all.py` — `TestModelCompare.test_comparison_result` called
@@ -370,7 +370,7 @@ contributor asks first.
   hang instead of failing. Rewritten to mock `gateway.runner.run_gateway`
   the same way `test_cli_gateway.py` already does it correctly — now
   deterministic and takes 0.02s instead of up to 120s+.
-- `agent_harness/workers/network/network_workers.py` `PingWorker` — on
+- `minxg/workers/network/network_workers.py` `PingWorker` — on
   `FileNotFoundError` (no `ping` binary — the common case on a bare
   Termux/Android install or a minimal container) it returned a bare
   `{"error": ...}` with no `host` key. Now falls back to a TCP-connect
@@ -400,7 +400,7 @@ contributor asks first.
   POSIX destructive commands; added the Windows/PowerShell equivalents
   (`format`, `diskpart`, `Remove-Item -Recurse -Force`, `reg delete`,
   `Stop-Computer`, `vssadmin`, etc.).
-- `agent_harness/workers/system/system_workers.py` `ProcessWorker.kill_force`
+- `minxg/workers/system/system_workers.py` `ProcessWorker.kill_force`
   referenced `signal.SIGKILL`, which doesn't exist on Windows at all
   (silently swallowed by a bare `except Exception`, so force-kill just
   quietly did nothing there). Both `kill`/`kill_force` now use
@@ -410,10 +410,10 @@ contributor asks first.
 - AgentHarness had two independent file-operation implementations: one behind
   the chat-agent's function-calling registry (`tools/file_tools.py`,
   safety-hardened) and one behind the MCP worker protocol
-  (`agent_harness/workers/file/file_workers.py`, which had *none* of those
+  (`minxg/workers/file/file_workers.py`, which had *none* of those
   guards — no blocked-path check, no size cap, no binary-file
   rejection). Extracted the safety logic into a single shared module,
-  `agent_harness/core_ops/file_safety.py`, that both surfaces now import, so a
+  `minxg/core_ops/file_safety.py`, that both surfaces now import, so a
   fix only has to happen once and both entry points get the same
   protection level.
 
@@ -437,12 +437,12 @@ this sandbox's outbound network is allowlisted to package registries
 only. Smoke-test with real credentials before relying on these.
 
 ### Docs
-- Doc/version drift: `agent_harness/_version.py`, `CHANGELOG.md`, `DEVELOPER.md`
+- Doc/version drift: `minxg/_version.py`, `CHANGELOG.md`, `DEVELOPER.md`
   and the README install line had each drifted to a different version
   string (0.18.2 vs 0.18.3 in different places); re-synced to 0.18.4 as
   the single source of truth, per `tests/test_version_lock.py`.
 - README numbers reconciled against what the code actually reports at
-  runtime (`agent_harness doctor`, `WorkerRegistry().load()`) instead of
+  runtime (`minxg doctor`, `WorkerRegistry().load()`) instead of
   hand-maintained counts that had drifted from reality.
 - Fixed the README's own "Any MCP Client" code sample — it called
   `WorkerRegistry().list_all()`, a method that doesn't exist on that
@@ -495,21 +495,21 @@ only. Smoke-test with real credentials before relying on these.
 - `health_checker` — System health monitoring and checks
 
 #### CLI Commands (15 new commands)
-- `agent_harness memory` — Memory system dashboard
-- `agent_harness cost` — Cost tracking panel
-- `agent_harness compare` — Multi-model comparison
-- `agent_harness web` — Launch web UI
-- `agent_harness features` — Feature showcase
-- `agent_harness themes` — Theme management
-- `agent_harness export` — Export memories
-- `agent_harness import` — Import memories
-- `agent_harness ext` — Extension management
-- `agent_harness screen` — Screen operations
-- `agent_harness update` — Update check
-- `agent_harness skill` — Skill management
-- `agent_harness bench` — Performance benchmark
-- `agent_harness replay` — Session replay
-- `agent_harness doctor` — System diagnosis
+- `minxg memory` — Memory system dashboard
+- `minxg cost` — Cost tracking panel
+- `minxg compare` — Multi-model comparison
+- `minxg web` — Launch web UI
+- `minxg features` — Feature showcase
+- `minxg themes` — Theme management
+- `minxg export` — Export memories
+- `minxg import` — Import memories
+- `minxg ext` — Extension management
+- `minxg screen` — Screen operations
+- `minxg update` — Update check
+- `minxg skill` — Skill management
+- `minxg bench` — Performance benchmark
+- `minxg replay` — Session replay
+- `minxg doctor` — System diagnosis
 
 #### Worker Tools (69 new tools)
 - **File workers (9):** file_read, file_write, file_copy, file_move, file_delete, file_search, file_diff, file_hash, file_stat

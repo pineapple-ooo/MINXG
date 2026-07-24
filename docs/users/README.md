@@ -1,16 +1,16 @@
 # AgentHarness User Guide
 
-Quick start: run `agent_harness` from a terminal and type a prompt. That's it.
+Quick start: run `minxg` from a terminal and type a prompt. That's it.
 
 ## A taste
 
 ```python
-import agent_harness
+import minxg
 
-print(agent_harness.VERSION)           # "0.18.2"
-print(agent_harness.detect_platform())  # 'linux', 'termux', 'windows', etc.
+print(minxg.VERSION)           # "0.18.2"
+print(minxg.detect_platform())  # 'linux', 'termux', 'windows', etc.
 
-fs = agent_harness.FsIoWorker()
+fs = minxg.FsIoWorker()
 result = await fs.list_directory(path="/tmp")
 ```
 
@@ -18,7 +18,7 @@ result = await fs.list_directory(path="/tmp")
 
 - **[ARCHITECTURE.md](../ARCHITECTURE.md)** — how the whole thing fits together
 - **[DEVELOPER.md](../../DEVELOPER.md#5-worker-base-class)** — how to write a worker
-- **`agent_harness --help`** — built-in command reference
+- **`minxg --help`** — built-in command reference
 - **`/help`** in the REPL — slash commands available at runtime
 
 ## The slash command cheat sheet
