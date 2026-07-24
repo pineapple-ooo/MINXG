@@ -3,7 +3,8 @@ name: Release
 on:
   push:
     tags:
-      - "v*.*.*"          # 匹配 v0.12.2 这种 tag
+      - "*.*.*"          # 匹配日期版 tag 如 2026.07.25
+      - "v*.*.*"          # 兼容 semver tag
   workflow_dispatch:        # 也允许在网页手动点按钮触发
 
 permissions:
