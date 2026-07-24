@@ -1,4 +1,4 @@
-"""Load and expose project config from config/agent_harness.yaml."""
+"""Load and expose project config from config/minxg.yaml."""
 import os
 from pathlib import Path
 from typing import Any, Dict
@@ -6,7 +6,7 @@ from typing import Any, Dict
 _config: Dict[str, Any] = {}
 
 def load_config() -> Dict[str, Any]:
-    """Load config/agent_harness.yaml. Returns dict."""
+    """Load config/minxg.yaml. Returns dict."""
     global _config
     if _config:
         return _config
@@ -14,7 +14,7 @@ def load_config() -> Dict[str, Any]:
         import yaml
     except ImportError:
         return _config
-    config_path = Path(__file__).parent.parent / "config" / "agent_harness.yaml"
+    config_path = Path(__file__).parent.parent / "config" / "minxg.yaml"
     if not config_path.exists():
         return _config
     with open(config_path) as f:

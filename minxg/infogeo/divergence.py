@@ -1,5 +1,5 @@
 """
-agent_harness/infogeo/divergence.py — Information Divergences (pure Python)
+minxg/infogeo/divergence.py — Information Divergences (pure Python)
 ============================================================================
 
 All divergences implemented in pure Python without numpy.

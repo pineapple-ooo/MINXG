@@ -1,12 +1,12 @@
 """
-agent_harness/operators.py — Operator Engine Python Bridge v1.0.0
+minxg/operators.py — Operator Engine Python Bridge v1.0.0
 
 Provides Python-level access to the 10,000+ operator engine.
 Operators are lightweight data transformations: math, text, data, logic,
 network, ML, system operations. Each operator has a unique ID (0-9999)
 and category.
 
-When C++ native operators are loaded (via libagent_harness_operators.so), they
+When C++ native operators are loaded (via libminxg_operators.so), they
 execute 10-100x faster than pure Python. Falls back gracefully.
 """
 from __future__ import annotations

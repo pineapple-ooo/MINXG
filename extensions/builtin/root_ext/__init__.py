@@ -3,7 +3,7 @@ extensions/builtin/root_ext/__init__.py — ROOT tools v1.0.1
 
 Opt-in only: ships with EXTENSION_ENABLED = False; the existence of `su`
 on the filesystem by itself is NOT enough to gate this extension. Enable
-with `agent_harness ext add agent_harness-root`.
+with `minxg ext add minxg-root`.
 
 ROOT tooling is dangerous (it can mount, set iptables, swap kernels, etc);
 shipping it auto-enabled would be irresponsible. Probe-on-call is cheap
@@ -15,14 +15,14 @@ import os
 import subprocess
 
 
-EXTENSION_NAME = "agent_harness-root"
+EXTENSION_NAME = "minxg-root"
 EXTENSION_DESCRIPTION = (
     "ROOT tooling: su execution, mount, iptables, sysctl, SELinux, kernel"
 )
 EXTENSION_VERSION = "0.17.1"
 EXTENSION_PRIORITY = 95
 EXTENSION_SOURCE = "builtin"
-EXTENSION_ENABLED = False  # opt-in via `agent_harness ext add agent_harness-root`
+EXTENSION_ENABLED = False  # opt-in via `minxg ext add minxg-root`
 
 
 _ROOT_CANDIDATES = (
@@ -108,9 +108,9 @@ def handle_command(args) -> int:
 
 
 def register_cli(subparsers):
-    """`agent_harness ext root ...` — opt-in ROOT sub-tree."""
+    """`minxg ext root ...` — opt-in ROOT sub-tree."""
     p = subparsers.add_parser(
-        "root", help="ROOT tools (opt-in via `agent_harness ext add agent_harness-root`)"
+        "root", help="ROOT tools (opt-in via `minxg ext add minxg-root`)"
     )
     sp = p.add_subparsers(dest="root_subcommand")
     sp.add_parser("check", help="probe ROOT status")

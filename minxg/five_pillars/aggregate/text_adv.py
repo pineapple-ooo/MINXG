@@ -14,7 +14,7 @@ import urllib.parse
 import html
 import xml.sax.saxutils as saxutils
 from typing import Dict, List, Any, Tuple
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 class TextAdvWorker(BaseWorker):

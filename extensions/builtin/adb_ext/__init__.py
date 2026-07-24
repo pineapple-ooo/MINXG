@@ -2,10 +2,10 @@
 extensions/builtin/adb_ext/__init__.py — ADB command extension v1.0.1
 
 Opt-in only: ships with EXTENSION_ENABLED = False so it never auto-attaches
-when `adb` happens to be on PATH. Enable with `agent_harness ext add agent_harness-adb`.
+when `adb` happens to be on PATH. Enable with `minxg ext add minxg-adb`.
 
 Dependency probing happens inside handle_command (cheap, runs only when
-invoked), not at module import — that keeps `agent_harness tools` cold-start
+invoked), not at module import — that keeps `minxg tools` cold-start
 fast on Termux + Py3.13 where adb may simply not exist.
 """
 from __future__ import annotations
@@ -15,7 +15,7 @@ import subprocess
 import sys
 
 
-EXTENSION_NAME = "agent_harness-adb"
+EXTENSION_NAME = "minxg-adb"
 EXTENSION_DESCRIPTION = (
     "ADB tooling: manage connected Android devices "
     "(devices/shell/install/logcat/screenshot)"
@@ -23,7 +23,7 @@ EXTENSION_DESCRIPTION = (
 EXTENSION_VERSION = "0.17.1"
 EXTENSION_PRIORITY = 90
 EXTENSION_SOURCE = "builtin"
-EXTENSION_ENABLED = False  # opt-in via `agent_harness ext add agent_harness-adb`
+EXTENSION_ENABLED = False  # opt-in via `minxg ext add minxg-adb`
 
 
 def _adb_available() -> bool:
@@ -69,7 +69,7 @@ def handle_command(args) -> int:
     if subcmd == "shell":
         cmd = getattr(args, "shell_command", None)
         if not cmd:
-            print("Usage: agent_harness ext adb shell <CMD>")
+            print("Usage: minxg ext adb shell <CMD>")
             return 1
         r = subprocess.run(["adb", "shell", cmd],
                            capture_output=True, text=True, timeout=30)
@@ -79,7 +79,7 @@ def handle_command(args) -> int:
     if subcmd == "install":
         apk = getattr(args, "apk_path", "")
         if not apk:
-            print("Usage: agent_harness ext adb install <APK>")
+            print("Usage: minxg ext adb install <APK>")
             return 1
         r = subprocess.run(["adb", "install", apk],
                            capture_output=True, text=True, timeout=60)
@@ -106,9 +106,9 @@ def handle_command(args) -> int:
 
 
 def register_cli(subparsers):
-    """`agent_harness ext adb ...` — opt-in ADB sub-tree."""
+    """`minxg ext adb ...` — opt-in ADB sub-tree."""
     p = subparsers.add_parser(
-        "adb", help="ADB tools (opt-in via `agent_harness ext add agent_harness-adb`)"
+        "adb", help="ADB tools (opt-in via `minxg ext add minxg-adb`)"
     )
     sp = p.add_subparsers(dest="adb_subcommand")
     sp.add_parser("devices", help="list connected devices")

@@ -6,8 +6,8 @@ Legacy subcommands remain under multiligua_cli.main.
 
 from __future__ import annotations
 
-from agent_harness.cli.app import Tui
-from agent_harness.cli.approval import (
+from minxg.cli.app import Tui
+from minxg.cli.approval import (
     PendingWrite,
     apply_pending,
     discard_pending,
@@ -17,9 +17,9 @@ from agent_harness.cli.approval import (
     set_write_approval,
     write_approval_enabled,
 )
-from agent_harness.cli.commands import SlashCommand, all_commands, get, matches, register
-from agent_harness.cli.doctor import run_doctor
-from agent_harness.cli.renderers import print_banner, render_tool_card, status_line
+from minxg.cli.commands import SlashCommand, all_commands, get, matches, register
+from minxg.cli.doctor import run_doctor
+from minxg.cli.renderers import print_banner, render_tool_card, status_line
 
 __all__ = [
     "Tui",

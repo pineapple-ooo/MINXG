@@ -43,7 +43,7 @@ def _has_env(key: str) -> bool:
 
 def test_extension_registry_discovers_plugins():
     """Scan the plugins/ dir if it exists."""
-    from agent_harness.extension_api import ExtensionRegistry
+    from minxg.extension_api import ExtensionRegistry
     reg = ExtensionRegistry()
     report = reg.discover(root=ROOT)
     assert isinstance(report, dict)
@@ -54,7 +54,7 @@ def test_extension_registry_discovers_plugins():
 
 
 def test_extension_registry_returns_visible_tools():
-    from agent_harness.extension_api import ExtensionRegistry
+    from minxg.extension_api import ExtensionRegistry
     reg = ExtensionRegistry()
     reg.discover(root=ROOT)
     tools = reg.get_visible_tools()
@@ -62,7 +62,7 @@ def test_extension_registry_returns_visible_tools():
 
 
 def test_plugin_manifest_registration():
-    from agent_harness.extension_api import PluginManifest, register_plugin, _PLUGIN_REGISTRY
+    from minxg.extension_api import PluginManifest, register_plugin, _PLUGIN_REGISTRY
     manifest = PluginManifest(
         name="test-plugin",
         version="0.1.0",
@@ -75,7 +75,7 @@ def test_plugin_manifest_registration():
 
 
 def test_plugin_tool_registration():
-    from agent_harness.extension_api import PluginManifest, register_plugin, _PLUGIN_REGISTRY
+    from minxg.extension_api import PluginManifest, register_plugin, _PLUGIN_REGISTRY
     manifest = PluginManifest(
         name="test-tool-plugin",
         version="0.1.0",
@@ -102,7 +102,7 @@ def test_plugin_tool_registration():
 
 
 def test_mcp_endpoint_declaration():
-    from agent_harness.extension_api import MCPEndpoint, MCPBridge
+    from minxg.extension_api import MCPEndpoint, MCPBridge
     ep = MCPEndpoint(
         name="filesystem-server",
         transport="stdio",
@@ -115,7 +115,7 @@ def test_mcp_endpoint_declaration():
 
 
 def test_acp_adapter_connect():
-    from agent_harness.extension_api import ACPAdapter
+    from minxg.extension_api import ACPAdapter
     acp = ACPAdapter()
     assert acp.connect("localhost:50051")
 
@@ -123,7 +123,7 @@ def test_acp_adapter_connect():
 # ── E2E 2: Math dispatcher lifecycle ──────────────────────────
 
 def test_math_dispatcher_indexes_and_dispatches():
-    from agent_harness.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
+    from minxg.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
 
     async def go():
         w = MathPillarDispatcher()
@@ -141,7 +141,7 @@ def test_math_dispatcher_indexes_and_dispatches():
 # ── E2E 3: Quad forge target listing ──────────────────────────
 
 def test_quad_forge_lists_targets():
-    from agent_harness.five_pillars.devtools.quad_forge import QuadForgeWorker
+    from minxg.five_pillars.devtools.quad_forge import QuadForgeWorker
 
     async def go():
         w = QuadForgeWorker()
@@ -161,7 +161,7 @@ def test_quad_forge_lists_targets():
 def test_benchmark_report_smoke():
     """Try to run the Rust bench report; skips if .so not found."""
     try:
-        from agent_harness.rust_bridge import rust_bench_report
+        from minxg.rust_bridge import rust_bench_report
     except ImportError:
         pytest.skip("rust_bridge not importable (no .so or import error)")
     try:
@@ -208,7 +208,7 @@ def test_benchmark_report_smoke():
 
 async def _cross_worker_call():
     """Two workers in chain: list → dispatch."""
-    from agent_harness.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
+    from minxg.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
     w = MathPillarDispatcher()
     r1 = await w.math_pillar_list(pillar="chaos")
     assert r1["status"] == "ok"

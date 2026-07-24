@@ -1,4 +1,4 @@
-"""agent_harness.five_pillars.scalar — Pure compute plane.
+"""minxg.five_pillars.scalar — Pure compute plane.
 
 text_tools, datetime_tools, math_tools, string_tools,
 version_tools, color_tools, markdown_tools.

@@ -19,7 +19,7 @@ from __future__ import annotations
 import asyncio
 from typing import Any, Dict, List, Optional
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 # Lazy adapter lookup — avoids import errors when unified-channel not installed

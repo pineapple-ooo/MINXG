@@ -1,5 +1,5 @@
 """
-agent_harness/infogeo/operators_ig.py — Register Information Geometry operators
+minxg/infogeo/operators_ig.py — Register Information Geometry operators
 ================================================================================
 
 100+ information-geometry operators. Operator IDs 7000-7499 are reserved.

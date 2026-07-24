@@ -1,5 +1,5 @@
 """
-agent_harness/infogeo/manifold.py — Statistical Manifolds
+minxg/infogeo/manifold.py — Statistical Manifolds
 ==========================================================
 
 A STATISTICAL MANIFOLD is a smooth manifold M where each point p ∈ M is

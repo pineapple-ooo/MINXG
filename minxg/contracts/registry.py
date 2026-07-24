@@ -1,7 +1,7 @@
-"""agent_harness.contracts.registry — type-keyed catalogue of Cells.
+"""minxg.contracts.registry — type-keyed catalogue of Cells.
 
-agent_harness.cap.provides: contracts.registry, contracts.capability.query
-agent_harness.cap.requires: (none)
+minxg.cap.provides: contracts.registry, contracts.capability.query
+minxg.cap.requires: (none)
 """
 from __future__ import annotations
 from typing import Any, Dict, Iterable, Optional, Type

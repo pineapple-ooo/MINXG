@@ -148,7 +148,7 @@ def _ansi(text: str, *codes: str) -> str:
 
 def print_banner() -> None:
     try:
-        from agent_harness import VERSION
+        from minxg import VERSION
         ver = VERSION
     except Exception:
         ver = "0.18.2"
@@ -182,7 +182,7 @@ def print_banner() -> None:
 
 def print_chat_banner() -> None:
     try:
-        from agent_harness import VERSION
+        from minxg import VERSION
         ver = VERSION
     except Exception:
         ver = "0.18.2"

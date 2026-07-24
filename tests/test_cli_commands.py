@@ -90,21 +90,21 @@ def _stop_isolated_config(patches):
 
 
 class TestCliSurface:
-    """`agent_harness --help` should enumerate every advertised subcommand."""
+    """`minxg --help` should enumerate every advertised subcommand."""
     def test_help_lists_all_top_level_subcommands(self):
         rc, out = _silent_call(["--help"])
         assert rc == 0
         for cmd in ["setup", "config", "status", "tools", "model",
                     "api", "key", "lang", "gateway", "doctor",
                     "ext", "help"]:
-            assert f"agent_harness {cmd}" in out or cmd in out, (
+            assert f"minxg {cmd}" in out or cmd in out, (
                 f"missing {cmd!r} in --help output:\n{out[:800]}"
             )
 
     def test_help_lists_ext_subcommands(self):
         rc, out = _silent_call(["ext", "--help"])
         assert rc == 0
-        # the ext sub-command surface (via ext --help, not agent_harness --help)
+        # the ext sub-command surface (via ext --help, not minxg --help)
         for action in ["list", "available", "add", "remove", "info",
                        "enable", "disable"]:
             assert action in out, f"ext sub-action {action!r} missing from ext --help"
@@ -143,7 +143,7 @@ class TestReadOnlyCommands:
         assert rc == 0
 
     def test_status_works_without_config(self):
-        """`agent_harness status` renders even if config is missing/empty."""
+        """`minxg status` renders even if config is missing/empty."""
         rc, _ = _silent_call(["status"])
         assert rc == 0
 
@@ -228,7 +228,7 @@ class TestGateway:
         assert rc in (0, 1), f"unexpected gateway status rc={rc}"
 
     def test_gateway_no_subcommand_runs_foreground(self):
-        """v0.18.2: `agent_harness gateway` with no sub-command runs in foreground.
+        """v0.18.2: `minxg gateway` with no sub-command runs in foreground.
 
         This used to actually start a real aiohttp server with no way to
         stop it deterministically — it "passed" only because retrying
@@ -267,16 +267,16 @@ class TestExtDispatch:
         rc, out = _silent_call(["ext", "available"])
         assert rc == 0
         # the three opt-in slugs are advertised
-        assert "agent_harness-adb" in out
-        assert "agent_harness-root" in out
+        assert "minxg-adb" in out
+        assert "minxg-root" in out
 
     def test_ext_info_known_builtin(self):
-        rc, out = _silent_call(["ext", "info", "agent_harness-adb"])
+        rc, out = _silent_call(["ext", "info", "minxg-adb"])
         assert rc == 0
         assert "adb" in out.lower() or "adb" in out
 
     def test_ext_info_unknown_slug(self, capsys):
-        rc, _ = _silent_call(["ext", "info", "agent_harness-not-a-real-slug"])
+        rc, _ = _silent_call(["ext", "info", "minxg-not-a-real-slug"])
         # unknown extension should give a non-zero exit
         assert rc != 0
 
@@ -320,7 +320,7 @@ class TestTopLevelFlags:
 
 
 class TestModelNoArg:
-    """`agent_harness model` with no name is special-cased to interactive setup
+    """`minxg model` with no name is special-cased to interactive setup
     which would block on input; we verify it parses and dispatches
     without throwing by mocking its tail."""
     def test_model_no_arg_reaches_setup(self, tmp_path):

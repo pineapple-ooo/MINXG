@@ -1,4 +1,4 @@
-"""agent_harness.context.token_tracker — token accounting for web dashboard.
+"""minxg.context.token_tracker — token accounting for web dashboard.
 
 Separates input and output tokens and exposes Prometheus metrics for the
 gateway / web UI to scrape.

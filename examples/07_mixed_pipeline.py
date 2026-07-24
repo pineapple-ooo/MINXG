@@ -11,15 +11,15 @@ might use:
   - FIBER for the underlying manifold structure
 """
 import math
-import agent_harness.cat as cat
-from agent_harness.ga import Multivector, Signature, Rotor
-from agent_harness.infogeo import (
+import minxg.cat as cat
+from minxg.ga import Multivector, Signature, Rotor
+from minxg.infogeo import (
     fisher_information_matrix, natural_gradient, Gaussian,
 )
-from agent_harness.chaos import logistic_lyapunov
-from agent_harness.topo import Simplex, SimplicialComplex
-from agent_harness.fiber import TangentBundle, RiemannianMetric
-from agent_harness.operators import OPERATOR_REGISTRY
+from minxg.chaos import logistic_lyapunov
+from minxg.topo import Simplex, SimplicialComplex
+from minxg.fiber import TangentBundle, RiemannianMetric
+from minxg.operators import OPERATOR_REGISTRY
 
 print("=" * 60)
 print("AgentHarness: mixing all six mathematical pillars in one workflow")

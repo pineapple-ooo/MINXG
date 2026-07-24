@@ -37,7 +37,7 @@ _INDEX_PATH = Path(__file__).with_name('_index.html')
 if _INDEX_PATH.exists():
     INDEX_HTML = _INDEX_PATH.read_text(encoding='utf-8')
 else:
-    raise RuntimeError("Missing _index.html. Run 'python -m agent_harness.tools.extract_index' to generate it.")
+    raise RuntimeError("Missing _index.html. Run 'python -m minxg.tools.extract_index' to generate it.")
 
 # ── Emphasis markers system prompt ──
 EMPHASIS_PROMPT = {"role": "system", "content": """You are AgentHarness, an expert AI assistant. When you write, you MUST use the following emphasis markers to make your responses more readable and engaging:
@@ -67,7 +67,7 @@ class WebUIServer:
         self.clients = set()
         self._aborting_sessions: set = set()
         self._app = None
-        self._uploads_dir = Path.home() / '.agent_harness' / 'uploads'
+        self._uploads_dir = Path.home() / '.minxg' / 'uploads'
         self._uploads_dir.mkdir(parents=True, exist_ok=True)
 
     def _build_app(self):
@@ -151,7 +151,7 @@ class WebUIServer:
             reasoning_effort = data.get("reasoning_effort") or None
             await self._handle_chat(ws, data.get("message", ""), data.get("history", []), data.get("company", False), reasoning_effort)
         elif msg_type == "abort":
-            self._aborting_sessions.add(ws._agent_harness_session or id(ws))
+            self._aborting_sessions.add(ws._minxg_session or id(ws))
             await ws.send_json({"type": "abort_ok"})
         elif msg_type == "get_agents":
             await self._send_agent_status(ws)

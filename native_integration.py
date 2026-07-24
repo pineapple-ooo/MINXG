@@ -2,9 +2,9 @@
 native_integration.py — Native C/C++/Go/Shell for AgentHarness v2.0.0
 
 Loads and wraps:
-  - libagent_harness_c.so    (C: text processing, memory pools, statistics)
-  - libagent_harness_core.so (C++: crypto, compression, JSON, RAII wrappers)
-  - libagent_harness_go.so   (Go: health, WebSocket hub, rate limiting via c-shared)
+  - libminxg_c.so    (C: text processing, memory pools, statistics)
+  - libminxg_core.so (C++: crypto, compression, JSON, RAII wrappers)
+  - libminxg_go.so   (Go: health, WebSocket hub, rate limiting via c-shared)
   - shell scripts    (OS-native: grep/sed/awk/date/printf wrappers)
 
 每个都是原生实现，不需要Python扩展。
@@ -41,7 +41,7 @@ def _find_lib(name: str) -> Optional[Path]:
     return None
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# C CORE — libagent_harness_c.so  (text_engine + mem_pool + evolve + arch)
+# C CORE — libminxg_c.so  (text_engine + mem_pool + evolve + arch)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 class CCore:
@@ -50,7 +50,7 @@ class CCore:
 
     @classmethod
     def load(cls):
-        path = _find_lib("libagent_harness_c.so")
+        path = _find_lib("libminxg_c.so")
         if not path:
             cls._lib = None
             return
@@ -68,80 +68,80 @@ class CCore:
     def _setup_funcs(cls):
         lib = cls._lib
         # memmem family
-        lib.agent_harness_memmem.argtypes = [ctypes.c_void_p, ctypes.c_size_t,
+        lib.minxg_memmem.argtypes = [ctypes.c_void_p, ctypes.c_size_t,
                                       ctypes.c_void_p, ctypes.c_size_t]
-        lib.agent_harness_memmem.restype = ctypes.c_int64
-        lib.agent_harness_memrmem.argtypes = lib.agent_harness_memmem.argtypes
-        lib.agent_harness_memrmem.restype = ctypes.c_int64
-        lib.agent_harness_memcnt.argtypes = lib.agent_harness_memmem.argtypes
-        lib.agent_harness_memcnt.restype = ctypes.c_int
+        lib.minxg_memmem.restype = ctypes.c_int64
+        lib.minxg_memrmem.argtypes = lib.minxg_memmem.argtypes
+        lib.minxg_memrmem.restype = ctypes.c_int64
+        lib.minxg_memcnt.argtypes = lib.minxg_memmem.argtypes
+        lib.minxg_memcnt.restype = ctypes.c_int
 
         # string transforms (in-place)
-        lib.agent_harness_str_lower.argtypes = [ctypes.c_char_p, ctypes.c_size_t]
-        lib.agent_harness_str_lower.restype = ctypes.c_size_t
-        lib.agent_harness_str_upper.argtypes = lib.agent_harness_str_lower.argtypes
-        lib.agent_harness_str_upper.restype = ctypes.c_size_t
-        lib.agent_harness_str_trim.argtypes = lib.agent_harness_str_lower.argtypes
-        lib.agent_harness_str_trim.restype = ctypes.c_size_t
+        lib.minxg_str_lower.argtypes = [ctypes.c_char_p, ctypes.c_size_t]
+        lib.minxg_str_lower.restype = ctypes.c_size_t
+        lib.minxg_str_upper.argtypes = lib.minxg_str_lower.argtypes
+        lib.minxg_str_upper.restype = ctypes.c_size_t
+        lib.minxg_str_trim.argtypes = lib.minxg_str_lower.argtypes
+        lib.minxg_str_trim.restype = ctypes.c_size_t
 
         # glob
-        lib.agent_harness_fnmatch.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
-        lib.agent_harness_fnmatch.restype = ctypes.c_bool
-        lib.agent_harness_fnmatch_caseless.argtypes = lib.agent_harness_fnmatch.argtypes
-        lib.agent_harness_fnmatch_caseless.restype = ctypes.c_bool
+        lib.minxg_fnmatch.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
+        lib.minxg_fnmatch.restype = ctypes.c_bool
+        lib.minxg_fnmatch_caseless.argtypes = lib.minxg_fnmatch.argtypes
+        lib.minxg_fnmatch_caseless.restype = ctypes.c_bool
 
         # Unicode
-        lib.agent_harness_utf8_codepoint_count.argtypes = [ctypes.c_char_p, ctypes.c_size_t]
-        lib.agent_harness_utf8_codepoint_count.restype = ctypes.c_int
-        lib.agent_harness_utf8_is_valid.argtypes = lib.agent_harness_utf8_codepoint_count.argtypes
-        lib.agent_harness_utf8_is_valid.restype = ctypes.c_bool
+        lib.minxg_utf8_codepoint_count.argtypes = [ctypes.c_char_p, ctypes.c_size_t]
+        lib.minxg_utf8_codepoint_count.restype = ctypes.c_int
+        lib.minxg_utf8_is_valid.argtypes = lib.minxg_utf8_codepoint_count.argtypes
+        lib.minxg_utf8_is_valid.restype = ctypes.c_bool
 
         # extractors (zero-copy, caller allocates out_buf)
-        lib.agent_harness_slugify.argtypes = [ctypes.c_char_p, ctypes.c_size_t,
+        lib.minxg_slugify.argtypes = [ctypes.c_char_p, ctypes.c_size_t,
                                       ctypes.c_char_p, ctypes.c_size_t]
-        lib.agent_harness_slugify.restype = ctypes.c_size_t
-        lib.agent_harness_truncate.argtypes = [ctypes.c_char_p, ctypes.c_size_t,
+        lib.minxg_slugify.restype = ctypes.c_size_t
+        lib.minxg_truncate.argtypes = [ctypes.c_char_p, ctypes.c_size_t,
                                        ctypes.c_size_t, ctypes.c_char_p,
                                        ctypes.c_size_t, ctypes.c_char_p,
                                        ctypes.c_size_t]
-        lib.agent_harness_truncate.restype = ctypes.c_size_t
-        lib.agent_harness_word_freq_hash.argtypes = [ctypes.c_char_p, ctypes.c_size_t,
+        lib.minxg_truncate.restype = ctypes.c_size_t
+        lib.minxg_word_freq_hash.argtypes = [ctypes.c_char_p, ctypes.c_size_t,
                                               ctypes.c_int, ctypes.c_char_p,
                                               ctypes.c_size_t]
-        lib.agent_harness_word_freq_hash.restype = ctypes.c_size_t
-        lib.agent_harness_normalize_ws.argtypes = [ctypes.c_char_p, ctypes.c_size_t,
+        lib.minxg_word_freq_hash.restype = ctypes.c_size_t
+        lib.minxg_normalize_ws.argtypes = [ctypes.c_char_p, ctypes.c_size_t,
                                            ctypes.c_int, ctypes.c_char_p,
                                            ctypes.c_size_t]
-        lib.agent_harness_normalize_ws.restype = ctypes.c_size_t
-        lib.agent_harness_extract_urls.argtypes = [ctypes.c_char_p, ctypes.c_size_t,
+        lib.minxg_normalize_ws.restype = ctypes.c_size_t
+        lib.minxg_extract_urls.argtypes = [ctypes.c_char_p, ctypes.c_size_t,
                                            ctypes.c_char_p, ctypes.c_size_t, ctypes.c_int]
-        lib.agent_harness_extract_urls.restype = ctypes.c_int
-        lib.agent_harness_extract_emails.argtypes = lib.agent_harness_extract_urls.argtypes
-        lib.agent_harness_extract_emails.restype = ctypes.c_int
-        lib.agent_harness_extract_hashtags.argtypes = lib.agent_harness_extract_urls.argtypes
-        lib.agent_harness_extract_hashtags.restype = ctypes.c_int
+        lib.minxg_extract_urls.restype = ctypes.c_int
+        lib.minxg_extract_emails.argtypes = lib.minxg_extract_urls.argtypes
+        lib.minxg_extract_emails.restype = ctypes.c_int
+        lib.minxg_extract_hashtags.argtypes = lib.minxg_extract_urls.argtypes
+        lib.minxg_extract_hashtags.restype = ctypes.c_int
 
         # base convert
-        lib.agent_harness_base_convert.argtypes = [ctypes.c_char_p, ctypes.c_int,
+        lib.minxg_base_convert.argtypes = [ctypes.c_char_p, ctypes.c_int,
                                            ctypes.c_int, ctypes.c_char_p, ctypes.c_size_t]
-        lib.agent_harness_base_convert.restype = ctypes.c_int
+        lib.minxg_base_convert.restype = ctypes.c_int
 
         # text extractors (C-native, no Go dependency)
-        lib.agent_harness_extract_urls.argtypes = [ctypes.c_char_p, ctypes.c_size_t,
+        lib.minxg_extract_urls.argtypes = [ctypes.c_char_p, ctypes.c_size_t,
                                            ctypes.c_char_p, ctypes.c_size_t, ctypes.c_int]
-        lib.agent_harness_extract_urls.restype = ctypes.c_int
-        lib.agent_harness_extract_emails.argtypes = lib.agent_harness_extract_urls.argtypes
-        lib.agent_harness_extract_emails.restype = ctypes.c_int
-        lib.agent_harness_extract_hashtags.argtypes = lib.agent_harness_extract_urls.argtypes
-        lib.agent_harness_extract_hashtags.restype = ctypes.c_int
+        lib.minxg_extract_urls.restype = ctypes.c_int
+        lib.minxg_extract_emails.argtypes = lib.minxg_extract_urls.argtypes
+        lib.minxg_extract_emails.restype = ctypes.c_int
+        lib.minxg_extract_hashtags.argtypes = lib.minxg_extract_urls.argtypes
+        lib.minxg_extract_hashtags.restype = ctypes.c_int
 
         # word frequency hash (C-native)
-        lib.agent_harness_word_freq_hash.argtypes = [ctypes.c_char_p, ctypes.c_size_t,
+        lib.minxg_word_freq_hash.argtypes = [ctypes.c_char_p, ctypes.c_size_t,
                                               ctypes.c_int, ctypes.c_char_p, ctypes.c_size_t]
-        lib.agent_harness_word_freq_hash.restype = ctypes.c_size_t
+        lib.minxg_word_freq_hash.restype = ctypes.c_size_t
 
         # stats
-        lib.agent_harness_statistics.argtypes = [ctypes.POINTER(ctypes.c_double),
+        lib.minxg_statistics.argtypes = [ctypes.POINTER(ctypes.c_double),
                                           ctypes.c_size_t,
                                           ctypes.POINTER(ctypes.c_double),
                                           ctypes.POINTER(ctypes.c_double),
@@ -149,7 +149,7 @@ class CCore:
                                           ctypes.POINTER(ctypes.c_double),
                                           ctypes.POINTER(ctypes.c_double),
                                           ctypes.POINTER(ctypes.c_double)]
-        lib.agent_harness_statistics.restype = ctypes.c_int
+        lib.minxg_statistics.restype = ctypes.c_int
 
     @classmethod
     def available(cls) -> bool: return cls._lib is not None
@@ -158,20 +158,20 @@ class CCore:
         """Boyer-Moore-Horspool substring search via C. Returns offset or -1."""
         self.__class__.load()
         hb = haystack.encode('utf-8'); nb = needle.encode('utf-8')
-        pos = self._lib.agent_harness_memmem(hb, len(hb), nb, len(nb))
+        pos = self._lib.minxg_memmem(hb, len(hb), nb, len(nb))
         return int(pos)
 
     def bmh_rsearch(self, haystack: str, needle: str) -> int:
         """Reverse BMH search (last occurrence) via C."""
         self.__class__.load()
         hb = haystack.encode('utf-8'); nb = needle.encode('utf-8')
-        return int(self._lib.agent_harness_memrmem(hb, len(hb), nb, len(nb)))
+        return int(self._lib.minxg_memrmem(hb, len(hb), nb, len(nb)))
 
     def bmh_count(self, haystack: str, needle: str) -> int:
         """Count non-overlapping occurrences via C."""
         self.__class__.load()
         hb = haystack.encode('utf-8'); nb = needle.encode('utf-8')
-        return int(self._lib.agent_harness_memcnt(hb, len(hb), nb, len(nb)))
+        return int(self._lib.minxg_memcnt(hb, len(hb), nb, len(nb)))
 
     def str_lower(self, s: str) -> str:
         self.__class__.load()
@@ -179,7 +179,7 @@ class CCore:
         if not self._lib: return s.lower()
         b = s.encode(); buf = ctypes.create_string_buffer(len(b))
         buf.value = b
-        self._lib.agent_harness_str_lower(buf, len(b))
+        self._lib.minxg_str_lower(buf, len(b))
         return buf.value.decode()
 
     def str_upper(self, s: str) -> str:
@@ -188,14 +188,14 @@ class CCore:
         if not self._lib: return s.upper()
         b = s.encode(); buf = ctypes.create_string_buffer(len(b))
         buf.value = b
-        self._lib.agent_harness_str_upper(buf, len(b))
+        self._lib.minxg_str_upper(buf, len(b))
         return buf.value.decode()
 
     def glob_match(self, pattern: str, name: str, case_insensitive: bool = False) -> bool:
         """Glob-style pattern matching (fnmatch-lite, zero-alloc)."""
         if not self._lib: return self._py_glob(pattern, name, case_insensitive)
         pat_b = pattern.encode(); name_b = name.encode()
-        fn = self._lib.agent_harness_fnmatch_caseless if case_insensitive else self._lib.agent_harness_fnmatch
+        fn = self._lib.minxg_fnmatch_caseless if case_insensitive else self._lib.minxg_fnmatch
         return bool(fn(pat_b, name_b))
 
     def _py_glob(self, pat: str, name: str, ci: bool) -> bool:
@@ -206,13 +206,13 @@ class CCore:
         """Validate UTF-8."""
         if not self._lib: return True
         b = s.encode('utf-8', errors='ignore')
-        return bool(self._lib.agent_harness_utf8_is_valid(b, len(b)))
+        return bool(self._lib.minxg_utf8_is_valid(b, len(b)))
 
     def utf8_codepoints(self, s: str) -> int:
         """Count Unicode codepoints."""
         if not self._lib: return len(s)
         b = s.encode('utf-8', errors='ignore')
-        return int(self._lib.agent_harness_utf8_codepoint_count(b, len(b)))
+        return int(self._lib.minxg_utf8_codepoint_count(b, len(b)))
 
     def slugify(self, text: str, max_out: int = 1024) -> str:
         self.__class__.load()
@@ -220,7 +220,7 @@ class CCore:
         if not self._lib: return self._py_slugify(text)
         ib = text.encode('utf-8', errors='ignore')
         ob = ctypes.create_string_buffer(max_out)
-        n = self._lib.agent_harness_slugify(ib, len(ib), ob, max_out)
+        n = self._lib.minxg_slugify(ib, len(ib), ob, max_out)
         return ob.value[:n].decode()
 
     def _py_slugify(self, text: str) -> str:
@@ -238,7 +238,7 @@ class CCore:
         # Pass max_len + suffix_len so C gives us max_len visible chars
         total = max_len + len(sb)
         ob = ctypes.create_string_buffer(total + 1)
-        n = self._lib.agent_harness_truncate(ib, len(ib), max_len, sb, len(sb), ob, total + 1)
+        n = self._lib.minxg_truncate(ib, len(ib), max_len, sb, len(sb), ob, total + 1)
         return ob.value[:n].decode('utf-8', errors='ignore') if n > 0 else text[:max_len]
 
     def word_freq(self, text: str, top_n: int = 20, max_out: int = 4096) -> str:
@@ -247,7 +247,7 @@ class CCore:
         if not self._lib: return self._py_wordfreq(text, top_n)
         ib = text.encode('utf-8', errors='ignore')
         ob = ctypes.create_string_buffer(max_out)
-        n = self._lib.agent_harness_word_freq_hash(ib, len(ib), top_n, ob, max_out)
+        n = self._lib.minxg_word_freq_hash(ib, len(ib), top_n, ob, max_out)
         if n <= 0: return ""
         parts = ob.value.split(b'\x00')
         return ",".join(p.decode('utf-8', errors='ignore') for p in parts[:n] if p)
@@ -268,7 +268,7 @@ class CCore:
         if not self._lib: return self._py_normalize_ws(text, line_ending)
         ib = text.encode('utf-8', errors='ignore')
         ob = ctypes.create_string_buffer(max_out)
-        n = self._lib.agent_harness_normalize_ws(ib, len(ib), line_ending, ob, max_out)
+        n = self._lib.minxg_normalize_ws(ib, len(ib), line_ending, ob, max_out)
         return ob.value[:n].decode()
 
     def _py_normalize_ws(self, text: str, le: int) -> str:
@@ -285,7 +285,7 @@ class CCore:
         if not self._lib: return self._py_extract(text, r'https?://\S+')
         ib = text.encode('utf-8', errors='ignore')
         ob = ctypes.create_string_buffer(max_out)
-        n = self._lib.agent_harness_extract_urls(ib, len(ib), ob, max_out, max_urls)
+        n = self._lib.minxg_extract_urls(ib, len(ib), ob, max_out, max_urls)
         if n <= 0: return []
         parts = ob.value.split(b'\x00')
         return [s.decode('utf-8', errors='ignore') for s in parts if s][:n]
@@ -295,7 +295,7 @@ class CCore:
         if not self._lib: return self._py_extract(text, r'[\w.+-]+@[\w-]+\.[\w.-]+')
         ib = text.encode('utf-8', errors='ignore')
         ob = ctypes.create_string_buffer(max_out)
-        n = self._lib.agent_harness_extract_emails(ib, len(ib), ob, max_out, max_emails)
+        n = self._lib.minxg_extract_emails(ib, len(ib), ob, max_out, max_emails)
         if n <= 0: return []
         parts = ob.value.split(b'\x00')
         return [s.decode('utf-8', errors='ignore') for s in parts if s][:n]
@@ -305,7 +305,7 @@ class CCore:
         if not self._lib: return self._py_extract(text, r'#\w+')
         ib = text.encode('utf-8', errors='ignore')
         ob = ctypes.create_string_buffer(max_out)
-        n = self._lib.agent_harness_extract_hashtags(ib, len(ib), ob, max_out, max_tags)
+        n = self._lib.minxg_extract_hashtags(ib, len(ib), ob, max_out, max_tags)
         if n <= 0: return []
         parts = ob.value.split(b'\x00')
         return [s.decode('utf-8', errors='ignore') for s in parts if s][:n]
@@ -320,7 +320,7 @@ class CCore:
         if not self._lib: return self._py_baseconv(number, base_from, base_to)
         nb = number.encode()
         ob = ctypes.create_string_buffer(max_out)
-        n = self._lib.agent_harness_base_convert(nb, base_from, base_to, ob, max_out)
+        n = self._lib.minxg_base_convert(nb, base_from, base_to, ob, max_out)
         return ob.value[:n].decode() if n > 0 else ""
 
     def extract_urls(self, text: str, max_out: int = 8192, max_items: int = 100) -> List[str]:
@@ -329,7 +329,7 @@ class CCore:
         if not self._lib: return self._py_extract(text, r'https?://\S+')
         ib = text.encode('utf-8', errors='ignore')
         ob = ctypes.create_string_buffer(max_out)
-        n = self._lib.agent_harness_extract_urls(ib, len(ib), ob, max_out, max_items)
+        n = self._lib.minxg_extract_urls(ib, len(ib), ob, max_out, max_items)
         if n <= 0: return []
         # Parse raw buffer (null-separated): split on \x00, drop empty items
         raw = bytes(ob.raw[:max_out])
@@ -349,7 +349,7 @@ class CCore:
         if not self._lib: return self._py_extract(text, r'[\w.+-]+@[\w-]+\.[\w.-]+')
         ib = text.encode('utf-8', errors='ignore')
         ob = ctypes.create_string_buffer(max_out)
-        n = self._lib.agent_harness_extract_emails(ib, len(ib), ob, max_out, max_items)
+        n = self._lib.minxg_extract_emails(ib, len(ib), ob, max_out, max_items)
         if n <= 0: return []
         raw = bytes(ob.raw[:max_out])
         parts = []
@@ -368,7 +368,7 @@ class CCore:
         if not self._lib: return self._py_extract(text, r'#[\w\u0080-\U0010FFFF]+')
         ib = text.encode('utf-8', errors='ignore')
         ob = ctypes.create_string_buffer(max_out)
-        n = self._lib.agent_harness_extract_hashtags(ib, len(ib), ob, max_out, max_items)
+        n = self._lib.minxg_extract_hashtags(ib, len(ib), ob, max_out, max_items)
         if n <= 0: return []
         raw = bytes(ob.raw[:max_out])
         parts = []
@@ -387,7 +387,7 @@ class CCore:
         if not self._lib: return []
         ib = text.encode('utf-8', errors='ignore')
         ob = ctypes.create_string_buffer(max_out)
-        n = self._lib.agent_harness_word_freq_hash(ib, len(ib), top_n, ob, max_out)
+        n = self._lib.minxg_word_freq_hash(ib, len(ib), top_n, ob, max_out)
         if n <= 0: return []
         raw = bytes(ob.raw[:max_out])
         parts = []
@@ -415,7 +415,7 @@ class CCore:
         arr = (ctypes.c_double * n)(*values)
         mean=ctypes.c_double(); std=ctypes.c_double(); med=ctypes.c_double()
         mn=ctypes.c_double(); mx=ctypes.c_double(); sm=ctypes.c_double()
-        r = self._lib.agent_harness_statistics(arr, n,
+        r = self._lib.minxg_statistics(arr, n,
             ctypes.byref(mean), ctypes.byref(std), ctypes.byref(med),
             ctypes.byref(mn), ctypes.byref(mx), ctypes.byref(sm))
         if r != 0: return {}
@@ -423,7 +423,7 @@ class CCore:
                 "min":mn.value,"max":mx.value,"sum":sm.value}
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# CPP CORE — libagent_harness_core.so (crypto, compress, json, data_proc via OpenSSL)
+# CPP CORE — libminxg_core.so (crypto, compress, json, data_proc via OpenSSL)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 class CPPCore:
@@ -436,7 +436,7 @@ class CPPCore:
         CCore.load()
         if cls._lib is not None:  # Already loaded
             return
-        path = _find_lib("libagent_harness_core.so")
+        path = _find_lib("libminxg_core.so")
         if not path:
             cls._lib = None
             return
@@ -451,25 +451,25 @@ class CPPCore:
     def _setup_funcs(cls):
         lib = cls._lib
         # sha256
-        lib.agent_harness_sha256.argtypes = [ctypes.c_char_p, ctypes.c_size_t, ctypes.c_char_p]
-        lib.agent_harness_sha256.restype = None
+        lib.minxg_sha256.argtypes = [ctypes.c_char_p, ctypes.c_size_t, ctypes.c_char_p]
+        lib.minxg_sha256.restype = None
 
         # base64
-        lib.agent_harness_base64_encode.argtypes = [ctypes.c_char_p, ctypes.c_size_t, ctypes.c_char_p]
-        lib.agent_harness_base64_encode.restype = ctypes.c_size_t
-        lib.agent_harness_base64_decode.argtypes = [ctypes.c_char_p, ctypes.c_size_t, ctypes.c_char_p]
-        lib.agent_harness_base64_decode.restype = ctypes.c_size_t
+        lib.minxg_base64_encode.argtypes = [ctypes.c_char_p, ctypes.c_size_t, ctypes.c_char_p]
+        lib.minxg_base64_encode.restype = ctypes.c_size_t
+        lib.minxg_base64_decode.argtypes = [ctypes.c_char_p, ctypes.c_size_t, ctypes.c_char_p]
+        lib.minxg_base64_decode.restype = ctypes.c_size_t
 
         # compress
-        lib.agent_harness_compress.argtypes = [ctypes.c_char_p, ctypes.c_size_t, ctypes.c_char_p, ctypes.POINTER(ctypes.c_size_t)]
-        lib.agent_harness_compress.restype = ctypes.c_int
-        lib.agent_harness_decompress.argtypes = lib.agent_harness_compress.argtypes
-        lib.agent_harness_decompress.restype = ctypes.c_int
+        lib.minxg_compress.argtypes = [ctypes.c_char_p, ctypes.c_size_t, ctypes.c_char_p, ctypes.POINTER(ctypes.c_size_t)]
+        lib.minxg_compress.restype = ctypes.c_int
+        lib.minxg_decompress.argtypes = lib.minxg_compress.argtypes
+        lib.minxg_decompress.restype = ctypes.c_int
 
         # json (handled via _py_json_valid fallback)
         # data proc
-        lib.agent_harness_data_hash.argtypes = [ctypes.c_void_p, ctypes.c_size_t]
-        lib.agent_harness_data_hash.restype = ctypes.c_uint64
+        lib.minxg_data_hash.argtypes = [ctypes.c_void_p, ctypes.c_size_t]
+        lib.minxg_data_hash.restype = ctypes.c_uint64
 
     @classmethod
     def available(cls) -> bool: return cls._lib is not None
@@ -479,7 +479,7 @@ class CPPCore:
         """SHA-256 via OpenSSL EVP (C++ implementation)."""
         if not self._lib: return hashlib.sha256(data).hexdigest()
         out = ctypes.create_string_buffer(32)
-        self._lib.agent_harness_sha256(data, len(data), out)
+        self._lib.minxg_sha256(data, len(data), out)
         return out.raw[:32].hex()
 
     def base64_encode(self, data: bytes, max_out: int = 0) -> str:
@@ -489,7 +489,7 @@ class CPPCore:
             import base64; return base64.b64encode(data).decode()
         if max_out == 0: max_out = (len(data) + 2) // 3 * 4 + 4
         out = ctypes.create_string_buffer(max_out)
-        n = self._lib.agent_harness_base64_encode(data, len(data), out)
+        n = self._lib.minxg_base64_encode(data, len(data), out)
         return out.value[:n].decode()
 
     def base64_decode(self, data: str, max_out: int = 0) -> bytes:
@@ -500,7 +500,7 @@ class CPPCore:
         b = data.encode()
         if max_out == 0: max_out = len(b) * 3 // 4 + 4
         out = ctypes.create_string_buffer(max_out)
-        n = self._lib.agent_harness_base64_decode(b, len(b), out)
+        n = self._lib.minxg_base64_decode(b, len(b), out)
         return out.value[:n]
 
     def compress(self, data: bytes, max_out: int = 0) -> bytes:
@@ -511,7 +511,7 @@ class CPPCore:
         if max_out == 0: max_out = len(data) + len(data)//10 + 13
         out = ctypes.create_string_buffer(max_out)
         out_sz = ctypes.c_size_t(max_out)
-        r = self._lib.agent_harness_compress(data, len(data), out, ctypes.byref(out_sz))
+        r = self._lib.minxg_compress(data, len(data), out, ctypes.byref(out_sz))
         return out.value[:out_sz.value] if r == 0 else data
 
     def decompress(self, data: bytes, max_out: int = 65536) -> bytes:
@@ -521,7 +521,7 @@ class CPPCore:
             import zlib; return zlib.decompress(data)
         out = ctypes.create_string_buffer(max_out)
         out_sz = ctypes.c_size_t(max_out)
-        r = self._lib.agent_harness_decompress(data, len(data), out, ctypes.byref(out_sz))
+        r = self._lib.minxg_decompress(data, len(data), out, ctypes.byref(out_sz))
         return out.value[:out_sz.value] if r == 0 else data
 
     def json_valid(self, text: str) -> bool:
@@ -530,7 +530,7 @@ class CPPCore:
         if not self._lib: return self._py_json_valid(text)
         b = text.encode('utf-8', errors='ignore')
         try:
-            return bool(self._lib.agent_harness_json_parse(b))
+            return bool(self._lib.minxg_json_parse(b))
         except AttributeError:
             return self._py_json_valid(text)
 
@@ -543,10 +543,10 @@ class CPPCore:
         self.__class__.load()
         """Fast hash via C++ (MurmurHash3 or similar)."""
         if not self._lib: return hash(data)
-        return self._lib.agent_harness_data_hash(data, len(data))
+        return self._lib.minxg_data_hash(data, len(data))
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# CPP JSON CORE — libagent_harness_cpp_json.so
+# CPP JSON CORE — libminxg_cpp_json.so
 # (flat C facade over cpp_core::json_fast, malloc-in / free-out ABI)
 # ═══════════════════════════════════════════════════════════════════════════════
 
@@ -563,11 +563,11 @@ class CPPJsonNative:
 
     @classmethod
     def load(cls):
-        path = _find_lib("libagent_harness_cpp_json.so")
+        path = _find_lib("libminxg_cpp_json.so")
         if path is None:
             # CMake drops it under cpp_core/build/ — copy to usr/lib for
             # the Termux linker-namespace to load it.
-            alt = _PROJ / "cpp_core" / "build" / "libagent_harness_cpp_json.so"
+            alt = _PROJ / "cpp_core" / "build" / "libminxg_cpp_json.so"
             if alt.exists():
                 dest = Path("/data/data/com.termux/files/usr/lib") / alt.name
                 try:
@@ -940,7 +940,7 @@ class CPPJsonNative:
         return ok
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# GO CORE — libagent_harness_go.so (c-shared: health, text search, rate limit)
+# GO CORE — libminxg_go.so (c-shared: health, text search, rate limit)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 class GoCore:
@@ -954,7 +954,7 @@ class GoCore:
         CPPCore.load()
         if cls._lib is not None:  # Already loaded
             return
-        path = _find_lib("libagent_harness_go.so")
+        path = _find_lib("libminxg_go.so")
         if not path:
             cls._lib = None
             return
@@ -1198,13 +1198,13 @@ NATIVE_SHELL = shell()
 def status() -> dict:
     """Return status of all native backends."""
     return {
-        "c":  {"available": CCore.available(), "path": str(_find_lib("libagent_harness_c.so") or "")},
-        "cpp": {"available": CPPCore.available(), "path": str(_find_lib("libagent_harness_core.so") or "")},
+        "c":  {"available": CCore.available(), "path": str(_find_lib("libminxg_c.so") or "")},
+        "cpp": {"available": CPPCore.available(), "path": str(_find_lib("libminxg_core.so") or "")},
         "cpp_json": {"available": CPPJsonNative.available(),
-                     "path": str(_find_lib("libagent_harness_cpp_json.so") or
-                                  str(_PROJ / "cpp_core" / "build" / "libagent_harness_cpp_json.so"))},
+                     "path": str(_find_lib("libminxg_cpp_json.so") or
+                                  str(_PROJ / "cpp_core" / "build" / "libminxg_cpp_json.so"))},
         "go":  {"available": GoCore.available(),
-                "path": str(_find_lib("libagent_harness_go.so") or ""),
+                "path": str(_find_lib("libminxg_go.so") or ""),
                 "version": GoCore().version() if GoCore.available() else "unavailable"},
         "shell_tools": ShellCore.available(),
         "all_native": all([CCore.available(), CPPCore.available(),

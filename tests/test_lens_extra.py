@@ -1,6 +1,6 @@
-"""Extra coverage for agent_harness.lens — glossary, projector, and export."""
+"""Extra coverage for minxg.lens — glossary, projector, and export."""
 import pytest
-from agent_harness.lens import (
+from minxg.lens import (
     Glossary,
     Entry,
     load_default_glossary,
@@ -12,8 +12,8 @@ from agent_harness.lens import (
 
 def test_lens_module_imports_cleanly():
     import importlib
-    import agent_harness.lens
-    importlib.reload(agent_harness.lens)
+    import minxg.lens
+    importlib.reload(minxg.lens)
 
 
 def test_glossary_translates_known_term_monad():

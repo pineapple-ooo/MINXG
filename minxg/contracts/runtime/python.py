@@ -1,4 +1,4 @@
-"""Thin wrapper: Python adapter delegated to ``agent_harness.contracts.runtime.scientific``."""
+"""Thin wrapper: Python adapter delegated to ``minxg.contracts.runtime.scientific``."""
 from __future__ import annotations
 
 from .scientific import (  # noqa: F401

@@ -1,12 +1,12 @@
-"""agent_harness.context — long-running agent context management.
+"""minxg.context — long-running agent context management.
 
 Public surface
 --------------
-* :mod:`agent_harness.context.compression` — multi-agent 3-tier auto compression
-* :mod:`agent_harness.context.memory` — day-scale memory hierarchy
-* :mod:`agent_harness.context.token_tracker` — token accounting
-* :mod:`agent_harness.context.model_probe` — dynamic model context-window detection
-* :mod:`agent_harness.context.dev_utils` — developer utilities: savepoint, diff, restore
+* :mod:`minxg.context.compression` — multi-agent 3-tier auto compression
+* :mod:`minxg.context.memory` — day-scale memory hierarchy
+* :mod:`minxg.context.token_tracker` — token accounting
+* :mod:`minxg.context.model_probe` — dynamic model context-window detection
+* :mod:`minxg.context.dev_utils` — developer utilities: savepoint, diff, restore
 """
 from __future__ import annotations
 

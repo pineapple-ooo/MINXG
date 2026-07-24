@@ -40,7 +40,7 @@ def _find_lib(name: str) -> str:
     Resolves the project root by walking up from this file until we find
     both ``pyproject.toml`` and the ``cpp_core`` directory. The compiled
     native library shipped with the project lives at
-    ``<project_root>/cpp_core/build/libagent_harness_core.so`` after a pip
+    ``<project_root>/cpp_core/build/libminxg_core.so`` after a pip
     install or a developer build, so all candidate paths are anchored
     there. On Android, copies the library into the Termux lib dir
     before loading to bypass linker-namespace restrictions.
@@ -63,7 +63,7 @@ def _find_lib(name: str) -> str:
         base / "cpp_core" / f"{name}.so",
         base / "build" / name,
         base / "build" / f"{name}.so",
-        # legacy fallback: relative to agent_harness/five_pillars (older paths)
+        # legacy fallback: relative to minxg/five_pillars (older paths)
         here.parent.parent / "cpp_core" / "build" / name,
         here.parent.parent / "cpp_core" / "build" / f"{name}.so",
     ]
@@ -94,13 +94,13 @@ def _load_lib():
 
     system = platform.system()
     if system == "Linux":
-        lib_name = "libagent_harness_core.so"
+        lib_name = "libminxg_core.so"
     elif system == "Android":
-        lib_name = "libagent_harness_core.so"
+        lib_name = "libminxg_core.so"
     elif system == "Darwin":
-        lib_name = "libagent_harness_core.dylib"
+        lib_name = "libminxg_core.dylib"
     elif system == "Windows":
-        lib_name = "agent_harness_core.dll"
+        lib_name = "minxg_core.dll"
     else:
         raise OSError(f"Unsupported platform: {system}")
 

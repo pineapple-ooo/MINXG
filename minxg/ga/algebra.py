@@ -1,5 +1,5 @@
 """
-agent_harness/ga/algebra.py — Core products of Geometric Algebra
+minxg/ga/algebra.py — Core products of Geometric Algebra
 =================================================================
 
 This file implements the five fundamental products of Clifford algebra:

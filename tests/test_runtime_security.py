@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import pytest
 
-from agent_harness.contracts.runtime._exec import validate_url, sanitize_path, safe_json_dumps
+from minxg.contracts.runtime._exec import validate_url, sanitize_path, safe_json_dumps
 
 
 class TestSecurityHelpers:
@@ -85,21 +85,21 @@ class TestWorkerInputValidation:
 
     @pytest.mark.asyncio
     async def test_julia_worker_rejects_empty_code(self):
-        from agent_harness.five_pillars.polyglot.julia_worker import JuliaWorker
+        from minxg.five_pillars.polyglot.julia_worker import JuliaWorker
         worker = JuliaWorker()
         result = await worker.call("julia_eval", {"code": ""})
         assert result["status"] in ("error", "disabled")
 
     @pytest.mark.asyncio
     async def test_datalog_worker_rejects_malformed_edges(self):
-        from agent_harness.five_pillars.polyglot.datalog_worker import DatalogWorker
+        from minxg.five_pillars.polyglot.datalog_worker import DatalogWorker
         worker = DatalogWorker()
         result = await worker.call("datalog_graph_reachable", {"edges": "not a list"})
         assert result["status"] == "error"
 
     @pytest.mark.asyncio
     async def test_wasm_worker_rejects_invalid_op(self):
-        from agent_harness.five_pillars.polyglot.wasm_worker import WasmWorker
+        from minxg.five_pillars.polyglot.wasm_worker import WasmWorker
         worker = WasmWorker()
         result = await worker.call("wasm_arith_i32", {"op": "DROP_TABLE", "a": 1, "b": 2})
         assert result["status"] == "error"

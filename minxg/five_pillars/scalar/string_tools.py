@@ -2,13 +2,13 @@
 String manipulation tools — delegates to C via core_native bridge.
 """
 from __future__ import annotations
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 _has_native = False
 _slugify = _truncate = _extract_urls = _extract_emails = _extract_hashtags = _word_freq = None
 
 try:
-    from agent_harness.five_pillars.scalar.core_native import (
+    from minxg.five_pillars.scalar.core_native import (
         slugify as _slugify,
         truncate as _truncate,
         extract_urls as _extract_urls,

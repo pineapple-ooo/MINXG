@@ -19,20 +19,20 @@ from unittest import mock
 class TestImports:
     """All modules must import successfully."""
 
-    def test_agent_harness_init(self):
-        import agent_harness
-        assert agent_harness is not None
+    def test_minxg_init(self):
+        import minxg
+        assert minxg is not None
 
-    def test_agent_harness_base(self):
-        from agent_harness.base import BaseWorker
+    def test_minxg_base(self):
+        from minxg.base import BaseWorker
         assert BaseWorker is not None
 
-    def test_agent_harness_operators(self):
-        from agent_harness.operators import Operator
+    def test_minxg_operators(self):
+        from minxg.operators import Operator
         assert Operator is not None
 
-    def test_agent_harness_drivers(self):
-        from agent_harness.driver import DriverEngine
+    def test_minxg_drivers(self):
+        from minxg.driver import DriverEngine
         assert DriverEngine is not None
 
     def test_multiligua_cli(self):
@@ -40,7 +40,7 @@ class TestImports:
         assert multiligua_cli is not None
 
     def test_mcp_server(self):
-        from agent_harness.mcp_server import WorkerRegistry
+        from minxg.mcp_server import WorkerRegistry
         assert WorkerRegistry is not None
 
     def test_features(self):
@@ -99,40 +99,40 @@ class TestImports:
         assert detect_model_capabilities is not None
 
     def test_agents_react(self):
-        from agent_harness.agents.react_agent import ReActAgent, PlanningAgent
+        from minxg.agents.react_agent import ReActAgent, PlanningAgent
         assert ReActAgent is not None
         assert PlanningAgent is not None
 
     def test_agents_rag(self):
-        from agent_harness.agents.rag_system import VectorStore, RAGPipeline
+        from minxg.agents.rag_system import VectorStore, RAGPipeline
         assert VectorStore is not None
         assert RAGPipeline is not None
 
     def test_workflow(self):
-        from agent_harness.workflow.engine import WorkflowEngine
+        from minxg.workflow.engine import WorkflowEngine
         assert WorkflowEngine is not None
 
     def test_function_calling(self):
-        from agent_harness.function_calling import FunctionRegistry
+        from minxg.function_calling import FunctionRegistry
         assert FunctionRegistry is not None
 
     def test_streaming(self):
-        from agent_harness.streaming import StreamingResponse, TokenStream
+        from minxg.streaming import StreamingResponse, TokenStream
         assert StreamingResponse is not None
         assert TokenStream is not None
 
     def test_guardrails(self):
-        from agent_harness.guardrails import InputGuardrail, OutputGuardrail
+        from minxg.guardrails import InputGuardrail, OutputGuardrail
         assert InputGuardrail is not None
         assert OutputGuardrail is not None
 
     def test_caching(self):
-        from agent_harness.caching import SemanticCache, TieredCache
+        from minxg.caching import SemanticCache, TieredCache
         assert SemanticCache is not None
         assert TieredCache is not None
 
     def test_monitoring(self):
-        from agent_harness.monitoring import MetricsCollector, RequestTracker
+        from minxg.monitoring import MetricsCollector, RequestTracker
         assert MetricsCollector is not None
         assert RequestTracker is not None
 
@@ -145,7 +145,7 @@ class TestWorkers:
     """Worker functionality tests."""
 
     def test_worker_base(self):
-        from agent_harness.base import BaseWorker
+        from minxg.base import BaseWorker
 
         class TestWorker(BaseWorker):
             name = "test_worker"
@@ -162,7 +162,7 @@ class TestWorkers:
         assert worker.name == "test_worker"
 
     def test_worker_validation(self):
-        from agent_harness.base import BaseWorker
+        from minxg.base import BaseWorker
 
         class ValidatedWorker(BaseWorker):
             name = "validated_worker"
@@ -180,7 +180,7 @@ class TestWorkers:
         assert result["data"]["value"] == 10
 
     def test_worker_error_handling(self):
-        from agent_harness.base import BaseWorker
+        from minxg.base import BaseWorker
 
         class FailingWorker(BaseWorker):
             name = "failing_worker"
@@ -205,7 +205,7 @@ class TestMCPServer:
     """MCP server functionality tests."""
 
     def test_worker_registry(self):
-        from agent_harness.mcp_server import WorkerRegistry
+        from minxg.mcp_server import WorkerRegistry
 
         registry = WorkerRegistry()
         tools = registry.get_tools()
@@ -213,7 +213,7 @@ class TestMCPServer:
         assert isinstance(tools, list)
 
     def test_worker_registration(self):
-        from agent_harness.mcp_server import WorkerRegistry
+        from minxg.mcp_server import WorkerRegistry
 
         registry = WorkerRegistry()
         # Just verify get_tools returns a list
@@ -380,21 +380,21 @@ class TestAgents:
     """Agent framework tests."""
 
     def test_react_agent(self):
-        from agent_harness.agents.react_agent import ReActAgent
+        from minxg.agents.react_agent import ReActAgent
         agent = ReActAgent(name="test-agent", max_steps=3)
         result = agent.run("Simple test goal")
         assert "goal" in result
         assert result["goal"] == "Simple test goal"
 
     def test_planning_agent(self):
-        from agent_harness.agents.react_agent import PlanningAgent
+        from minxg.agents.react_agent import PlanningAgent
         planner = PlanningAgent()
         plan = planner.plan_task("Complex task")
         assert len(plan) > 0
         assert all("task" in p for p in plan)
 
     def test_multi_agent_system(self):
-        from agent_harness.agents.react_agent import MultiAgentSystem
+        from minxg.agents.react_agent import MultiAgentSystem
         system = MultiAgentSystem()
         system.add_agent("agent1", "math")
         system.add_agent("agent2", "coding")
@@ -409,20 +409,20 @@ class TestRAG:
     """RAG system tests."""
 
     def test_vector_store(self):
-        from agent_harness.agents.rag_system import VectorStore, Document
+        from minxg.agents.rag_system import VectorStore, Document
         store = VectorStore(dimension=128)
         doc = Document(id="1", content="Test", embedding=[0.5] * 128)
         store.add(doc)
         assert len(store.vectors) == 1
 
     def test_text_splitter(self):
-        from agent_harness.agents.rag_system import TextSplitter
+        from minxg.agents.rag_system import TextSplitter
         splitter = TextSplitter(chunk_size=50, chunk_overlap=10)
         chunks = splitter.split("A" * 200)
         assert len(chunks) > 1
 
     def test_rag_pipeline(self):
-        from agent_harness.agents.rag_system import RAGPipeline, Document
+        from minxg.agents.rag_system import RAGPipeline, Document
         pipeline = RAGPipeline()
         docs = [Document(id="1", content="Python programming")]
         stats = pipeline.ingest(docs)
@@ -437,13 +437,13 @@ class TestWorkflow:
     """Workflow engine tests."""
 
     def test_workflow_creation(self):
-        from agent_harness.workflow.engine import WorkflowEngine
+        from minxg.workflow.engine import WorkflowEngine
         engine = WorkflowEngine()
         workflow = engine.create_workflow("test")
         assert workflow.workflow_id == "test"
 
     def test_workflow_execution(self):
-        from agent_harness.workflow.engine import WorkflowEngine
+        from minxg.workflow.engine import WorkflowEngine
         engine = WorkflowEngine()
         engine.create_workflow("exec-test")
         engine.add_node("exec-test", "step1", "Step 1", "action")
@@ -461,7 +461,7 @@ class TestFunctionCalling:
     """Function calling tests."""
 
     def test_function_registry(self):
-        from agent_harness.function_calling import FunctionRegistry
+        from minxg.function_calling import FunctionRegistry
         registry = FunctionRegistry()
 
         @registry.register(description="Add numbers")
@@ -472,7 +472,7 @@ class TestFunctionCalling:
         assert result["result"] == 5
 
     def test_openai_format(self):
-        from agent_harness.function_calling import FunctionRegistry
+        from minxg.function_calling import FunctionRegistry
         registry = FunctionRegistry()
 
         @registry.register(description="Test")
@@ -491,7 +491,7 @@ class TestStreaming:
     """Streaming tests."""
 
     def test_token_stream(self):
-        from agent_harness.streaming import TokenStream
+        from minxg.streaming import TokenStream
         tokens = []
         stream = TokenStream(on_token=tokens.append)
         stream.push("Hello ")
@@ -500,7 +500,7 @@ class TestStreaming:
         assert result == "Hello World"
 
     def test_chunk_aggregator(self):
-        from agent_harness.streaming import ChunkAggregator
+        from minxg.streaming import ChunkAggregator
         agg = ChunkAggregator()
         agg.add({"choices": [{"delta": {"content": "Hello "}}]})
         agg.add({"choices": [{"delta": {"content": "World"}}]})
@@ -516,19 +516,19 @@ class TestGuardrails:
     """Guardrails tests."""
 
     def test_input_guardrail(self):
-        from agent_harness.guardrails import InputGuardrail
+        from minxg.guardrails import InputGuardrail
         guard = InputGuardrail()
         result = guard.validate("Normal input")
         assert result.result.value == "pass"
 
     def test_too_long_input(self):
-        from agent_harness.guardrails import InputGuardrail
+        from minxg.guardrails import InputGuardrail
         guard = InputGuardrail()
         result = guard.validate("A" * 200000)
         assert result.result.value == "fail"
 
     def test_output_guardrail(self):
-        from agent_harness.guardrails import OutputGuardrail
+        from minxg.guardrails import OutputGuardrail
         guard = OutputGuardrail()
         result = guard.validate("Normal output")
         assert result.result.value == "pass"
@@ -542,14 +542,14 @@ class TestCaching:
     """Caching tests."""
 
     def test_semantic_cache(self):
-        from agent_harness.caching import SemanticCache
+        from minxg.caching import SemanticCache
         cache = SemanticCache()
         cache.set("What is Python?", "Python is a language", "gpt-4o")
         result = cache.get("What is Python?", "gpt-4o")
         assert result is not None
 
     def test_tiered_cache(self):
-        from agent_harness.caching import TieredCache
+        from minxg.caching import TieredCache
         with tempfile.TemporaryDirectory() as tmpdir:
             cache = TieredCache(cache_dir=tmpdir)
             cache.set("key", "value")
@@ -565,7 +565,7 @@ class TestMonitoring:
     """Monitoring tests."""
 
     def test_metrics_collector(self):
-        from agent_harness.monitoring import MetricsCollector
+        from minxg.monitoring import MetricsCollector
         metrics = MetricsCollector()
         metrics.inc("requests", 1)
         metrics.inc("requests", 1)
@@ -574,7 +574,7 @@ class TestMonitoring:
         assert metrics.get("temperature") == 25.5
 
     def test_request_tracker(self):
-        from agent_harness.monitoring import RequestTracker
+        from minxg.monitoring import RequestTracker
         tracker = RequestTracker()
         with tracker.start_request("/test", "POST"):
             pass
@@ -582,7 +582,7 @@ class TestMonitoring:
         assert "requests_total" in dashboard
 
     def test_health_checker(self):
-        from agent_harness.monitoring import HealthChecker
+        from minxg.monitoring import HealthChecker
         health = HealthChecker()
         health.register("healthy_check", lambda: True)
         result = health.check_all()
@@ -622,11 +622,11 @@ class TestIntegration:
 
     def test_all_modules_importable(self):
         modules = [
-            'agent_harness',
-            'agent_harness.base',
-            'agent_harness.operators',
-            'agent_harness.driver',
-            'agent_harness.mcp_server',
+            'minxg',
+            'minxg.base',
+            'minxg.operators',
+            'minxg.driver',
+            'minxg.mcp_server',
             'multiligua_cli',
             'multiligua_cli.setup',
             'multiligua_cli.features',
@@ -636,14 +636,14 @@ class TestIntegration:
             'multiligua_cli.memory_system',
             'multiligua_cli.memory_viz',
             'multiligua_cli.web_ui',
-            'agent_harness.agents.react_agent',
-            'agent_harness.agents.rag_system',
-            'agent_harness.workflow.engine',
-            'agent_harness.function_calling',
-            'agent_harness.streaming',
-            'agent_harness.guardrails',
-            'agent_harness.caching',
-            'agent_harness.monitoring',
+            'minxg.agents.react_agent',
+            'minxg.agents.rag_system',
+            'minxg.workflow.engine',
+            'minxg.function_calling',
+            'minxg.streaming',
+            'minxg.guardrails',
+            'minxg.caching',
+            'minxg.monitoring',
         ]
         for module in modules:
             __import__(module)
@@ -681,13 +681,13 @@ class TestPerformance:
     def test_import_speed(self):
         import time
         start = time.time()
-        import agent_harness
+        import minxg
         elapsed = time.time() - start
         assert elapsed < 5.0
 
     def test_worker_creation_speed(self):
         import time
-        from agent_harness.base import BaseWorker
+        from minxg.base import BaseWorker
 
         class QuickWorker(BaseWorker):
             name = "quick_worker"

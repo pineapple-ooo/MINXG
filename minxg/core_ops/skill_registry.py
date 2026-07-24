@@ -1,8 +1,8 @@
-"""agent_harness/core_ops/skill_registry.py — the AgentHarness skill ecosystem engine.
+"""minxg/core_ops/skill_registry.py — the AgentHarness skill ecosystem engine.
 
 Shared by both the LLM-facing tool surface (tools/skill_manager_tool.py)
 and the CLI surface (multiligua_cli/skill_cli.py) — one engine, two
-entry points, same pattern as agent_harness/core_ops/file_safety.py.
+entry points, same pattern as minxg/core_ops/file_safety.py.
 
 Design notes, since this is the direct answer to "ecosystem" being the
 one place AgentHarness was honestly behind OpenClaw's ClawHub:
@@ -14,7 +14,7 @@ one place AgentHarness was honestly behind OpenClaw's ClawHub:
     model misleading instructions, but it can't run arbitrary code on
     install the way a bad extension can. Extensions (tools/*.py-style
     executable plugins) already require an explicit local
-    `agent_harness ext add` and are a separate, more sensitive system on
+    `minxg ext add` and are a separate, more sensitive system on
     purpose; this registry does not touch that.
   - No hosted registry exists (nobody's running one), so "catalog" is
     just a JSON file — local, a raw GitHub URL, or anything else
@@ -22,7 +22,7 @@ one place AgentHarness was honestly behind OpenClaw's ClawHub:
     more than a git repo, matching the local-first shape of the rest
     of the project. `default_catalog.json` ships one to start from.
   - Every install is content-hashed into a local lockfile
-    (~/.agent_harness/skills/installed.json) so `agent_harness skill list --installed`
+    (~/.minxg/skills/installed.json) so `minxg skill list --installed`
     can show provenance, and re-installing/updating is detectable.
 """
 from __future__ import annotations
@@ -39,7 +39,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
-from agent_harness.utils.network_safety import validate_url
+from minxg.utils.network_safety import validate_url
 from multiling.constants import TIMEOUT_HTTP_SKILL_FETCH, TIMEOUT_SUBPROCESS_TOOL
 import urllib.request
 
@@ -51,14 +51,14 @@ except ImportError:  # pragma: no cover — yaml is a core dependency, but
 
 # ──────────────────────────────────────────────────────── paths / config
 
-def agent_harness_home() -> Path:
+def minxg_home() -> Path:
     import os
-    return Path(os.environ.get("AgentHarness_HOME", str(Path.home() / ".agent_harness")))
+    return Path(os.environ.get("AgentHarness_HOME", str(Path.home() / ".minxg")))
 
 
 def user_skills_dir() -> Path:
-    """Where `agent_harness skill install`/`new` write to."""
-    return agent_harness_home() / "skills" / "user"
+    """Where `minxg skill install`/`new` write to."""
+    return minxg_home() / "skills" / "user"
 
 
 def bundled_skills_dir() -> Path:
@@ -67,7 +67,7 @@ def bundled_skills_dir() -> Path:
 
 
 def lockfile_path() -> Path:
-    return agent_harness_home() / "skills" / "installed.json"
+    return minxg_home() / "skills" / "installed.json"
 
 
 def default_catalog_path() -> Path:
@@ -77,7 +77,7 @@ def default_catalog_path() -> Path:
 REQUIRED_FRONTMATTER_FIELDS = ("name", "description")
 MAX_SKILL_MD_BYTES = 512 * 1024  # 512KB — a skill is instructions, not a payload
 
-# Rough courtesy check for `agent_harness skill publish` — catches the most
+# Rough courtesy check for `minxg skill publish` — catches the most
 # common "oops, my API key is in here" accidents. Not a substitute for
 # actually reading what you're about to publish.
 _SECRET_LOOKING_PATTERNS = (
@@ -360,7 +360,7 @@ def preview_skill(source: str) -> SkillManifest:
     ):
         url = resolved[4:] if resolved.startswith("git+") else resolved
         url, _, subdir = url.partition("#")
-        with tempfile.TemporaryDirectory(prefix="agent_harness-skill-") as tmp:
+        with tempfile.TemporaryDirectory(prefix="minxg-skill-") as tmp:
             skill_dir = _git_clone_shallow(url, Path(tmp) / "clone", subdir)
             skill_md = skill_dir / "SKILL.md"
             if not skill_md.exists():

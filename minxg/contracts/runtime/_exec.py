@@ -4,7 +4,7 @@ This module provides hardened execution layer with security policies, execution 
 
 Typical usage::
 
-    from agent_harness.contracts.runtime import handle
+    from minxg.contracts.runtime import handle
     result = handle({"language": "julia", "mode": "eval", "code": "sqrt(4.0)"})
 
 All operations support async execution, security policies, and comprehensive error handling.
@@ -78,14 +78,14 @@ class ContentHashCache:
 
     def get(self, key: bytes) -> Optional[bytes]:
         digest = hashlib.sha256(key).hexdigest()[:16]
-        path = Path(tempfile.gettempdir()) / f"agent_harness_{digest}{self.suffix}"
+        path = Path(tempfile.gettempdir()) / f"minxg_{digest}{self.suffix}"
         if path.exists():
             return path.read_bytes()
         return None
 
     def put(self, key: bytes, value: bytes) -> None:
         digest = hashlib.sha256(key).hexdigest()[:16]
-        path = Path(tempfile.gettempdir()) / f"agent_harness_{digest}{self.suffix}"
+        path = Path(tempfile.gettempdir()) / f"minxg_{digest}{self.suffix}"
         try:
             path.write_bytes(value)
         except OSError:
@@ -128,7 +128,7 @@ def payload_code(payload: Dict[str, Any], max_chars: int = 120_000) -> str:
 
 
 def sandbox_path(*parts: str) -> str:
-    candidate = Path(tempfile.gettempdir()) / "agent_harness" / Path(*parts)
+    candidate = Path(tempfile.gettempdir()) / "minxg" / Path(*parts)
     candidate.mkdir(parents=True, exist_ok=True)
     return str(candidate)
 
@@ -792,7 +792,7 @@ class MetricsCollector:
 class DistributedTracer:
     """Distributed tracing support."""
 
-    def __init__(self, service_name: str = "agent_harness"):
+    def __init__(self, service_name: str = "minxg"):
         self.service_name = service_name
         self.traces: List[Dict[str, Any]] = []
 
@@ -845,7 +845,7 @@ class DistributedTracer:
 class StructuredLogger:
     """Structured logging support."""
 
-    def __init__(self, service: str = "agent_harness"):
+    def __init__(self, service: str = "minxg"):
         self.service = service
         self.logs: List[Dict[str, Any]] = []
 

@@ -181,7 +181,7 @@ def is_active(name: str) -> bool:
 
 
 def summary() -> Dict[str, object]:
-    """One-line dict summary for `agent_harness doctor` / `agent_harness status`."""
+    """One-line dict summary for `minxg doctor` / `minxg status`."""
     pk = _platform_key()
     cap = cap_for(pk)
     active = active_tools()

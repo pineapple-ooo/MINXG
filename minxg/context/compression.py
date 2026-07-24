@@ -1,4 +1,4 @@
-"""agent_harness.context.compression — multi-agent 3-tier context compression.
+"""minxg.context.compression — multi-agent 3-tier context compression.
 
 All tiers target ~20% of original tokens with near-lossless squeeze.
 Tier selection is automatic when ``tier=None``.
@@ -7,7 +7,7 @@ Auto trigger
 ------------
 ``AutoCompressor`` triggers at 70 % model context usage and compresses to
 ~20 %. The model context window is detected dynamically via
-:mod:`agent_harness.context.model_probe` from API response metadata,
+:mod:`minxg.context.model_probe` from API response metadata,
 runtime hints, or conservative inference — no hardcoded lookup table.
 """
 from __future__ import annotations
@@ -261,7 +261,7 @@ _TIERS_FN = {
 
 def _bie_lossless_compress(text: str) -> Tuple[str, Dict[str, Any]]:
     try:
-        from agent_harness.lossless.codec import LosslessCodec
+        from minxg.lossless.codec import LosslessCodec
         codec = LosslessCodec()
         res = codec.compress(text.encode("utf-8"))
         payload = base64.b64encode(res.data).decode("ascii")
@@ -286,7 +286,7 @@ def _lossless_decompress(payload: str, meta: Dict[str, Any]) -> str:
     method = meta.get("method", "zlib")
     if method == "bie_lossless":
         try:
-            from agent_harness.lossless.codec import LosslessCodec
+            from minxg.lossless.codec import LosslessCodec
             codec = LosslessCodec()
             return codec.decompress(raw).data.decode("utf-8", errors="replace")
         except Exception:

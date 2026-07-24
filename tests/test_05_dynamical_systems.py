@@ -1,5 +1,5 @@
 """Dynamical Systems: chaos, Lyapunov, fractals."""
-from agent_harness.chaos import (
+from minxg.chaos import (
     logistic_map, logistic_lyapunov, lorenz,
     sierpinski_gasket, koch_snowflake,
     feigenbaum_constant, kaplan_yorke_dimension,

@@ -17,9 +17,9 @@ they conform to the schema, not which one fires.
 
 import pytest
 
-import agent_harness  # top-level package must export all four workers
-from agent_harness.base import BaseWorker, ToolDef
-from agent_harness.five_pillars.polyglot import (
+import minxg  # top-level package must export all four workers
+from minxg.base import BaseWorker, ToolDef
+from minxg.five_pillars.polyglot import (
     JuliaWorker, RWorker, DatalogWorker, WasmWorker,
 )
 
@@ -46,10 +46,10 @@ def test_worker_class_attributes(cls, worker_id, version):
 
 
 def test_workers_exported_at_top_level():
-    """All four workers must be reachable via ``import agent_harness``."""
+    """All four workers must be reachable via ``import minxg``."""
     for attr in ("JuliaWorker", "RWorker", "DatalogWorker", "WasmWorker"):
-        assert hasattr(agent_harness, attr), f"agent_harness.{attr} missing"
-        assert getattr(agent_harness, attr).__name__ == attr
+        assert hasattr(minxg, attr), f"minxg.{attr} missing"
+        assert getattr(minxg, attr).__name__ == attr
 
 
 # ── 2. Instantiation + tool registration ─────────────────────────────
@@ -584,7 +584,7 @@ async def test_julia_finance_monte_carlo():
 @pytest.mark.asyncio
 async def test_julia_all_modes_have_python_fallback():
     """Test that all Julia modes have python fallbacks."""
-    from agent_harness.contracts.runtime.scientific import _JULIA_MODE_SCHEMA, handle as sci_handle
+    from minxg.contracts.runtime.scientific import _JULIA_MODE_SCHEMA, handle as sci_handle
     for mode in _JULIA_MODE_SCHEMA:
         result = sci_handle({"language": "julia", "mode": mode, "args": []})
         assert "status" in result, f"mode {mode} missing status"

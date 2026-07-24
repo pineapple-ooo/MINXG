@@ -1,4 +1,4 @@
-"""agent_harness.contracts.runtime._wasm_toolchain — WAT parser / type checker / linker / encoder."""
+"""minxg.contracts.runtime._wasm_toolchain — WAT parser / type checker / linker / encoder."""
 from __future__ import annotations
 
 import io

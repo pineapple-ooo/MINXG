@@ -10,7 +10,7 @@ from __future__ import annotations
 from pathlib import Path
 
 # ── Path constants ────────────────────────────────────────────────────────────
-AgentHarness_HOME            = Path.home() / ".agent_harness"
+AgentHarness_HOME            = Path.home() / ".minxg"
 AgentHarness_MEMORY_DIR      = AgentHarness_HOME / "memory"
 AgentHarness_LOG_DIR         = AgentHarness_HOME / "logs"
 AgentHarness_SESSIONS_DIR    = AgentHarness_HOME / "sessions"

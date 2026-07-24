@@ -1,4 +1,4 @@
-"""agent_harness/utils/errors.py — Error classification + retry policy.
+"""minxg/utils/errors.py — Error classification + retry policy.
 
  inspired by hermes-agent/error_classifier.py but condensed to the
  three categories that actually matter for AgentHarness:

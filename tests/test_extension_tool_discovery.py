@@ -1,9 +1,9 @@
 """tests/test_extension_tool_discovery.py — proves the real bug fix:
 enabled extensions' `register_hooks(registry)` is now actually called
 during chat-agent tool discovery. Before this fix, `discover_extensions()`
-imported every extension module (needed for `agent_harness ext list` metadata),
+imported every extension module (needed for `minxg ext list` metadata),
 but nothing in the chat startup path ever invoked `register_hooks()` on
-them — extensions only ever reached `agent_harness ext <verb>` CLI dispatch,
+them — extensions only ever reached `minxg ext <verb>` CLI dispatch,
 never a live conversation, no matter what they registered.
 
 This test creates a real, throwaway extension under extensions/user/
@@ -21,7 +21,7 @@ from pathlib import Path
 import pytest
 
 
-EXT_NAME = "agent_harness-test-discovery-ext"
+EXT_NAME = "minxg-test-discovery-ext"
 
 EXT_SOURCE = '''
 EXTENSION_NAME = "{name}"

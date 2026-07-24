@@ -4,7 +4,7 @@ This module provides versioned manifest with capabilities, tool counts, and rele
 
 Typical usage::
 
-    from agent_harness.contracts.runtime import handle
+    from minxg.contracts.runtime import handle
     result = handle({"language": "julia", "mode": "eval", "code": "sqrt(4.0)"})
 
 All operations support async execution, security policies, and comprehensive error handling.
@@ -100,7 +100,7 @@ def _build_manifest() -> Dict[str, LanguageManifest]:
             name="python",
             version="0.18.0",
             status="native",
-            module="agent_harness.contracts.runtime.python",
+            module="minxg.contracts.runtime.python",
             adapter_version="0.18.0",
             capabilities=["eval", "scripting", "glue"],
             tool_count=1,
@@ -112,7 +112,7 @@ def _build_manifest() -> Dict[str, LanguageManifest]:
             name="wasm",
             version="0.18.0",
             status="sandbox",
-            module="agent_harness.contracts.runtime.wasm",
+            module="minxg.contracts.runtime.wasm",
             adapter_version="0.17.1",
             expected_binary_version=">= 20.0.0",
             capabilities=[
@@ -128,7 +128,7 @@ def _build_manifest() -> Dict[str, LanguageManifest]:
             name="julia",
             version="0.18.0",
             status="managed",
-            module="agent_harness.contracts.runtime.julia",
+            module="minxg.contracts.runtime.julia",
             adapter_version="0.17.1",
             expected_binary_version=">= 1.9.0",
             capabilities=[
@@ -146,7 +146,7 @@ def _build_manifest() -> Dict[str, LanguageManifest]:
             name="datalog",
             version="0.18.0",
             status="managed",
-            module="agent_harness.contracts.runtime.datalog",
+            module="minxg.contracts.runtime.datalog",
             adapter_version="0.17.1",
             expected_binary_version=">= 5.5.0",
             capabilities=[

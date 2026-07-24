@@ -1,7 +1,7 @@
 """ChatTui — wires the agent orchestrator into the new prompt_toolkit TUI.
 
 This is the integration point between:
-  * ``agent_harness.cli.app.Tui`` — the generic prompt_toolkit surface
+  * ``minxg.cli.app.Tui`` — the generic prompt_toolkit surface
   * ``multiligua_cli.tui_chat._ensure_orchestrator`` / ``_stream`` — the
     existing AgentHarness streaming + slash-command logic
 
@@ -19,8 +19,8 @@ import sys
 import time
 from typing import Any, AsyncIterator, Dict, List, Optional
 
-from agent_harness.cli.app import MessageResult, Tui
-from agent_harness.cli.commands import all_commands
+from minxg.cli.app import MessageResult, Tui
+from minxg.cli.commands import all_commands
 
 
 class ChatTui:
@@ -107,18 +107,18 @@ class ChatTui:
         try:
             from pathlib import Path
             import uuid
-            session_file = Path.home() / ".agent_harness" / "session_id"
+            session_file = Path.home() / ".minxg" / "session_id"
             session_file.parent.mkdir(parents=True, exist_ok=True)
             if session_file.exists():
                 sid = session_file.read_text(encoding="utf-8").strip()
                 if sid:
                     return sid
-            sid = f"agent_harness_{uuid.uuid4().hex[:12]}"
+            sid = f"minxg_{uuid.uuid4().hex[:12]}"
             session_file.write_text(sid, encoding="utf-8")
             return sid
         except Exception:
             import uuid
-            return f"agent_harness_{uuid.uuid4().hex[:12]}"
+            return f"minxg_{uuid.uuid4().hex[:12]}"
 
     # ------------------------------------------------------------------
     # Message handling

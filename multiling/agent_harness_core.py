@@ -1,5 +1,5 @@
 """
-agent_harness_core — Python ctypes bindings for libagent_harness_core.so
+minxg_core — Python ctypes bindings for libminxg_core.so
 
 Heavy tools run in C:
   Encoding  : base64, hex, url, utf8 validation
@@ -8,7 +8,7 @@ Heavy tools run in C:
   Data Proc  : csv_info, csv_cell, tokenize, word_frequency, trim
 
 Usage:
-    from agent_harness_core import sha256, base64_encode, file_copy
+    from minxg_core import sha256, base64_encode, file_copy
 
     h = sha256(b"hello")        # returns bytes
     enc = base64_encode(b"hi")  # returns str
@@ -32,18 +32,18 @@ def _find_libpath() -> str:
         return env
 
     candidates = [
-        Path("/data/data/com.termux/files/usr/lib/libagent_harness_core.so"),
-        Path(__file__).parent.parent / "cpp_core" / "build" / "libagent_harness_core.so",
-        Path(__file__).parent.parent / "cpp_core" / "libagent_harness_core.so",
-        Path("/usr/local/lib/libagent_harness_core.so"),
-        Path("/usr/lib/libagent_harness_core.so"),
+        Path("/data/data/com.termux/files/usr/lib/libminxg_core.so"),
+        Path(__file__).parent.parent / "cpp_core" / "build" / "libminxg_core.so",
+        Path(__file__).parent.parent / "cpp_core" / "libminxg_core.so",
+        Path("/usr/local/lib/libminxg_core.so"),
+        Path("/usr/lib/libminxg_core.so"),
     ]
     for p in candidates:
         if p.exists():
             return str(p)
 
     raise FileNotFoundError(
-        "libagent_harness_core.so not found. "
+        "libminxg_core.so not found. "
         "Set AgentHarness_CORE_PATH or build it with: cd cpp_core && mkdir build && cd build && cmake .. && make"
     )
 
@@ -89,7 +89,7 @@ class StringBuffer:
 def _check(really_call, *args) -> int:
     result = really_call(*args)
     if result < 0:
-        raise RuntimeError(f"agent_harness_core: negative return code {result}")
+        raise RuntimeError(f"minxg_core: negative return code {result}")
     return result
 
 

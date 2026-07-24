@@ -1,5 +1,5 @@
 """
-agent_harness.contracts.agent.evolution — Evolutionary Self-Improvement
+minxg.contracts.agent.evolution — Evolutionary Self-Improvement
 ===============================================================
 
 Bold design: agents modify their own strategies, prompts, and tool configs
@@ -147,7 +147,7 @@ class AgentStrategyStore:
     """Persistent storage for strategy genomes and fitness history."""
 
     def __init__(self, storage_path: Optional[Path] = None) -> None:
-        self.storage_path = storage_path or Path(".agent_harness/agent_strategies.json")
+        self.storage_path = storage_path or Path(".minxg/agent_strategies.json")
         self.storage_path.parent.mkdir(parents=True, exist_ok=True)
         self._store: Dict[str, StrategyGenome] = {}
         self._load()

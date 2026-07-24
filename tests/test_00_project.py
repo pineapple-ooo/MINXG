@@ -63,11 +63,11 @@ class TestSyntax:
         if readme.exists():
             readme.read_text(encoding="utf-8")
 
-    def test_agent_harness_yaml_valid(self):
-        agent_harness = PROJECT_ROOT / "config" / "agent_harness.yaml"
-        if agent_harness.exists():
+    def test_minxg_yaml_valid(self):
+        minxg = PROJECT_ROOT / "config" / "minxg.yaml"
+        if minxg.exists():
             import yaml
-            yaml.safe_load(agent_harness.read_text(encoding="utf-8"))
+            yaml.safe_load(minxg.read_text(encoding="utf-8"))
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -75,23 +75,23 @@ class TestSyntax:
 # ═══════════════════════════════════════════════════════════════════════════
 
 class TestConfig:
-    """config/agent_harness.yaml has all required fields."""
+    """config/minxg.yaml has all required fields."""
 
     @pytest.fixture(scope="class")
-    def agent_harness_yaml(self):
+    def minxg_yaml(self):
         import yaml
-        with open(PROJECT_ROOT / "config" / "agent_harness.yaml") as f:
+        with open(PROJECT_ROOT / "config" / "minxg.yaml") as f:
             return yaml.safe_load(f)
 
-    def test_has_version(self, agent_harness_yaml):
-        project = agent_harness_yaml.get("project", {})
+    def test_has_version(self, minxg_yaml):
+        project = minxg_yaml.get("project", {})
         assert "version" in project, "config.yaml: project.version is missing"
 
-    def test_has_operators(self, agent_harness_yaml):
-        assert "operators" in agent_harness_yaml, "config.yaml: operators list is missing"
+    def test_has_operators(self, minxg_yaml):
+        assert "operators" in minxg_yaml, "config.yaml: operators list is missing"
 
-    def test_no_obvious_corruption(self, agent_harness_yaml):
-        assert isinstance(agent_harness_yaml, dict), "config.yaml is not a mapping"
+    def test_no_obvious_corruption(self, minxg_yaml):
+        assert isinstance(minxg_yaml, dict), "config.yaml is not a mapping"
 
 
 # ═══════════════════════════════════════════════════════════════════════════

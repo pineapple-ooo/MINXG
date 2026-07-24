@@ -1,5 +1,5 @@
 """
-agent_harness/chaos/ifs.py — Iterated Function Systems & Classic Fractals
+minxg/chaos/ifs.py — Iterated Function Systems & Classic Fractals
 ========================================================================
 
 An ITERATED FUNCTION SYSTEM (IFS) is a set of contraction maps

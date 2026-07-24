@@ -1,4 +1,4 @@
-"""agent_harness.context.dev_utils — developer utilities for message state.
+"""minxg.context.dev_utils — developer utilities for message state.
 
 * SavepointManager: save/restore message snapshots with diffs
 * diff_messages: compute minimal edit script between two message lists
@@ -52,7 +52,7 @@ class SavepointManager:
     def save(self, messages: List[Dict[str, Any]], description: str = "",
              metadata: Optional[Dict[str, Any]] = None) -> Savepoint:
         """Create a compressed savepoint of current message state."""
-        from agent_harness.context.compression import estimate_tokens
+        from minxg.context.compression import estimate_tokens
 
         sp_id = f"sp_{int(time.time() * 1000)}_{len(self._order)}"
         raw = json.dumps(messages, ensure_ascii=False).encode("utf-8")
@@ -159,7 +159,7 @@ class DevToolbox:
 
     def inspect(self, messages: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Return a compact inspection report."""
-        from agent_harness.context.compression import estimate_tokens
+        from minxg.context.compression import estimate_tokens
         roles: Dict[str, int] = {}
         tools: List[str] = []
         for m in messages:

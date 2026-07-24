@@ -10,9 +10,9 @@ import asyncio
 import ipaddress
 from typing import Dict, List, Optional
 from urllib.parse import urlparse
-from agent_harness.base import BaseWorker, tool
-from agent_harness.utils.network_safety import validate_url
-from agent_harness.utils.errors import classify
+from minxg.base import BaseWorker, tool
+from minxg.utils.network_safety import validate_url
+from minxg.utils.errors import classify
 
 
 def _safe_urlopen(url, **kwargs):

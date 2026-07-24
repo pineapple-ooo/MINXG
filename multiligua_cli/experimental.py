@@ -13,7 +13,7 @@ experimental verbs:
   - polyglot-manifest    list every language adapter AgentHarness can dispatch to,
                          with version numbers lifted from each adapter's
                          JSON manifest
-  - contract             list every registered ``agent_harness.contracts`` Cell
+  - contract             list every registered ``minxg.contracts`` Cell
                          (id + version + capability tags)
   - genesis              run a one-shot ``AgentHarness Genesis Loop``:
                          propose → mutate → evaluate → crystallise → report
@@ -73,7 +73,7 @@ def _experimental_warning(name: str) -> None:
     Quiet by default — use --verbose in the parent parser to also tee."""
     if os.environ.get("AgentHarness_EXPERIMENTAL_QUIET"):
         return
-    sys.stderr.write(f"{EXPERIMENTAL_TAG} agent_harness {name} — signature may change\n")
+    sys.stderr.write(f"{EXPERIMENTAL_TAG} minxg {name} — signature may change\n")
 
 
 # ----------------------------------------------------------------------
@@ -98,7 +98,7 @@ def run_bench(args: argparse.Namespace) -> int:
 
     # 1) Lossless round-trip
     def _lossless() -> bytes:
-        from agent_harness import lossless
+        from minxg import lossless
         return lossless.LosslessCodec().decompress(
             lossless.LosslessCodec().compress(b"perf-payload").payload
         )
@@ -107,7 +107,7 @@ def run_bench(args: argparse.Namespace) -> int:
 
     # 2) Driver engine step
     def _driver() -> str:
-        from agent_harness.driver import DriverEngine, State, smoothing_field
+        from minxg.driver import DriverEngine, State, smoothing_field
         end, _ = DriverEngine([smoothing_field(rate=0.4)]).run(
             State(payload={"x": 0.0, "v": 1.0}), n_steps=8,
         )
@@ -117,14 +117,14 @@ def run_bench(args: argparse.Namespace) -> int:
 
     # 3) Twin python→rust (single def, single block)
     def _twin() -> str:
-        from agent_harness.twin import python_to_rust
+        from minxg.twin import python_to_rust
         return python_to_rust("def f(x):\n    if x > 0:\n        y = 1\n    else:\n        y = 0\n    return y\n")
 
     samples.append(_bench_one("twin.python_to_rust", _twin))
 
     # 4) Polyglot normalise
     def _poly() -> int:
-        from agent_harness.polyglot.normalizer import normalize
+        from minxg.polyglot.normalizer import normalize
         g = normalize("def f(x): return x + 1", language="python")
         return len(g.nodes)
 
@@ -132,7 +132,7 @@ def run_bench(args: argparse.Namespace) -> int:
 
     # 5) OperatorRegistry dump
     def _reg() -> int:
-        from agent_harness.operators import OPERATOR_REGISTRY
+        from minxg.operators import OPERATOR_REGISTRY
         return OPERATOR_REGISTRY.total_operators
 
     samples.append(_bench_one("operators.total", _reg))
@@ -146,7 +146,7 @@ def run_bench(args: argparse.Namespace) -> int:
     samples.append(_bench_one("features.list", _import_cost))
 
     longest = max(len(s[0]) for s in samples)
-    print(f"{EXPERIMENTAL_TAG} agent_harness bench — local perf snapshot")
+    print(f"{EXPERIMENTAL_TAG} minxg bench — local perf snapshot")
     print("-" * (longest + 32))
     for label, dt, summary in samples:
         print(f"  {label.ljust(longest)}  {dt:>10.3f} ms    {summary}")
@@ -195,7 +195,7 @@ def run_replay(args: argparse.Namespace) -> int:
     else:
         text = sys.stdin.read()
         # reuse _parse_markdown_lines by writing to a temp file
-        tmp = Path(os.environ.get("TMPDIR", "/tmp")) / "agent_harness_replay.md"
+        tmp = Path(os.environ.get("TMPDIR", "/tmp")) / "minxg_replay.md"
         tmp.write_text(text, encoding="utf-8")
         turns = _parse_markdown_lines(tmp)
         tmp.unlink(missing_ok=True)
@@ -216,7 +216,7 @@ def run_replay(args: argparse.Namespace) -> int:
 # ----------------------------------------------------------------------
 
 THEME_FILE = Path(
-    os.environ.get("AgentHarness_HOME", str(Path.home() / ".agent_harness"))
+    os.environ.get("AgentHarness_HOME", str(Path.home() / ".minxg"))
 ) / "theme.json"
 VALID_THEMES = ("dark", "colorful", "minimal")
 
@@ -241,7 +241,7 @@ def _write_theme(name: str) -> Path:
 
 
 def run_theme(args: argparse.Namespace) -> int:
-    """Show or set the active TUI theme. Press `agent_harness theme` to use default."""
+    """Show or set the active TUI theme. Press `minxg theme` to use default."""
     _experimental_warning("theme")
     name: Optional[str] = getattr(args, "name", None)
     if not name:
@@ -313,7 +313,7 @@ def run_safe_eval(args: argparse.Namespace) -> int:
     json_locals: Optional[str] = getattr(args, "locals", None)
     if expr is None:
         sys.stderr.write(
-            f"{EXPERIMENTAL_TAG} usage: agent_harness safe-eval <expr> [--locals JSON]\n"
+            f"{EXPERIMENTAL_TAG} usage: minxg safe-eval <expr> [--locals JSON]\n"
             f"   allowed builtins: {SAFE_EVAL_BUILTINS_HELP}\n"
         )
         return 2
@@ -358,7 +358,7 @@ def run_ext_reload(args: argparse.Namespace) -> int:
 # ----------------------------------------------------------------------
 
 THINK_FILE = Path(
-    os.environ.get("AgentHarness_HOME", str(Path.home() / ".agent_harness"))
+    os.environ.get("AgentHarness_HOME", str(Path.home() / ".minxg"))
 ) / "think.json"
 
 
@@ -394,11 +394,11 @@ def run_think(args: argparse.Namespace) -> int:
     if action is None:
         state = _read_think_state()
         print(f"{EXPERIMENTAL_TAG} think tags: {'on' if state else 'off'}")
-        print(f"   use `agent_harness think on` / `off` to toggle")
+        print(f"   use `minxg think on` / `off` to toggle")
         return 0
     if action not in ("on", "off"):
         sys.stderr.write(
-            f"{EXPERIMENTAL_TAG} usage: agent_harness think [on|off]\n"
+            f"{EXPERIMENTAL_TAG} usage: minxg think [on|off]\n"
         )
         return 2
     enabled = (action == "on")
@@ -414,16 +414,16 @@ def run_think(args: argparse.Namespace) -> int:
 def _discover_polyglot_manifest() -> List[Dict[str, str]]:
     """Return every polyglot language adapter AgentHarness can dispatch to.
 
-    Prefer the live registry in ``agent_harness.contracts.runtime``; fall back to
+    Prefer the live registry in ``minxg.contracts.runtime``; fall back to
     the static manifest table if the runtime package is not importable.
     """
     try:
-        from agent_harness.contracts.runtime import list_adapters
+        from minxg.contracts.runtime import list_adapters
         return list_adapters()
     except Exception:
         pass
     try:
-        from agent_harness.contracts.runtime.manifest import (
+        from minxg.contracts.runtime.manifest import (
             POLYGLOT_LANGUAGES, POLYGLOT_MANIFEST,
         )
         return [
@@ -480,19 +480,19 @@ def run_polyglot_manifest(args: argparse.Namespace) -> int:
 
 
 # ----------------------------------------------------------------------
-# contract — list registered Cells in agent_harness.contracts
+# contract — list registered Cells in minxg.contracts
 # ----------------------------------------------------------------------
 
 def run_contract(args: argparse.Namespace) -> int:
-    """List every Cell currently registered in ``agent_harness.contracts``.
+    """List every Cell currently registered in ``minxg.contracts``.
 
-    ``agent_harness.contracts.registry.get_registry`` is the single source of
+    ``minxg.contracts.registry.get_registry`` is the single source of
     truth for these — the verb just renders what it sees, so a Cell
     that registers itself shows up here for free.
     """
     _experimental_warning("contract")
     try:
-        from agent_harness.contracts.registry import get_registry
+        from minxg.contracts.registry import get_registry
         reg = get_registry()
         ids = sorted(reg.all_ids())
     except Exception as exc:
@@ -524,7 +524,7 @@ def run_contract(args: argparse.Namespace) -> int:
 # ----------------------------------------------------------------------
 
 GENESIS_HOME = Path(
-    os.environ.get("AgentHarness_HOME", str(Path.home() / ".agent_harness"))
+    os.environ.get("AgentHarness_HOME", str(Path.home() / ".minxg"))
 ) / "genesis"
 
 
@@ -535,7 +535,7 @@ def _genesis_propose(prompt: Optional[str]) -> str:
     ≤ 240 chars wrapped in a complete module skeleton. Heavy lifting
     happens in `_genesis_mutate`.
     """
-    seed = (prompt or "agent_harness-self-evolve").strip()[:80]
+    seed = (prompt or "minxg-self-evolve").strip()[:80]
     return (
         f"def evolve(name: str = '{seed}') -> str:\n"
         f"    \"\"\"Genesis candidate generated for seed={seed!r}.\"\"\"\n"
@@ -605,7 +605,7 @@ def run_genesis(args: argparse.Namespace) -> int:
 
     This is the 0.16.0 self-evolved capability. It DOES NOT mutate the
     AgentHarness source tree — it produces a candidate module under
-    ``~/.agent_harness/genesis/latest.py`` that human review can adopt (or not).
+    ``~/.minxg/genesis/latest.py`` that human review can adopt (or not).
     Generated code is reproducible from the seed prompt, so two runs
     with the same seed compare cleanly.
     """
@@ -636,7 +636,7 @@ def run_genesis(args: argparse.Namespace) -> int:
 #
 # What users actually want when an adapter says ``status = "disabled"``:
 # how do I install R / Julia / Datalog / wasmtime on this box? The six
-# ``agent_harness.contracts.runtime`` adapters detect their own runtime at
+# ``minxg.contracts.runtime`` adapters detect their own runtime at
 # import time and silently fall back to emulators / pure-python when
 # the host binary is absent, so the gap that needed filling was a
 # user-visible *plan* the user can copy-paste and a guarded *executor*
@@ -678,7 +678,7 @@ def run_runtime_plan(args: argparse.Namespace) -> int:
     """
     _experimental_warning("runtime-plan")
     try:
-        from agent_harness.contracts.runtime import (
+        from minxg.contracts.runtime import (
             current_plan, render_install_plan, MANAGED_LANGUAGES,
         )
     except Exception as exc:
@@ -695,7 +695,7 @@ def run_runtime_plan(args: argparse.Namespace) -> int:
         )
         # Best-effort: still render a single no-op plan so the user
         # gets the same "host=..." header and "no recipe" output.
-        from agent_harness.contracts.runtime.installer import plan_install
+        from minxg.contracts.runtime.installer import plan_install
         sys.stdout.write(render_install_plan([plan_install(lang)], plat=plat))
         return 2
     try:
@@ -725,7 +725,7 @@ def run_runtime_install(args: argparse.Namespace) -> int:
       subprocess is launched.
     * With ``--apply``, runs *one* ``sh -c <cmd>`` per language with
       a 10-minute timeout. The runner is the
-      :func:`agent_harness.contracts.runtime._exec.run` shared helper, so
+      :func:`minxg.contracts.runtime._exec.run` shared helper, so
       `test_polyglot_runtime_installer` can monkeypatch the runner
       without touching the file-system.
     * The executor NEVER recurses into ``run_install("all")``; the
@@ -734,13 +734,13 @@ def run_runtime_install(args: argparse.Namespace) -> int:
       language ids (see ``MANAGED_LANGUAGES``); anything else is
       treated as a typo and rejected with rc=2.
 
-    Exit codes follow ``agent_harness`` convention: 0 = applied or no-op,
+    Exit codes follow ``minxg`` convention: 0 = applied or no-op,
     1 = underlying runner returned ok=False, 2 = unsupported
     language id requested.
     """
     _experimental_warning("runtime-install")
     try:
-        from agent_harness.contracts.runtime import MANAGED_LANGUAGES
+        from minxg.contracts.runtime import MANAGED_LANGUAGES
     except Exception as exc:
         sys.stderr.write(
             f"{EXPERIMENTAL_TAG} runtime-install: {type(exc).__name__}: {exc}\n"
@@ -756,7 +756,7 @@ def run_runtime_install(args: argparse.Namespace) -> int:
         )
         return 2
     try:
-        from agent_harness.contracts.runtime import (
+        from minxg.contracts.runtime import (
             current_plan, run_install as _run_install,
         )
     except Exception as exc:
@@ -858,7 +858,7 @@ def add_subparsers(sub) -> None:
 
     sub.add_parser(
         "contract",
-        help=f"{EXPERIMENTAL_TAG} list registered agent_harness.contracts Cells",
+        help=f"{EXPERIMENTAL_TAG} list registered minxg.contracts Cells",
     ).set_defaults(_experimental_cmd="contract")
 
     p_genesis = sub.add_parser(
@@ -871,7 +871,7 @@ def add_subparsers(sub) -> None:
         help="how many mutation generations to explore (default 3)",
     )
     p_genesis.add_argument(
-        "--out", help="output directory (default ~/.agent_harness/genesis)",
+        "--out", help="output directory (default ~/.minxg/genesis)",
     )
     p_genesis.set_defaults(_experimental_cmd="genesis")
 
@@ -906,14 +906,14 @@ def add_subparsers(sub) -> None:
     )
     p_runtime_install.set_defaults(_experimental_cmd="runtime-install")
 
-    # 0.16.0 — `agent_harness sg` — call the polyglot worker tools from the CLI.
+    # 0.16.0 — `minxg sg` — call the polyglot worker tools from the CLI.
     # The polyglot adapters have always had invoke() entries; this verb
     # makes them reachable for users without going through the AI layer.
     p_sg = sub.add_parser(
         "sg",
         help=(
             f"{EXPERIMENTAL_TAG} dispatch a polyglot worker tool by name. "
-            "Use ``agent_harness polyglot-manifest`` (and ``agent_harness tools``) to find "
+            "Use ``minxg polyglot-manifest`` (and ``minxg tools``) to find "
             "the registered worker tool names per language."
         ),
     )
@@ -969,7 +969,7 @@ def dispatch(args: argparse.Namespace) -> int:
 def run_sg(args: argparse.Namespace) -> int:
     """Call a polyglot worker tool by fully-qualified name.
 
-    Format: ``agent_harness sg <worker_id>.<tool_name> [--json] [<args...>]``
+    Format: ``minxg sg <worker_id>.<tool_name> [--json] [<args...>]``
 
     * Without ``--json``: positional args after the tool name are coerced
       to keyword arguments via str.split("=") syntax
@@ -985,7 +985,7 @@ def run_sg(args: argparse.Namespace) -> int:
         3 — internal dispatcher error
     """
     _experimental_warning("sg")
-    from agent_harness.base import WorkerRegistry
+    from minxg.base import WorkerRegistry
 
     spec: str = getattr(args, "tool", "")
     if not spec or "." not in spec:
@@ -999,7 +999,7 @@ def run_sg(args: argparse.Namespace) -> int:
     # Build or reuse a registry. Workers self-register on import, so
     # importing the polyglot sub-package is enough.
     try:
-        from agent_harness.five_pillars.polyglot import JuliaWorker, RWorker, DatalogWorker, WasmWorker
+        from minxg.five_pillars.polyglot import JuliaWorker, RWorker, DatalogWorker, WasmWorker
         registry = WorkerRegistry()
         registry.register(JuliaWorker())
         registry.register(RWorker())
@@ -1057,7 +1057,7 @@ def _sg_parse_positional(argv: List[str]) -> Dict[str, Any]:
     """Parse leftover ``--key=value`` / ``key=value`` / positional ``k k`` pairs.
 
     Bare positional args (no ``=``) are merged into ``code`` so that
-    ``agent_harness sg r_stats.r_eval -- -- '$x + 1'`` ends up with
+    ``minxg sg r_stats.r_eval -- -- '$x + 1'`` ends up with
     ``{"code": "$x + 1"}`` after stripping the leading separator.
     """
     params: Dict[str, Any] = {}

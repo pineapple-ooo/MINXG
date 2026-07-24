@@ -7,8 +7,8 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from agent_harness.five_pillars.devtools.audit_worker import AuditWorker
-from agent_harness.base import BaseWorker
+from minxg.five_pillars.devtools.audit_worker import AuditWorker
+from minxg.base import BaseWorker
 
 
 def _run(coro):
@@ -71,7 +71,7 @@ def test_audit_file_missing(w):
 
 def test_audit_file_real(w):
     """Audit a real file in the project."""
-    target = str(Path(__file__).resolve().parent.parent / "agent_harness" / "base.py")
+    target = str(Path(__file__).resolve().parent.parent / "minxg" / "base.py")
     r = _run(w.audit_file(target))
     assert r["status"] == "ok"
     assert "findings" in r

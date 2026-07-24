@@ -1,5 +1,5 @@
 """
-agent_harness.contracts.agent.autonomous_engine — Autonomous Engineering Platform
+minxg.contracts.agent.autonomous_engine — Autonomous Engineering Platform
 =========================================================================
 
 Bold design: AgentHarness agents that read code, design solutions, implement changes,

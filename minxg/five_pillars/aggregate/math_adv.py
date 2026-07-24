@@ -14,7 +14,7 @@ import itertools
 import functools
 import re
 from typing import Dict, List, Any, Tuple
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 class MathAdvWorker(BaseWorker):

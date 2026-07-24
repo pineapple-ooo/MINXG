@@ -1,4 +1,4 @@
-"""agent_harness.screen.screen_controller_v2 — Enhanced ScreenController with ElementIndex fusion.
+"""minxg.screen.screen_controller_v2 — Enhanced ScreenController with ElementIndex fusion.
 
 Extends BaseController to add:
 - Unified ScreenCapture bridge (capture + UIAutomator XML + OCR)
@@ -13,20 +13,20 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from agent_harness.screen.constants import (
+from minxg.screen.constants import (
     SCREEN_RAW,
     ScreenSource,
 )
-from agent_harness.screen.capture.screen_capture import ScreenCapture
-from agent_harness.screen.action.action_engine import ActionEngine
-from agent_harness.screen.perception.element_index import ElementIndex
-from agent_harness.screen.perception.layout_analyzer import (
+from minxg.screen.capture.screen_capture import ScreenCapture
+from minxg.screen.action.action_engine import ActionEngine
+from minxg.screen.perception.element_index import ElementIndex
+from minxg.screen.perception.layout_analyzer import (
     parse_uiautomator_xml,
     merge_xml_and_ocr,
     build_screen_description,
     find_tappable_elements,
 )
-from agent_harness.screen.controller.screen_controller import ScreenController
+from minxg.screen.controller.screen_controller import ScreenController
 
 
 class ScreenControllerV2(ScreenController):

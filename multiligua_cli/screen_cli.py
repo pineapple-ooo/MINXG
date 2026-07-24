@@ -1,8 +1,8 @@
-"""agent_harness/screen_cli.py — `agent_harness screen` verb handlers.
+"""minxg/screen_cli.py — `minxg screen` verb handlers.
 
 Each function takes the parsed argparse namespace and returns an int exit code.
 Shared screen state (controller) is created lazily per call — doing it upfront
-would block every `agent_harness screen describe` cold start with adb probing.
+would block every `minxg screen describe` cold start with adb probing.
 """
 from __future__ import annotations
 import json
@@ -22,7 +22,7 @@ def _get_ctrl():
     global _CTRL
     if _CTRL is None:
         try:
-            from agent_harness.screen.screen_controller_v2 import ScreenControllerV2
+            from minxg.screen.screen_controller_v2 import ScreenControllerV2
             _CTRL = ScreenControllerV2(platform="android")
         except Exception as exc:
             print(f"screen: controller init failed: {exc}", file=sys.stderr)
@@ -34,7 +34,7 @@ def _get_capture():
     global _CAPTURE
     if _CAPTURE is None:
         try:
-            from agent_harness.screen.capture.screen_capture import ScreenCapture
+            from minxg.screen.capture.screen_capture import ScreenCapture
             _CAPTURE = ScreenCapture()
         except Exception as exc:
             _CAPTURE = _FakeCapture(exc)

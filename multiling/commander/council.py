@@ -499,7 +499,7 @@ class CompanyOrchestrator:
         from .comm_bus import get_bus, AgentMessage
 
         bus = get_bus()
-        bus.enable_checkpoint(os.path.expanduser("~/.agent_harness/comm_bus_checkpoint.json"))
+        bus.enable_checkpoint(os.path.expanduser("~/.minxg/comm_bus_checkpoint.json"))
 
         _ctx_parts: list[str] = [f"# Goal\n{goal}\n"]
         group_outputs: Dict[str, str] = {}

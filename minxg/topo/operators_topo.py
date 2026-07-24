@@ -1,5 +1,5 @@
 """
-agent_harness/topo/operators_topo.py — Register Topological operators
+minxg/topo/operators_topo.py — Register Topological operators
 ====================================================================
 
 100+ topological operators. Operator IDs 8000-8499 are reserved.

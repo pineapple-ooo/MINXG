@@ -39,7 +39,7 @@ class TestExtensionDiscovery(unittest.TestCase):
     def test_builtin_extensions_present(self):
         """All four shipped built-ins are discoverable."""
         names = {e.name for e in self.extensions}
-        required = {"hello", "agent_harness-files", "agent_harness-adb", "agent_harness-root"}
+        required = {"hello", "minxg-files", "minxg-adb", "minxg-root"}
         missing = required - names
         self.assertEqual(missing, set(), f"missing builtins: {missing}")
 
@@ -66,33 +66,33 @@ class TestBuiltinOptIn(unittest.TestCase):
         return next((e for e in exts if e.name == name), None)
 
     def test_adb_ext_opt_in(self):
-        adb = self._find("agent_harness-adb")
+        adb = self._find("minxg-adb")
         if adb is None:
             return
-        self.assertFalse(adb.enabled, "agent_harness-adb is on by default; should be opt-in")
+        self.assertFalse(adb.enabled, "minxg-adb is on by default; should be opt-in")
         self.assertFalse(hasattr(adb.module, "ADB_AVAILABLE"),
-                         "agent_harness-adb still exposes ADB_AVAILABLE at module load")
+                         "minxg-adb still exposes ADB_AVAILABLE at module load")
         self.assertTrue(callable(getattr(adb.module, "_adb_available", None)),
-                        "agent_harness-adb should expose _adb_available() callable")
+                        "minxg-adb should expose _adb_available() callable")
 
     def test_root_ext_opt_in(self):
-        root = self._find("agent_harness-root")
+        root = self._find("minxg-root")
         if root is None:
             return
-        self.assertFalse(root.enabled, "agent_harness-root is on by default; should be opt-in")
+        self.assertFalse(root.enabled, "minxg-root is on by default; should be opt-in")
         self.assertFalse(hasattr(root.module, "ROOT_AVAILABLE"),
-                         "agent_harness-root still exposes ROOT_AVAILABLE at module load")
+                         "minxg-root still exposes ROOT_AVAILABLE at module load")
         self.assertTrue(callable(getattr(root.module, "_root_available", None)),
-                        "agent_harness-root should expose _root_available() callable")
+                        "minxg-root should expose _root_available() callable")
 
     def test_files_ext_opt_in(self):
-        files = self._find("agent_harness-files")
+        files = self._find("minxg-files")
         if files is None:
             return
         # v0.19.x — files ext is ON by default so the AI can read
         # the file system out of the box. ADB/ROOT stay opt-in.
         self.assertTrue(files.enabled,
-                         "agent_harness-files should be ON by default since v0.19.x")
+                         "minxg-files should be ON by default since v0.19.x")
 
     def test_builtin_descriptions_english_only(self):
         """Built-in extension descriptions must not contain Chinese chars."""
@@ -113,23 +113,23 @@ class TestBuiltinOptIn(unittest.TestCase):
         )
         prev = False
         for ext in reload_extensions():
-            if ext.name == "agent_harness-adb":
+            if ext.name == "minxg-adb":
                 prev = ext.enabled
                 break
-        state_file = _user_state_dir() / "agent_harness-adb.state"
+        state_file = _user_state_dir() / "minxg-adb.state"
         had_previous = state_file.exists()
         previous_contents = (
             state_file.read_text(encoding="utf-8") if had_previous else None
         )
         try:
-            set_extension_enabled("agent_harness-adb", True)
+            set_extension_enabled("minxg-adb", True)
             exts = reload_extensions()
-            adb = next((e for e in exts if e.name == "agent_harness-adb"), None)
+            adb = next((e for e in exts if e.name == "minxg-adb"), None)
             self.assertIsNotNone(adb)
             if adb is not None:
                 self.assertTrue(adb.enabled, "opt-in toggle did not stick")
         finally:
-            set_extension_enabled("agent_harness-adb", prev)
+            set_extension_enabled("minxg-adb", prev)
             if not had_previous and state_file.exists():
                 state_file.unlink()
             elif had_previous and previous_contents is not None:
@@ -150,9 +150,9 @@ class TestPackageCli(unittest.TestCase):
 
     def test_builtin_optional_set_complete(self):
         from extensions.package_cli import BUILTIN_OPTIONAL
-        self.assertIn("agent_harness-adb", BUILTIN_OPTIONAL)
-        self.assertIn("agent_harness-root", BUILTIN_OPTIONAL)
-        self.assertIn("agent_harness-files", BUILTIN_OPTIONAL)
+        self.assertIn("minxg-adb", BUILTIN_OPTIONAL)
+        self.assertIn("minxg-root", BUILTIN_OPTIONAL)
+        self.assertIn("minxg-files", BUILTIN_OPTIONAL)
         import re as _re
         for slug, (_mod, desc) in BUILTIN_OPTIONAL.items():
             self.assertFalse(

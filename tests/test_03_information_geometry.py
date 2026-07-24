@@ -1,6 +1,6 @@
 """Information Geometry: Fisher, natural gradient, divergences."""
 import pytest
-from agent_harness.infogeo import (
+from minxg.infogeo import (
     Gaussian, Bernoulli, fisher_information_matrix, natural_gradient,
     parametric_kl, hellinger_distance, js_divergence,
 )

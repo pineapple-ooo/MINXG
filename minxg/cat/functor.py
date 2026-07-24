@@ -1,5 +1,5 @@
 """
-agent_harness/cat/functor.py — Functors and Common Instances
+minxg/cat/functor.py — Functors and Common Instances
 ============================================================
 
 A FUNCTOR F: C → D is a structure-preserving map between categories.

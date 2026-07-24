@@ -2,7 +2,7 @@
 multiligua_cli/web_ui.py — AgentHarness Web Interface
 
 A lightweight web UI for AgentHarness that runs in the browser.
-Accessible via `agent_harness web` command.
+Accessible via `minxg web` command.
 """
 from __future__ import annotations
 
@@ -424,7 +424,7 @@ HTML_TEMPLATE = """
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'agent_harness-chat-' + new Date().toISOString().slice(0,10) + '.json';
+            a.download = 'minxg-chat-' + new Date().toISOString().slice(0,10) + '.json';
             a.click();
             URL.revokeObjectURL(url);
         }
@@ -469,11 +469,11 @@ HTML_TEMPLATE = """
 async def create_app() -> Any:
     """Create the web UI FastAPI application.
 
-    NOTE: UI has moved to :mod:`agent_harness_ui.web`. This module keeps
+    NOTE: UI has moved to :mod:`minxg_ui.web`. This module keeps
     ``create_app`` as a compatibility shim for existing tests/CLI wiring.
     """
     try:
-        from agent_harness_ui.web import app as _app
+        from minxg_ui.web import app as _app
         return _app
     except Exception as e:
         print(f"ERROR: failed to load AgentHarness web UI: {e}")

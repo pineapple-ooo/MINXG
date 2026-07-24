@@ -1,5 +1,5 @@
 """tests/test_file_workers_hardening.py — the MCP-surface file workers
-(agent_harness/workers/file/file_workers.py) previously had none of the safety
+(minxg/workers/file/file_workers.py) previously had none of the safety
 guards the chat-agent surface (tools/file_tools.py) had. This locks in
 the fix: blocked-device-path rejection on every write-capable worker,
 plus the read worker refusing to slurp huge/binary files.
@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import pytest
 
-from agent_harness.workers.file.file_workers import (
+from minxg.workers.file.file_workers import (
     FileReadWorker, FileWriteWorker, FileCopyWorker,
     FileMoveWorker, FileDeleteWorker,
 )
@@ -31,7 +31,7 @@ class TestFileReadWorkerHardening:
         f = tmp_path / "big.txt"
         f.write_text("x" * 1000)
         monkeypatch.setattr(
-            "agent_harness.core_ops.file_safety.MAX_READABLE_BYTES", 10
+            "minxg.core_ops.file_safety.MAX_READABLE_BYTES", 10
         )
         result = FileReadWorker().execute(path=str(f))
         assert "error" in result

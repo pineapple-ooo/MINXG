@@ -7,24 +7,24 @@ regex/math/crypto. The Python layer handles config, extensions,
 gateway lifecycle, context compression, and memory.
 
 Commands:
-    agent_harness                    Start TUI chat (streaming + tool call visualization)
-    agent_harness docs               Start local docs server and open in browser
-    agent_harness open               Start OpenAI /v1 API server
-    agent_harness setup              Run setup wizard (repeatable)
-    agent_harness model [name]       Configure AI model/provider/key individually
-    agent_harness api <url>          Quick-set API base URL
-    agent_harness key <key>          Quick-set API Key
-    agent_harness lang [code]        Switch display language
-    agent_harness config             View current configuration
-    agent_harness status             View system status
-    agent_harness tools              List available tools
-    agent_harness gateway            Gateway lifecycle management
-    agent_harness update             Check for updates
-    agent_harness ext <sub>          Extension management
-    agent_harness skill <sub>        Skill management
-    agent_harness help               Show help
-    agent_harness --version          Show version
-    agent_harness --list-extensions  List extensions
+    minxg                    Start TUI chat (streaming + tool call visualization)
+    minxg docs               Start local docs server and open in browser
+    minxg open               Start OpenAI /v1 API server
+    minxg setup              Run setup wizard (repeatable)
+    minxg model [name]       Configure AI model/provider/key individually
+    minxg api <url>          Quick-set API base URL
+    minxg key <key>          Quick-set API Key
+    minxg lang [code]        Switch display language
+    minxg config             View current configuration
+    minxg status             View system status
+    minxg tools              List available tools
+    minxg gateway            Gateway lifecycle management
+    minxg update             Check for updates
+    minxg ext <sub>          Extension management
+    minxg skill <sub>        Skill management
+    minxg help               Show help
+    minxg --version          Show version
+    minxg --list-extensions  List extensions
 """
 from __future__ import annotations
 from multiling.constants import GATEWAY_DEFAULT_PORT, WORKERS_DEFAULT_PORT, WEB_UI_DEFAULT_PORT
@@ -63,32 +63,32 @@ def _build_cheatsheet() -> str:
         f"║  AgentHarness — commands                                                    ║",
         f"╠══════════════════════════════════════════════════════════════════════╣",
         f"║                                                                      ║",
-        f"║  agent_harness                    Start the TUI chat (DEFAULT)           ║",
-        f"║  agent_harness setup              Run the setup wizard                       ║",
-        f"║  agent_harness config             Show current configuration                 ║",
-        f"║  agent_harness status             Runtime status                             ║",
-        f"║  agent_harness tools              List available tools                       ║",
-        f"║  agent_harness model [name]       Set or view the model                       ║",
-        f"║  agent_harness api <url>          Quick-set API base URL                      ║",
-        f"║  agent_harness key <key>          Quick-set API key                          ║",
-        f"║  agent_harness lang [code]        Switch display language (en only, default) ║",
-        f"║  agent_harness ext list|add|...   Manage extensions (user-installed)         ║",
-        f"║  agent_harness gateway [--detach]  API gateway (foreground default, -d=bg)  ║",
-        f"║  agent_harness doctor             Self-check (config + tools + extensions)   ║",
-        f"║  agent_harness bugcheck        Built-in bug checker (static analysis)      ║",
-        f"║  agent_harness help               Show this cheatsheet                       ║",
+        f"║  minxg                    Start the TUI chat (DEFAULT)           ║",
+        f"║  minxg setup              Run the setup wizard                       ║",
+        f"║  minxg config             Show current configuration                 ║",
+        f"║  minxg status             Runtime status                             ║",
+        f"║  minxg tools              List available tools                       ║",
+        f"║  minxg model [name]       Set or view the model                       ║",
+        f"║  minxg api <url>          Quick-set API base URL                      ║",
+        f"║  minxg key <key>          Quick-set API key                          ║",
+        f"║  minxg lang [code]        Switch display language (en only, default) ║",
+        f"║  minxg ext list|add|...   Manage extensions (user-installed)         ║",
+        f"║  minxg gateway [--detach]  API gateway (foreground default, -d=bg)  ║",
+        f"║  minxg doctor             Self-check (config + tools + extensions)   ║",
+        f"║  minxg bugcheck        Built-in bug checker (static analysis)      ║",
+        f"║  minxg help               Show this cheatsheet                       ║",
         f"║                                                                      ║",
         f"║  Experimental verbs (0.13.0; may change without notice):            ║",
-        f"║  agent_harness bench              [EXPERIMENTAL] local perf snapshot         ║",
-        f"║  agent_harness replay <file>      [EXPERIMENTAL] replay a markdown chat log  ║",
-        f"║  agent_harness theme [name]       [EXPERIMENTAL] get/set the TUI theme       ║",
-        f"║  agent_harness safe-eval <expr>   [EXPERIMENTAL] restricted expr evaluator   ║",
-        f"║  agent_harness ext-reload --all   [EXPERIMENTAL] rescan extension sources    ║",
+        f"║  minxg bench              [EXPERIMENTAL] local perf snapshot         ║",
+        f"║  minxg replay <file>      [EXPERIMENTAL] replay a markdown chat log  ║",
+        f"║  minxg theme [name]       [EXPERIMENTAL] get/set the TUI theme       ║",
+        f"║  minxg safe-eval <expr>   [EXPERIMENTAL] restricted expr evaluator   ║",
+        f"║  minxg ext-reload --all   [EXPERIMENTAL] rescan extension sources    ║",
         f"║                                                                      ║",
         f"║  Examples:                                                           ║",
-        f"║    agent_harness model gpt-4o              # one-shot set the model          ║",
-        f"║    agent_harness ext add agent_harness-adb         # enable built-in ADB extension   ║",
-        f"║    agent_harness gateway --detach   (background mode, old 'gateway start')        ║",
+        f"║    minxg model gpt-4o              # one-shot set the model          ║",
+        f"║    minxg ext add minxg-adb         # enable built-in ADB extension   ║",
+        f"║    minxg gateway --detach   (background mode, old 'gateway start')        ║",
         f"║                                                                      ║",
         f"╚══════════════════════════════════════════════════════════════════════╝",
     ]
@@ -335,7 +335,7 @@ def run_docs(args) -> int:
     return 0
 
 def run_model_config(args) -> int:
-    """Configure AI model. Supports: agent_harness model or agent_harness model <name>."""
+    """Configure AI model. Supports: minxg model or minxg model <name>."""
     model_arg = getattr(args, "model_name", None)
     if model_arg:
 
@@ -355,7 +355,7 @@ def run_model_config(args) -> int:
     return run_setup()
 
 def run_api_config(args) -> int:
-    """Quick-set API base URL: agent_harness api <url>."""
+    """Quick-set API base URL: minxg api <url>."""
     url = args.url
     config = load_config()
     config.setdefault("ai", {})["base_url"] = url
@@ -369,7 +369,7 @@ def run_api_config(args) -> int:
     return 0
 
 def run_key_config(args) -> int:
-    """Quick-set API Key: agent_harness key <key>."""
+    """Quick-set API Key: minxg key <key>."""
     key = args.apikey
     config = load_config()
     config.setdefault("ai", {})["api_key"] = key
@@ -383,7 +383,7 @@ def run_key_config(args) -> int:
     return 0
 
 def run_lang_config(args) -> int:
-    """Switch language: agent_harness lang [code] or agent_harness lang (interactive)."""
+    """Switch language: minxg lang [code] or minxg lang (interactive)."""
     code_arg = getattr(args, "lang_code", None)
 
     if code_arg:
@@ -449,7 +449,7 @@ def _print_completion_hint() -> None:
     try:
         sys.stdout.write("\n")
         sys.stdout.write(_build_cheatsheet())
-        sys.stdout.write("\n  Type `agent_harness` to start the TUI chat.\n\n")
+        sys.stdout.write("\n  Type `minxg` to start the TUI chat.\n\n")
         sys.stdout.flush()
     except Exception:
         pass
@@ -461,37 +461,37 @@ def main(argv=None) -> int:
     update, skill) have been removed in this build:
       - `start` was an alias that conflated TUI with the gateway.
       - `adb` / `root` / `files` are extensions; enable them with
-        `agent_harness ext add agent_harness-adb` etc.
+        `minxg ext add minxg-adb` etc.
       - `update` was the removed hot-reload path.
       - `skill` is in flux; inside the TUI, use `/help` for the
-        command index and `agent_harness doctor` for diagnostic output.
+        command index and `minxg doctor` for diagnostic output.
     """
     set_process_title()
 
     parser = argparse.ArgumentParser(
-        prog="agent_harness",
+        prog="minxg",
         description="AgentHarness — five-pillar worker platform",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Core commands:
-  agent_harness                   Start the TUI chat (default)
-  agent_harness setup             Run the setup wizard
-  agent_harness config            Show current configuration
-  agent_harness status            Show runtime status
-  agent_harness tools             List available tools
-  agent_harness model [NAME]      Set or view the active model
-  agent_harness api <URL>         Quick-set the API base URL
-  agent_harness key <KEY>         Quick-set the API key
-  agent_harness ext ...           Manage user-installed extensions
-  agent_harness gateway ...       API gateway lifecycle (--detach for background, stop, status)
-  agent_harness doctor            Self-check (config + tools + extensions)
-  agent_harness --version         Show version
+  minxg                   Start the TUI chat (default)
+  minxg setup             Run the setup wizard
+  minxg config            Show current configuration
+  minxg status            Show runtime status
+  minxg tools             List available tools
+  minxg model [NAME]      Set or view the active model
+  minxg api <URL>         Quick-set the API base URL
+  minxg key <KEY>         Quick-set the API key
+  minxg ext ...           Manage user-installed extensions
+  minxg gateway ...       API gateway lifecycle (--detach for background, stop, status)
+  minxg doctor            Self-check (config + tools + extensions)
+  minxg --version         Show version
 
 Examples:
-  agent_harness
-  agent_harness model gpt-4o
-  agent_harness ext add agent_harness-adb
-  agent_harness gateway --detach
+  minxg
+  minxg model gpt-4o
+  minxg ext add minxg-adb
+  minxg gateway --detach
 """,
     )
     parser.add_argument("--version", action="version",
@@ -554,7 +554,7 @@ Examples:
     except ImportError:  # pragma: no cover
         pass
 
-    # SPA — agent_harness screen <verb>
+    # SPA — minxg screen <verb>
     p_screen = sub.add_parser(
         "screen",
         help="SPA screen controller (capture, describe, tap, swipe, type, key, act, daemon).",
@@ -572,7 +572,7 @@ Examples:
         dest="screen_action", metavar="<verb>",
     )
     p_screen_sub.add_parser(
-        "capture", help="Capture a screenshot to ~/.agent_harness/screen/raw/",
+        "capture", help="Capture a screenshot to ~/.minxg/screen/raw/",
     )
     p_screen_sub.add_parser(
         "describe", help="Render the screen description + element count",
@@ -634,7 +634,7 @@ Examples:
         "disable", help="Disable without removing")
     p_ext_disable.add_argument("name", help="Extension name")
 
-    # `agent_harness skill ...` — was listed in CORE_COMMANDS and the README but
+    # `minxg skill ...` — was listed in CORE_COMMANDS and the README but
     # never actually registered with argparse; see multiligua_cli/skill_cli.py.
     p_skill = sub.add_parser("skill", help="Manage AgentHarness skills (markdown instruction bundles)")
     skill_sub = p_skill.add_subparsers(dest="skill_action", metavar="<action>")
@@ -672,8 +672,8 @@ Examples:
         "publish", help="Validate a skill and print a catalog-entry snippet")
     p_skill_publish.add_argument("name")
 
-    # Let enabled extensions add their own subcommands (e.g. `agent_harness files
-    # browse`, once `agent_harness ext add agent_harness-files` is enabled) before parsing.
+    # Let enabled extensions add their own subcommands (e.g. `minxg files
+    # browse`, once `minxg ext add minxg-files` is enabled) before parsing.
     # `register_cli_extensions`/`dispatch_extension` already existed with
     # correct enabled-gating logic but were never actually called from
     # here — an extension's `register_cli` never reached argparse, so its
@@ -736,11 +736,11 @@ Examples:
     if cmd == "lang":
         return run_lang_config(args)
 
-    # ── `agent_harness gateway` — unified gateway command ──
+    # ── `minxg gateway` — unified gateway command ──
     # (v0.18.2 — the old `gateway start` sub-command has been removed.
-    #  `agent_harness gateway` with no sub-command runs in foreground.
-    #  `agent_harness gateway --detach` runs in background.
-    #  `agent_harness gateway stop` / `agent_harness gateway status` remain.)
+    #  `minxg gateway` with no sub-command runs in foreground.
+    #  `minxg gateway --detach` runs in background.
+    #  `minxg gateway stop` / `minxg gateway status` remain.)
     if cmd == "gateway":
         sub_c = getattr(args, "sub_command", None)
         detach = getattr(args, "detach", False)
@@ -842,7 +842,7 @@ Examples:
     if cmd == "import":
         from multiligua_cli.memory_system import get_memory_engine
         if len(sys.argv) < 3:
-            print("Usage: agent_harness import <file.json>")
+            print("Usage: minxg import <file.json>")
             return 1
         file_path = sys.argv[2]
         with open(file_path, "r") as f:
@@ -854,7 +854,7 @@ Examples:
 
     # No subcommand -> start chat directly.
     try:
-        from agent_harness.cli.chat import ChatTui
+        from minxg.cli.chat import ChatTui
         from multiligua_cli.utils import load_config
         chat_tui = ChatTui(load_config())
         return chat_tui.run()
@@ -867,7 +867,7 @@ Examples:
 
 
 def _pick_initial_mode() -> str:
-    """One-shot picker for `agent_harness` with no subcommand.
+    """One-shot picker for `minxg` with no subcommand.
 
     Lets the user choose between starting the chat CLI immediately
     or starting an OpenAI-compatible v1 gateway endpoint. Returns

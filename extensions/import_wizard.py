@@ -340,7 +340,7 @@ def import_extension(path: str, interactive: bool = True) -> Dict[str, Any]:
             return {
                 "status": "error",
                 "error": "未选择任何文件。请通过 --path 参数指定扩展包路径，或在交互式终端中浏览选择。",
-                "hint": "用法: agent_harness ext import --path /path/to/extension.zip"
+                "hint": "用法: minxg ext import --path /path/to/extension.zip"
             }
 
     path = os.path.expanduser(path)
@@ -427,7 +427,7 @@ def import_extension(path: str, interactive: bool = True) -> Dict[str, Any]:
             "dest": str(dest_dir),
             "source_type": source_type,
             "source_path": path,
-            "hint": f"扩展 '{ext_name}' 已安装到 extensions/user/{ext_name}/。运行 'agent_harness ext reload {ext_name}' 立即加载。",
+            "hint": f"扩展 '{ext_name}' 已安装到 extensions/user/{ext_name}/。运行 'minxg ext reload {ext_name}' 立即加载。",
         }
 
     except Exception as e:
@@ -463,11 +463,11 @@ AgentHarness 扩展包导入指南
 导入方式:
 
   1. 交互式导入 (推荐):
-     agent_harness ext import
+     minxg ext import
      → 打开文件浏览器，浏览选择扩展包
 
   2. 直接路径导入:
-     agent_harness ext import --path /path/to/my_ext.zip
+     minxg ext import --path /path/to/my_ext.zip
      → 直接指定文件路径
 
   3. Python导入:
@@ -482,8 +482,8 @@ AgentHarness 扩展包导入指南
     text += f"""
 
 安装后:
-  agent_harness ext list           # 查看已安装扩展
-  agent_harness ext reload NAME    # 热加载扩展
+  minxg ext list           # 查看已安装扩展
+  minxg ext reload NAME    # 热加载扩展
 
 扩展包结构:
   my_extension/
@@ -498,7 +498,7 @@ AgentHarness 扩展包导入指南
 
 
 def handle_import_command(args) -> int:
-    """CLI命令处理: agent_harness ext import [--path PATH] [--help]"""
+    """CLI命令处理: minxg ext import [--path PATH] [--help]"""
     path = getattr(args, 'path', None)
 
     if getattr(args, 'help', False):
@@ -520,5 +520,5 @@ def handle_import_command(args) -> int:
             print(f"   支持的格式: {', '.join(result['supported'])}")
         if "contents" in result:
             print(f"   包内容: {', '.join(result['contents'])}")
-        print(f"\n   💡 提示: agent_harness ext import --help 查看使用帮助")
+        print(f"\n   💡 提示: minxg ext import --help 查看使用帮助")
         return 1

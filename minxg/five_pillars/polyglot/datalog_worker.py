@@ -23,10 +23,10 @@ from __future__ import annotations
 import asyncio
 from typing import Any, Dict, List, Optional
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 import sys as _sys
-_ADAPTER = _sys.modules.get("agent_harness.contracts.runtime.datalog")
+_ADAPTER = _sys.modules.get("minxg.contracts.runtime.datalog")
 
 
 class DatalogWorker(BaseWorker):

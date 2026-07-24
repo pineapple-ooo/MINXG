@@ -1,4 +1,4 @@
-"""agent_harness.context.memory — day-scale memory hierarchy for long-running agents.
+"""minxg.context.memory — day-scale memory hierarchy for long-running agents.
 
 Memory layers
 -------------
@@ -22,7 +22,7 @@ import base64
 from dataclasses import dataclass, field, asdict
 from typing import Any, Dict, List, Optional, Tuple
 
-from agent_harness.context.compression import estimate_tokens, compress, decompress
+from minxg.context.compression import estimate_tokens, compress, decompress
 
 logger = logging.getLogger(__name__)
 

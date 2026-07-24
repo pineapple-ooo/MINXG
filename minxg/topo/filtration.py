@@ -1,5 +1,5 @@
 """
-agent_harness/topo/filtration.py — Filtrations of Point Clouds
+minxg/topo/filtration.py — Filtrations of Point Clouds
 ==============================================================
 
 To compute persistent homology, we need a FILTRATION — a 1-parameter family

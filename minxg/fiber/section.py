@@ -1,5 +1,5 @@
 """
-agent_harness/fiber/section.py — Sections and Covariant Derivatives
+minxg/fiber/section.py — Sections and Covariant Derivatives
 ==================================================================
 
 A SECTION of a fiber bundle E → B is a "field" s: B → E such that

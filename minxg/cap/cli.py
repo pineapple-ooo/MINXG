@@ -1,4 +1,4 @@
-"""CLI for agent_harness.cap — `python -m agent_harness.cap <query>`."""
+"""CLI for minxg.cap — `python -m minxg.cap <query>`."""
 from __future__ import annotations
 import argparse
 import json
@@ -9,7 +9,7 @@ from .registry import get_manifest
 
 
 def main(argv: List[str] = None) -> int:
-    parser = argparse.ArgumentParser(prog="agent_harness.cap",
+    parser = argparse.ArgumentParser(prog="minxg.cap",
         description="Corpus-based capability query and audit.")
     sub = parser.add_subparsers(dest="cmd", required=True)
 

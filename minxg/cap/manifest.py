@@ -1,15 +1,15 @@
-"""Manifest data structures for agent_harness.cap.
+"""Manifest data structures for minxg.cap.
 
-agent_harness.cap.provides: cap.types
-agent_harness.cap.requires: (none)
+minxg.cap.provides: cap.types
+minxg.cap.requires: (none)
 """
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Set, Tuple
 
 
-PROVIDE_TAG = "agent_harness.cap.provides"
-REQUIRE_TAG = "agent_harness.cap.requires"
+PROVIDE_TAG = "minxg.cap.provides"
+REQUIRE_TAG = "minxg.cap.requires"
 
 
 @dataclass

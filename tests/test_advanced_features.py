@@ -18,7 +18,7 @@ import pytest
 
 def test_react_agent_import():
     """Test agent framework imports."""
-    from agent_harness.agents.react_agent import ReActAgent, PlanningAgent, MultiAgentSystem
+    from minxg.agents.react_agent import ReActAgent, PlanningAgent, MultiAgentSystem
     assert ReActAgent is not None
     assert PlanningAgent is not None
     assert MultiAgentSystem is not None
@@ -26,7 +26,7 @@ def test_react_agent_import():
 
 def test_react_agent_run():
     """Test ReAct agent execution."""
-    from agent_harness.agents.react_agent import ReActAgent
+    from minxg.agents.react_agent import ReActAgent
 
     agent = ReActAgent(name="test-agent", max_steps=5)
     result = agent.run("Test goal")
@@ -38,7 +38,7 @@ def test_react_agent_run():
 
 def test_planning_agent():
     """Test planning agent."""
-    from agent_harness.agents.react_agent import PlanningAgent
+    from minxg.agents.react_agent import PlanningAgent
 
     planner = PlanningAgent()
     plan = planner.plan_task("Complex task")
@@ -49,7 +49,7 @@ def test_planning_agent():
 
 def test_multi_agent_system():
     """Test multi-agent system."""
-    from agent_harness.agents.react_agent import MultiAgentSystem
+    from minxg.agents.react_agent import MultiAgentSystem
 
     system = MultiAgentSystem()
     system.add_agent("agent1", "math")
@@ -68,7 +68,7 @@ def test_multi_agent_system():
 
 def test_rag_import():
     """Test RAG system imports."""
-    from agent_harness.agents.rag_system import VectorStore, TextSplitter, RAGPipeline
+    from minxg.agents.rag_system import VectorStore, TextSplitter, RAGPipeline
     assert VectorStore is not None
     assert TextSplitter is not None
     assert RAGPipeline is not None
@@ -76,7 +76,7 @@ def test_rag_import():
 
 def test_vector_store():
     """Test vector store operations."""
-    from agent_harness.agents.rag_system import VectorStore, Document
+    from minxg.agents.rag_system import VectorStore, Document
 
     store = VectorStore(dimension=128)
     doc = Document(id="1", content="Test document", embedding=[0.5] * 128)
@@ -90,7 +90,7 @@ def test_vector_store():
 
 def test_text_splitter():
     """Test text splitting."""
-    from agent_harness.agents.rag_system import TextSplitter, Document
+    from minxg.agents.rag_system import TextSplitter, Document
 
     splitter = TextSplitter(chunk_size=50, chunk_overlap=10)
     text = "A" * 200
@@ -102,7 +102,7 @@ def test_text_splitter():
 
 def test_rag_pipeline():
     """Test RAG pipeline."""
-    from agent_harness.agents.rag_system import RAGPipeline, Document
+    from minxg.agents.rag_system import RAGPipeline, Document
 
     pipeline = RAGPipeline()
     docs = [
@@ -121,14 +121,14 @@ def test_rag_pipeline():
 
 def test_workflow_import():
     """Test workflow engine imports."""
-    from agent_harness.workflow.engine import WorkflowEngine, WorkflowBuilder
+    from minxg.workflow.engine import WorkflowEngine, WorkflowBuilder
     assert WorkflowEngine is not None
     assert WorkflowBuilder is not None
 
 
 def test_workflow_creation():
     """Test workflow creation."""
-    from agent_harness.workflow.engine import WorkflowEngine
+    from minxg.workflow.engine import WorkflowEngine
 
     engine = WorkflowEngine()
     workflow = engine.create_workflow("test-workflow")
@@ -139,7 +139,7 @@ def test_workflow_creation():
 
 def test_workflow_execution():
     """Test workflow execution."""
-    from agent_harness.workflow.engine import WorkflowEngine
+    from minxg.workflow.engine import WorkflowEngine
 
     engine = WorkflowEngine()
     engine.create_workflow("exec-test")
@@ -155,7 +155,7 @@ def test_workflow_execution():
 
 def test_workflow_builder():
     """Test fluent workflow builder."""
-    from agent_harness.workflow.engine import WorkflowEngine, WorkflowBuilder
+    from minxg.workflow.engine import WorkflowEngine, WorkflowBuilder
 
     engine = WorkflowEngine()
     builder = WorkflowBuilder("builder-test", engine)
@@ -172,7 +172,7 @@ def test_workflow_builder():
 
 def test_function_registry():
     """Test function registry."""
-    from agent_harness.function_calling import FunctionRegistry
+    from minxg.function_calling import FunctionRegistry
 
     registry = FunctionRegistry()
 
@@ -188,7 +188,7 @@ def test_function_registry():
 
 def test_openai_format():
     """Test OpenAI format conversion."""
-    from agent_harness.function_calling import FunctionRegistry
+    from minxg.function_calling import FunctionRegistry
 
     registry = FunctionRegistry()
 
@@ -203,7 +203,7 @@ def test_openai_format():
 
 def test_common_schemas():
     """Test common function schemas."""
-    from agent_harness.function_calling import COMMON_SCHEMAS
+    from minxg.function_calling import COMMON_SCHEMAS
 
     assert "calculator" in COMMON_SCHEMAS
     assert "search" in COMMON_SCHEMAS
@@ -216,7 +216,7 @@ def test_common_schemas():
 
 def test_streaming_import():
     """Test streaming imports."""
-    from agent_harness.streaming import StreamingResponse, TokenStream, ChunkAggregator
+    from minxg.streaming import StreamingResponse, TokenStream, ChunkAggregator
     assert StreamingResponse is not None
     assert TokenStream is not None
     assert ChunkAggregator is not None
@@ -224,7 +224,7 @@ def test_streaming_import():
 
 def test_token_stream():
     """Test token stream."""
-    from agent_harness.streaming import TokenStream
+    from minxg.streaming import TokenStream
 
     tokens = []
     stream = TokenStream(on_token=tokens.append)
@@ -239,7 +239,7 @@ def test_token_stream():
 
 def test_chunk_aggregator():
     """Test chunk aggregation."""
-    from agent_harness.streaming import ChunkAggregator
+    from minxg.streaming import ChunkAggregator
 
     agg = ChunkAggregator()
     agg.add({
@@ -260,7 +260,7 @@ def test_chunk_aggregator():
 
 def test_guardrails_import():
     """Test guardrails imports."""
-    from agent_harness.guardrails import InputGuardrail, OutputGuardrail, Guardrails
+    from minxg.guardrails import InputGuardrail, OutputGuardrail, Guardrails
     assert InputGuardrail is not None
     assert OutputGuardrail is not None
     assert Guardrails is not None
@@ -268,7 +268,7 @@ def test_guardrails_import():
 
 def test_input_guardrail():
     """Test input validation."""
-    from agent_harness.guardrails import InputGuardrail
+    from minxg.guardrails import InputGuardrail
 
     guard = InputGuardrail()
 
@@ -283,7 +283,7 @@ def test_input_guardrail():
 
 def test_pii_detection():
     """Test PII detection."""
-    from agent_harness.guardrails import Guardrails
+    from minxg.guardrails import Guardrails
 
     guard = Guardrails()
     result = guard.validate_input("My email is test@example.com")
@@ -294,7 +294,7 @@ def test_pii_detection():
 
 def test_output_guardrail():
     """Test output validation."""
-    from agent_harness.guardrails import OutputGuardrail
+    from minxg.guardrails import OutputGuardrail
 
     guard = OutputGuardrail()
 
@@ -308,7 +308,7 @@ def test_output_guardrail():
 
 def test_caching_import():
     """Test caching imports."""
-    from agent_harness.caching import SemanticCache, TieredCache, CacheMiddleware
+    from minxg.caching import SemanticCache, TieredCache, CacheMiddleware
     assert SemanticCache is not None
     assert TieredCache is not None
     assert CacheMiddleware is not None
@@ -316,7 +316,7 @@ def test_caching_import():
 
 def test_semantic_cache():
     """Test semantic cache."""
-    from agent_harness.caching import SemanticCache
+    from minxg.caching import SemanticCache
 
     cache = SemanticCache()
     cache.set("What is Python?", "Python is a programming language", "gpt-4o")
@@ -331,7 +331,7 @@ def test_semantic_cache():
 
 def test_tiered_cache():
     """Test tiered cache."""
-    from agent_harness.caching import TieredCache
+    from minxg.caching import TieredCache
     import tempfile
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -351,7 +351,7 @@ def test_tiered_cache():
 
 def test_monitoring_import():
     """Test monitoring imports."""
-    from agent_harness.monitoring import MetricsCollector, RequestTracker, AlertManager, HealthChecker
+    from minxg.monitoring import MetricsCollector, RequestTracker, AlertManager, HealthChecker
     assert MetricsCollector is not None
     assert RequestTracker is not None
     assert AlertManager is not None
@@ -360,7 +360,7 @@ def test_monitoring_import():
 
 def test_metrics_collector():
     """Test metrics collection."""
-    from agent_harness.monitoring import MetricsCollector
+    from minxg.monitoring import MetricsCollector
 
     metrics = MetricsCollector()
     metrics.inc("requests", 1)
@@ -378,7 +378,7 @@ def test_metrics_collector():
 
 def test_request_tracker():
     """Test request tracking."""
-    from agent_harness.monitoring import RequestTracker
+    from minxg.monitoring import RequestTracker
 
     tracker = RequestTracker()
 
@@ -391,7 +391,7 @@ def test_request_tracker():
 
 def test_health_checker():
     """Test health checking."""
-    from agent_harness.monitoring import HealthChecker
+    from minxg.monitoring import HealthChecker
 
     health = HealthChecker()
     health.register("test_check", lambda: True)
@@ -411,14 +411,14 @@ def test_health_checker():
 def test_all_modules_importable():
     """Test that all new modules can be imported."""
     modules = [
-        'agent_harness.agents.react_agent',
-        'agent_harness.agents.rag_system',
-        'agent_harness.workflow.engine',
-        'agent_harness.function_calling',
-        'agent_harness.streaming',
-        'agent_harness.guardrails',
-        'agent_harness.caching',
-        'agent_harness.monitoring',
+        'minxg.agents.react_agent',
+        'minxg.agents.rag_system',
+        'minxg.workflow.engine',
+        'minxg.function_calling',
+        'minxg.streaming',
+        'minxg.guardrails',
+        'minxg.caching',
+        'minxg.monitoring',
     ]
 
     for module_path in modules:

@@ -5,7 +5,7 @@ The unified type for rigid motions and scalings. One algebraic
 framework works in any dimension and any signature.
 """
 import math
-from agent_harness.ga import Multivector, Signature, Rotor, Reflector, Dilator
+from minxg.ga import Multivector, Signature, Rotor, Reflector, Dilator
 
 sig = Signature(3, 0)
 e1 = Multivector({1: 1.0}, sig)

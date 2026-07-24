@@ -1,4 +1,4 @@
-"""agent_harness.symbdiff.operators_symbdiff — Operator-field bindings for symbdiff.
+"""minxg.symbdiff.operators_symbdiff — Operator-field bindings for symbdiff.
 
 Exports Operator subclasses that bring symbolic differentiation
 capabilities into the driver engine's operator composition framework.
@@ -14,9 +14,9 @@ from __future__ import annotations
 import math
 from typing import Dict, List, Optional
 
-from agent_harness.driver.operator import Operator
-from agent_harness.driver.state import State
-from agent_harness.symbdiff import Jet, DiffPoly, VectorField, lie_bracket
+from minxg.driver.operator import Operator
+from minxg.driver.state import State
+from minxg.symbdiff import Jet, DiffPoly, VectorField, lie_bracket
 
 
 class JetOperator(Operator):
@@ -141,7 +141,7 @@ class IntFactorOperator(Operator):
 
     def apply(self, state: State) -> State:
         out = state.clone()
-        from agent_harness.symbdiff import find_integrating_factor
+        from minxg.symbdiff import find_integrating_factor
         x = out.payload.get("x", 0.0)
         y = out.payload.get("y", 0.0)
 

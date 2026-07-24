@@ -1,5 +1,5 @@
 """
-agent_harness/ga/multivector.py — Multivector: the unified type of Geometric Algebra
+minxg/ga/multivector.py — Multivector: the unified type of Geometric Algebra
 ====================================================================================
 
 A multivector M in Cl(p,q,r) is a sum of blades, each a scalar times a basis
@@ -123,7 +123,7 @@ class Multivector:
     Examples
     --------
     >>> # 3D Euclidean
-    >>> from agent_harness.ga import Multivector, Signature
+    >>> from minxg.ga import Multivector, Signature
     >>> sig = Signature(3, 0)
     >>> e1 = Multivector({1: 1.0}, sig)   # e_0
     >>> e2 = Multivector({2: 1.0}, sig)   # e_1

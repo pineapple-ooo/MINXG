@@ -82,8 +82,8 @@ class TestLanguageRegistry:
 class TestFallbackChain:
     def test_key_falls_back_to_english_default(self):
         """A key not in JSON but present in _DEFAULTS should return English text."""
-        val = i18n_mod.T("cmd_agent_harness")
-        assert "agent_harness" in val.lower() or "chat" in val.lower()
+        val = i18n_mod.T("cmd_minxg")
+        assert "minxg" in val.lower() or "chat" in val.lower()
 
     def test_key_falls_back_to_itself_when_no_default(self):
         """A key not in JSON and not in _DEFAULTS returns the key."""

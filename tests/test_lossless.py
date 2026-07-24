@@ -1,7 +1,7 @@
-"""Tests for agent_harness.lossless BIE compression."""
+"""Tests for minxg.lossless BIE compression."""
 import os
 import pytest
-from agent_harness.lossless import (
+from minxg.lossless import (
     sphere_embed, blade_between,
     BIEBlade, SkeletonEncoder,
     LosslessCodec, CompressionResult,

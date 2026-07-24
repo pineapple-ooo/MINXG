@@ -1,5 +1,5 @@
 """
-agent_harness/utils/network_safety.py — SSRF / URL-safety guard rails.
+minxg/utils/network_safety.py — SSRF / URL-safety guard rails.
 
 Blocks:
   - non-http(s) schemes (file://, gopher://, ftp://, ...)

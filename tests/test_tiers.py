@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from agent_harness.tiers import (
+from minxg.tiers import (
     AI_TIER, USER_TIER, CODE_TIER, TierRegistry, classify,
 )
 
@@ -73,13 +73,13 @@ def test_tier_registry_to_dict():
 
 def test_scan_real_registry_classifies_workers():
     """Walk the live WorkerRegistry and confirm every worker has a tier."""
-    from agent_harness import WorkerRegistry
+    from minxg import WorkerRegistry
 
     reg = WorkerRegistry()
     # Instantiate the four devtools workers from v0.18.0; they're the
     # only ones guaranteed importable in this environment without
     # pulling in every other pillar.
-    from agent_harness import (AndroidForgeWorker, QuadForgeWorker,
+    from minxg import (AndroidForgeWorker, QuadForgeWorker,
                        DevForgeWorker, DevShellWorker,
                        ReverseStudioWorker, AiToolsWorker, AdbWorker,
                        MathToolsWorker, GeometryWorker,
@@ -109,6 +109,6 @@ def test_scan_real_registry_classifies_workers():
 
 
 def test_classify_fallback_uses_tier_attribute():
-    from agent_harness import AndroidForgeWorker
+    from minxg import AndroidForgeWorker
     inst = AndroidForgeWorker()
     assert classify(inst) == CODE_TIER

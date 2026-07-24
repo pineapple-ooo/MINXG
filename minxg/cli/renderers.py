@@ -1,7 +1,7 @@
 """Renderers for banner, status bar, and tool cards used by ChatTui.
 
 These are extracted from ``multiligua_cli.tui_chat`` and adapted to the
-new ``agent_harness.cli`` package so both the legacy TUI and the new
+new ``minxg.cli`` package so both the legacy TUI and the new
 prompt_toolkit shell can share one visual language.
 """
 
@@ -21,7 +21,7 @@ try:
 except ImportError:
     HAS_RICH = False
 
-from agent_harness.cli.theme import get_style
+from minxg.cli.theme import get_style
 from multiligua_cli.themes import TOKENS
 
 # ── Shared palette ─────────────────────────────────────────────────────

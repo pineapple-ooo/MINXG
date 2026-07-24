@@ -1,4 +1,4 @@
-"""agent_harness.screen.capture.adb_backend — ADB screencap + layout bridge.
+"""minxg.screen.capture.adb_backend — ADB screencap + layout bridge.
 
 Provides:
   adb_screencap(dest_path) → Path        — raw PNG pull
@@ -46,7 +46,7 @@ def adb_screencap(dest_path: str, *, serial: str = "", rotate: int = 0) -> dict:
         out["error"] = "no adb device connected"
         return out
 
-    tmp = "/sdcard/_agent_harness_capture.png"
+    tmp = "/sdcard/_minxg_capture.png"
     cmd = ["adb", "-s", serial] if serial else ["adb"]
     # Pull to device storage first, then pull to host
     r1 = subprocess.run(cmd + ["shell", "screencap", "-p", tmp],
@@ -102,7 +102,7 @@ def adb_uiautomator_dump(*, serial: str = "", dest_xml: str = "") -> dict:
         out["error"] = "no adb device connected"
         return out
 
-    tmp = "/sdcard/_agent_harness_uia.xml"
+    tmp = "/sdcard/_minxg_uia.xml"
     cmd = ["adb", "-s", serial] if serial else ["adb"]
     r = subprocess.run(cmd + ["shell", "uiautomator", "dump", tmp],
                        capture_output=True, text=True, timeout=20)
@@ -110,7 +110,7 @@ def adb_uiautomator_dump(*, serial: str = "", dest_xml: str = "") -> dict:
         out["error"] = f"uiautomator dump failed: {r.stderr[:200]}"
         return out
 
-    dp = Path(dest_xml) if dest_xml else Path.home() / ".agent_harness" / "screen" / "layout" / "latest.xml"
+    dp = Path(dest_xml) if dest_xml else Path.home() / ".minxg" / "screen" / "layout" / "latest.xml"
     dp.parent.mkdir(parents=True, exist_ok=True)
     r2 = subprocess.run(cmd + ["pull", tmp, str(dp)],
                         capture_output=True, text=True, timeout=10)

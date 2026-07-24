@@ -4,7 +4,7 @@ This module provides scientific computing runtime supporting julia, datalog, pyt
 
 Typical usage::
 
-    from agent_harness.contracts.runtime import handle
+    from minxg.contracts.runtime import handle
     result = handle({"language": "julia", "mode": "eval", "code": "sqrt(4.0)"})
 
 All operations support async execution, security policies, and comprehensive error handling.

@@ -1,5 +1,5 @@
 """Internationalization tools — language detection, translation helpers."""
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 class I18nWorker(BaseWorker):
     facade_alias = "i18n_worker"

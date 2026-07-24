@@ -14,12 +14,12 @@ import pytest
 
 
 def test_import():
-    from agent_harness.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
+    from minxg.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
     assert MathPillarDispatcher is not None
 
 
 def test_dispatcher_indexes_major_pillars():
-    from agent_harness.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
+    from minxg.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
     w = MathPillarDispatcher()
     pillars = set(w._ops_index.keys())
     # Six core pillars + the math_pillar geometry path
@@ -29,7 +29,7 @@ def test_dispatcher_indexes_major_pillars():
 
 def test_dispatcher_calls_chaos_logistic_lyapunov():
     """chaos.logistic_lyapunov(3.7) → chaotic, >0"""
-    from agent_harness.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
+    from minxg.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
 
     async def go():
         w = MathPillarDispatcher()
@@ -46,7 +46,7 @@ def test_dispatcher_calls_chaos_logistic_lyapunov():
 
 def test_dispatcher_calls_chaos_logistic_lyapunov_periodic():
     """chaos.logistic_lyapunov(3.2) → periodic, <0"""
-    from agent_harness.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
+    from minxg.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
 
     async def go():
         w = MathPillarDispatcher()
@@ -60,7 +60,7 @@ def test_dispatcher_calls_chaos_logistic_lyapunov_periodic():
 
 def test_dispatcher_lists_pillar_operations():
     """math_pillar_list returns the indexed operator names."""
-    from agent_harness.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
+    from minxg.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
 
     async def go():
         w = MathPillarDispatcher()
@@ -73,7 +73,7 @@ def test_dispatcher_lists_pillar_operations():
 
 
 def test_dispatcher_lists_all_pillars():
-    from agent_harness.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
+    from minxg.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
 
     async def go():
         w = MathPillarDispatcher()
@@ -88,7 +88,7 @@ def test_dispatcher_lists_all_pillars():
 
 
 def test_dispatcher_handles_unknown_pillar():
-    from agent_harness.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
+    from minxg.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
 
     async def go():
         w = MathPillarDispatcher()
@@ -100,7 +100,7 @@ def test_dispatcher_handles_unknown_pillar():
 
 
 def test_dispatcher_handles_unknown_op():
-    from agent_harness.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
+    from minxg.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
 
     async def go():
         w = MathPillarDispatcher()
@@ -114,7 +114,7 @@ def test_dispatcher_handles_unknown_op():
 
 def test_dispatcher_statistics():
     """Statistics include the indexed pillar ops."""
-    from agent_harness.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
+    from minxg.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
 
     w = MathPillarDispatcher()
     stats = w.statistics()
@@ -126,7 +126,7 @@ def test_dispatcher_statistics():
 def test_dispatcher_resilient_to_bad_args():
     """When op receives a TypeError (e.g. missing required arg),
     dispatcher returns a structured error rather than crashing."""
-    from agent_harness.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
+    from minxg.five_pillars.devtools.math_pillar_dispatcher import MathPillarDispatcher
 
     async def go():
         w = MathPillarDispatcher()

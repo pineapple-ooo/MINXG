@@ -1,5 +1,5 @@
 """
-agent_harness/chaos/operators_chaos.py — Register Chaos & Dynamical Systems operators
+minxg/chaos/operators_chaos.py — Register Chaos & Dynamical Systems operators
 =====================================================================================
 
 50+ chaos theory operators. Operator IDs 8500-8999 are reserved.

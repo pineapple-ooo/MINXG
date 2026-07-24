@@ -8,7 +8,7 @@ import logging
 from collections import defaultdict
 from dataclasses import dataclass
 from typing import Dict, List, Any, Callable, Optional
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 logger = logging.getLogger(__name__)
 

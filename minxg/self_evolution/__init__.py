@@ -1,4 +1,4 @@
-"""agent_harness.self_evolution — Closed-loop self-improvement.
+"""minxg.self_evolution — Closed-loop self-improvement.
 
 The driver engine is the *brain*, and `self_evolution` is the *immune
 system*. Each cycle:
@@ -19,7 +19,7 @@ This is genuinely novel in three ways:
   * Twin isolation ensures the live engine never sees a candidate that
     hasn't been validated end-to-end.
 
-Editing `agent_harness.driver` or `agent_harness.contracts` does NOT affect this module.
+Editing `minxg.driver` or `minxg.contracts` does NOT affect this module.
 Twin only depends on `State`/`Operator`/`EnginePhase` symbols; it
 doesn't reach into the engine's internals.
 """

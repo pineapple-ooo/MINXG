@@ -1,12 +1,12 @@
 """
-multiligua_cli/doctor.py — `agent_harness doctor` self-check.
+multiligua_cli/doctor.py — `minxg doctor` self-check.
 
 End-to-end diagnostic that does NOT replace building steps — it surfaces
 where the install is OK, where it is fragile, and where it is broken.
 
 Reports on:
   - Platform + probe-able binaries (python, pip, git, curl, gcc, adb)
-  - agent_harness import + version + worker count + native-lib status
+  - minxg import + version + worker count + native-lib status
   - Config file presence and key fields
   - Extension discovery and the opt-in state for built-ins
 
@@ -96,7 +96,7 @@ def _check_binaries() -> Section:
         ("pip", "Editable install"),
         ("gcc", "Native C build (optional)"),
         ("clang", "Native C build (optional)"),
-        ("adb", "agent_harness-adb extension (opt-in)"),
+        ("adb", "minxg-adb extension (opt-in)"),
     ]
     for name, desc in wanted:
         path = shutil.which(name)
@@ -107,36 +107,36 @@ def _check_binaries() -> Section:
     return rows
 
 
-def _check_agent_harness() -> Section:
-    """Import agent_harness and probe its surface."""
+def _check_minxg() -> Section:
+    """Import minxg and probe its surface."""
     rows: Section = []
     try:
-        import agent_harness
-        rows.append(("agent_harness import", "OK", str(agent_harness.__file__)))
+        import minxg
+        rows.append(("minxg import", "OK", str(minxg.__file__)))
     except Exception as e:
-        rows.append(("agent_harness import", "FAIL", repr(e)))
+        rows.append(("minxg import", "FAIL", repr(e)))
         return rows
 
-    rows.append(("agent_harness.VERSION", "OK", str(agent_harness.VERSION)))
+    rows.append(("minxg.VERSION", "OK", str(minxg.VERSION)))
 
     try:
-        workers = len(agent_harness.__all__)
+        workers = len(minxg.__all__)
         rows.append(("workers (__all__)", "OK", f"{workers} workers"))
     except Exception as e:
         rows.append(("workers (__all__)", "FAIL", repr(e)))
 
     try:
         rows.append(("operators (math)", "OK",
-                     f"{agent_harness.TOTAL_MATHEMATICAL_OPERATORS} "
-                     f"(ga={agent_harness.GA_OPERATORS} cat={agent_harness.CAT_OPERATORS} "
-                     f"ig={agent_harness.IG_OPERATORS} topo={agent_harness.TOPO_OPERATORS} "
-                     f"chaos={agent_harness.CHAOS_OPERATORS} "
-                     f"fiber={agent_harness.FIBER_OPERATORS})"))
+                     f"{minxg.TOTAL_MATHEMATICAL_OPERATORS} "
+                     f"(ga={minxg.GA_OPERATORS} cat={minxg.CAT_OPERATORS} "
+                     f"ig={minxg.IG_OPERATORS} topo={minxg.TOPO_OPERATORS} "
+                     f"chaos={minxg.CHAOS_OPERATORS} "
+                     f"fiber={minxg.FIBER_OPERATORS})"))
     except Exception as e:
         rows.append(("operators (math)", "FAIL", repr(e)))
 
     try:
-        total_ops = agent_harness.operators.OPERATOR_REGISTRY.total_operators
+        total_ops = minxg.operators.OPERATOR_REGISTRY.total_operators
         rows.append(("operators (total)", "OK",
                      f"{total_ops} across all categories"))
     except Exception as e:
@@ -144,7 +144,7 @@ def _check_agent_harness() -> Section:
 
     # Lazy import on purpose: cryptography can crash cold-start on Termux.
     try:
-        from agent_harness.five_pillars.scalar import core_native
+        from minxg.five_pillars.scalar import core_native
         # Force the lazy loader to actually run so we know it works.
         core_native._ensure_loaded()
         loaded_lib = core_native._lib
@@ -180,7 +180,7 @@ def _check_config() -> Section:
                  str(path)))
     if not path.exists():
         rows.append(("config", "WARN",
-                     "run `agent_harness setup` to create one"))
+                     "run `minxg setup` to create one"))
         return rows
 
     try:
@@ -252,7 +252,7 @@ def _check_platform_cap() -> Section:
 
 
 def _check_polyglot_runtimes() -> Section:
-    """Probe the six non-Python runtimes ``agent_harness.contracts.runtime`` ships.
+    """Probe the six non-Python runtimes ``minxg.contracts.runtime`` ships.
 
     Reports each language as ``OK`` / ``MISSING`` / ``WARN`` followed
     by a short note. Reason for a dedicated section: the adapter layer
@@ -262,13 +262,13 @@ def _check_polyglot_runtimes() -> Section:
     is disabled — so this section bridges that gap.
 
     The probe is read-only; install recipes live behind
-    ``agent_harness runtime-plan`` / ``agent_harness runtime-install`` (both
+    ``minxg runtime-plan`` / ``minxg runtime-install`` (both
     [EXPERIMENTAL] in 0.14) so the user is never surprised by an
     unattended ``pkg install``.
     """
     rows: Section = []
     try:
-        from agent_harness.contracts.runtime import (
+        from minxg.contracts.runtime import (
             status_snapshot, platform_id,
         )
     except Exception as exc:
@@ -298,7 +298,7 @@ def _check_polyglot_runtimes() -> Section:
         rows.append((
             "runtimes missing",
             "INFO",
-            " ".join(missing) + " — see `agent_harness runtime-plan`",
+            " ".join(missing) + " — see `minxg runtime-plan`",
         ))
     return rows
 
@@ -314,7 +314,7 @@ def _render_section(title: str, rows: Section) -> str:
 
 
 def run_doctor(args) -> int:
-    """`agent_harness doctor` — full self-check, return process exit code."""
+    """`minxg doctor` — full self-check, return process exit code."""
     if HAS_RICH and Panel is not None:
         console.print(Panel.fit(
             "AgentHarness doctor — self-check",
@@ -327,7 +327,7 @@ def run_doctor(args) -> int:
     sections = [
         ("Platform", _check_platform()),
         ("Binaries", _check_binaries()),
-        ("agent_harness package", _check_agent_harness()),
+        ("minxg package", _check_minxg()),
         ("Config", _check_config()),
         ("Tool cap", _check_platform_cap()),
         ("Polyglot runtimes", _check_polyglot_runtimes()),

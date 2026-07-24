@@ -1,18 +1,18 @@
 """tests/test_version_lock.py — cross-file version invariants.
 
-The AgentHarness version is a *single source of truth* in ``agent_harness/_version.py``.
+The AgentHarness version is a *single source of truth* in ``minxg/_version.py``.
 From there it propagates to:
 
 * ``pyproject.toml``  — consumed via ``[project] dynamic = ["version"]``
                         and ``[tool.setuptools.dynamic] version.attr``.
-* ``agent_harness/__init__.py``  — re-exported as ``__version__``.
+* ``minxg/__init__.py``  — re-exported as ``__version__``.
 * Doc surfaces (README banner / pip-install line, CHANGELOG top entry,
   DEVELOPER publishing checklist) — those MUST be kept in sync manually,
   this test just catches drift.
 
 Before v0.13.2 each consumer held its own literal copy of the version and
 this guard fired whenever any one of them drifted. Now that the code
-locations pull from ``agent_harness._version``, the test was rewritten in two
+locations pull from ``minxg._version``, the test was rewritten in two
 pieces:
 
 * ``test_runtime_singularity`` — code paths all read the same value.
@@ -30,9 +30,9 @@ import pytest
 
 
 REPO = Path(__file__).resolve().parent.parent
-VERSION_PY = REPO / "agent_harness" / "_version.py"
+VERSION_PY = REPO / "minxg" / "_version.py"
 PYPROJECT = REPO / "pyproject.toml"
-INIT_PY = REPO / "agent_harness" / "__init__.py"
+INIT_PY = REPO / "minxg" / "__init__.py"
 README = REPO / "README.md"
 CHANGELOG = REPO / "CHANGELOG.md"
 DEVELOPER = REPO / "DEVELOPER.md"
@@ -43,7 +43,7 @@ def _read(path: Path) -> str:
 
 
 def _ssot() -> str:
-    """Read the single source of truth from ``agent_harness/_version.py``.
+    """Read the single source of truth from ``minxg/_version.py``.
 
     Falls back to importing it (catches the case where someone renamed
     the file or moved the constant location).
@@ -57,7 +57,7 @@ def _ssot() -> str:
 def _ssot_imported() -> str:
     sys.path.insert(0, str(REPO))
     try:
-        import agent_harness._version as v   # noqa: PLC0415 — intentional late import
+        import minxg._version as v   # noqa: PLC0415 — intentional late import
         return v.VERSION
     finally:
         sys.path.pop(0)
@@ -66,7 +66,7 @@ def _ssot_imported() -> str:
 def test_ssot_import_matches_literal():
     """The literal ``VERSION = "0.17.1"`` and the runtime import must agree.
 
-    Otherwise ``pyproject.toml`` (which reads ``agent_harness._version.VERSION``
+    Otherwise ``pyproject.toml`` (which reads ``minxg._version.VERSION``
     via setuptools dynamic) would build a wheel with the wrong number.
     """
     assert _ssot() == _ssot_imported(), (
@@ -89,32 +89,32 @@ def test_pyproject_consumes_ssot():
     )
     assert m, (
         "pyproject.toml missing [tool.setuptools.dynamic] version.attr "
-        "that points at agent_harness._version.VERSION"
+        "that points at minxg._version.VERSION"
     )
-    assert m.group(1) == "agent_harness._version.VERSION", (
-        f"pyproject version.attr must point at agent_harness._version.VERSION, "
+    assert m.group(1) == "minxg._version.VERSION", (
+        f"pyproject version.attr must point at minxg._version.VERSION, "
         f"got {m.group(1)!r}"
     )
 
 
 def test_init_py_re_exports_ssot():
-    """``agent_harness/__init__.py`` must import ``__version__`` from ``_version``."""
+    """``minxg/__init__.py`` must import ``__version__`` from ``_version``."""
     text = _read(INIT_PY)
     assert "from ._version import" in text, (
-        "agent_harness/__init__.py must `from ._version import VERSION` so "
-        "`import agent_harness; agent_harness.__version__` returns the SSoT"
+        "minxg/__init__.py must `from ._version import VERSION` so "
+        "`import minxg; minxg.__version__` returns the SSoT"
     )
     # Belt + braces: the literal must not have its own stale string.
     assert not re.search(r'^VERSION\s*=\s*"', text, re.M), (
-        "agent_harness/__init__.py still declares its own `VERSION = \"…\"` — "
-        "remove it, the SSoT lives in agent_harness/_version.py"
+        "minxg/__init__.py still declares its own `VERSION = \"…\"` — "
+        "remove it, the SSoT lives in minxg/_version.py"
     )
 
 
 def _readme_drop_line() -> str:
     for line in _read(README).splitlines():
         m = re.match(
-            r"^Successfully installed agent_harness-beta-([0-9]+\.[0-9]+\.[0-9]+)$",
+            r"^Successfully installed minxg-beta-([0-9]+\.[0-9]+\.[0-9]+)$",
             line.strip(),
         )
         if m:
@@ -148,7 +148,7 @@ def _developer_publish_version() -> str:
     ],
 )
 def test_docs_echo_singular_value(label, fn):
-    """Doc surfaces must echo ``agent_harness/_version.py`` — release surfaces drift otherwise."""
+    """Doc surfaces must echo ``minxg/_version.py`` — release surfaces drift otherwise."""
     expected = _ssot()
     actual = fn()
     assert actual, f"{label} version not parseable"

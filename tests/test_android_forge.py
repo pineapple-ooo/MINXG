@@ -10,12 +10,12 @@ from pathlib import Path
 
 import pytest
 
-# Add repo root to path so we can import agent_harness
+# Add repo root to path so we can import minxg
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from agent_harness.five_pillars.devtools.android_forge import (
+from minxg.five_pillars.devtools.android_forge import (
     AndroidForgeWorker, ApkForgeWorker, _WIDGETS,
 )
-from agent_harness.base import BaseWorker
+from minxg.base import BaseWorker
 
 
 def test_worker_subclass_baseworker():
@@ -40,7 +40,7 @@ def test_worker_has_19_tools():
 
 
 def test_worker_has_tier():
-    from agent_harness.tiers import CODE_TIER
+    from minxg.tiers import CODE_TIER
     w = AndroidForgeWorker()
     assert w.tier == CODE_TIER
 
@@ -75,7 +75,7 @@ async def test_apk_plan_valid():
     w = AndroidForgeWorker()
     res = await w.call("apk_plan", {
         "manifest": {
-            "package": "ai.agent_harness.demo",
+            "package": "ai.minxg.demo",
             "title": "Test",
             "version": "0.1.0",
             "presets": ["kivy"],
@@ -84,7 +84,7 @@ async def test_apk_plan_valid():
     })
     assert res["status"] in ("ok", "checks_failed")
     assert "blueprint" in res
-    assert res["blueprint"]["package"] == "ai.agent_harness.demo"
+    assert res["blueprint"]["package"] == "ai.minxg.demo"
 
 
 @pytest.mark.asyncio
@@ -105,7 +105,7 @@ async def test_apk_scaffold_and_spec(tmp_path):
     w = AndroidForgeWorker()
     plan = await w.call("apk_plan", {
         "manifest": {
-            "package": "ai.agent_harness.unit",
+            "package": "ai.minxg.unit",
             "title": "Unit",
             "version": "0.1.0",
             "presets": ["kivy"],
@@ -116,13 +116,13 @@ async def test_apk_scaffold_and_spec(tmp_path):
     scaffold = await w.call("apk_scaffold", {"root_path": root, "blueprint": bp})
     assert scaffold["status"] == "ok"
     assert Path(root, "main.py").exists()
-    assert Path(root, "agent_harness-manifest.json").exists()
+    assert Path(root, "minxg-manifest.json").exists()
 
     spec = await w.call("apk_spec", {"root_path": root})
     assert spec["status"] == "ok"
     spec_content = Path(root, "buildozer.spec").read_text()
     assert "title = Unit" in spec_content
-    assert "package.name = ai.agent_harness.unit" in spec_content
+    assert "package.name = ai.minxg.unit" in spec_content
 
 
 @pytest.mark.asyncio
@@ -220,14 +220,14 @@ async def test_apk_release_aab_no_buildozer():
 
 @pytest.mark.asyncio
 async def test_concurrent_runner_structure():
-    from agent_harness.five_pillars.transform.concurrent_runner import ConcurrentRunner, _REGISTRY
+    from minxg.five_pillars.transform.concurrent_runner import ConcurrentRunner, _REGISTRY
     w = ConcurrentRunner()
     assert isinstance(w, BaseWorker)
     assert len(_REGISTRY) >= 3
 
 
 def test_png_emitter():
-    from agent_harness.five_pillars.devtools.android_forge import (
+    from minxg.five_pillars.devtools.android_forge import (
         _emit_png, _color_solid,
     )
     png = _emit_png(32, 32, _color_solid(32, 32, (100, 100, 200)))

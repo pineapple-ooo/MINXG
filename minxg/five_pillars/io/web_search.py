@@ -6,7 +6,7 @@ Modes:
   - "api": Uses a custom AI search API endpoint
 
 Usage:
-    from agent_harness.five_pillars.io.web_search import search
+    from minxg.five_pillars.io.web_search import search
 
     # Using system browser (user sees results)
     result = search("python tutorial", mode="user")
@@ -27,7 +27,7 @@ import urllib.parse
 import webbrowser
 from typing import Optional, Dict, Any
 
-from agent_harness.utils.network_safety import validate_url
+from minxg.utils.network_safety import validate_url
 
 
 def _safe_urlopen(url, **kwargs):

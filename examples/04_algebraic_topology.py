@@ -5,7 +5,7 @@ The shape of data: connected components, loops, voids. Persistent
 homology tracks how these features appear and disappear across scales.
 """
 import random
-from agent_harness.topo import (
+from minxg.topo import (
     Simplex, SimplicialComplex,
     VietorisRips, Filtration,
     persistent_homology,

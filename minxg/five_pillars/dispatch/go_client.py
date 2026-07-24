@@ -17,7 +17,7 @@ from typing import Optional, Callable, Dict, Any
 from urllib.request import Request, urlopen
 from urllib.error import URLError
 
-from agent_harness.utils.network_safety import validate_url
+from minxg.utils.network_safety import validate_url
 
 
 def _safe_urlopen(url, **kwargs):
@@ -173,7 +173,7 @@ class GoGatewayClient:
         with self._sock_lock:
             if self._sock is not None:
                 return
-            path = self.unix_socket or "/tmp/agent_harness-gateway.sock"
+            path = self.unix_socket or "/tmp/minxg-gateway.sock"
             sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             sock.connect(path)
             sock.settimeout(1.0)

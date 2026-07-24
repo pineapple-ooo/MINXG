@@ -1,5 +1,5 @@
 """
-multiligua_cli/tui_chat.py — AgentHarness TUI chat (the default ``agent_harness`` command).
+multiligua_cli/tui_chat.py — AgentHarness TUI chat (the default ``minxg`` command).
 
 A polished **blue-premium** chat surface with:
 
@@ -149,7 +149,7 @@ _SLASH_COMMANDS: Dict[str, str] = {
 
 def _version() -> str:
     try:
-        from agent_harness import VERSION as v
+        from minxg import VERSION as v
         return v
     except Exception:
         return "0.0.0+unknown"
@@ -1350,13 +1350,13 @@ def tui_chat(args) -> int:
     history: List[str] = []
     chat_state = {"config": config}
     # ── Persistent session: same ID across launches = same memory file ──
-    _session_file = Path.home() / ".agent_harness" / "session_id"
+    _session_file = Path.home() / ".minxg" / "session_id"
     _session_file.parent.mkdir(parents=True, exist_ok=True)
     if _session_file.exists():
         session_id: Optional[str] = _session_file.read_text(encoding="utf-8").strip() or None
     else:
         import uuid
-        session_id = f"agent_harness_{uuid.uuid4().hex[:12]}"
+        session_id = f"minxg_{uuid.uuid4().hex[:12]}"
         _session_file.write_text(session_id, encoding="utf-8")
 
     while True:
@@ -1572,8 +1572,8 @@ def tui_chat(args) -> int:
             run_config_show(args)
             continue
         if cmd == "/log":
-            print_info("Log file lives at ~/.agent_harness/logs/ ; "
-                       "use `agent_harness doctor` to inspect.")
+            print_info("Log file lives at ~/.minxg/logs/ ; "
+                       "use `minxg doctor` to inspect.")
             continue
         if cmd == "/web":
             try:

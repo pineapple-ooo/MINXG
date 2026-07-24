@@ -7,7 +7,7 @@ import asyncio
 import uuid
 from collections import defaultdict
 from typing import Dict, List, Optional, Any, Callable
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 class Event:

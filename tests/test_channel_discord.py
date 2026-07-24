@@ -113,7 +113,7 @@ class TestConnectOnce:
         assert identify["d"]["intents"] == (1 | (1 << 9) | (1 << 15))
 
     def test_message_create_lands_in_inbox(self):
-        events = [_dispatch("READY", {"user": {"id": "self1", "username": "agent_harness-bot"}}, seq=1),
+        events = [_dispatch("READY", {"user": {"id": "self1", "username": "minxg-bot"}}, seq=1),
                   _dispatch("MESSAGE_CREATE", {
                       "content": "hello bot", "channel_id": "555",
                       "author": {"id": "u1", "username": "carol", "bot": False},
@@ -152,10 +152,10 @@ class TestConnectOnce:
 
     def test_own_messages_after_ready_are_ignored(self):
         events = [
-            _dispatch("READY", {"user": {"id": "self1", "username": "agent_harness-bot"}}, seq=1),
+            _dispatch("READY", {"user": {"id": "self1", "username": "minxg-bot"}}, seq=1),
             _dispatch("MESSAGE_CREATE", {
                 "content": "echo", "channel_id": "555",
-                "author": {"id": "self1", "username": "agent_harness-bot", "bot": False},
+                "author": {"id": "self1", "username": "minxg-bot", "bot": False},
             }, seq=2),
         ]
         ws = _FakeWS(HELLO, events=events)

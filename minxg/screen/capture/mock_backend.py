@@ -1,4 +1,4 @@
-"""agent_harness.screen.capture.mock_backend — synthetic screen for testing.
+"""minxg.screen.capture.mock_backend — synthetic screen for testing.
 
 Generates a mock screenshot so the entire SPA pipeline can be exercised
 without any real device hardware. The mock renders a simple Android-like

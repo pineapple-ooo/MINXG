@@ -22,10 +22,10 @@ from typing import Any, Dict, List, Optional, Tuple
 
 
 def _find_project_root(start: Path = Path.cwd()) -> Path:
-    """Walk up until we find pyproject.toml or the agent_harness package."""
+    """Walk up until we find pyproject.toml or the minxg package."""
     here = start
     while True:
-        if (here / "pyproject.toml").exists() or (here / "agent_harness").is_dir():
+        if (here / "pyproject.toml").exists() or (here / "minxg").is_dir():
             return here
         parent = here.parent
         if parent == here:
@@ -62,11 +62,11 @@ def _check_workers() -> Tuple[str, bool, List[str]]:
     notes: List[str] = []
     ok = True
     try:
-        from agent_harness.base import _discover_workers  # type: ignore[attr-defined]
+        from minxg.base import _discover_workers  # type: ignore[attr-defined]
         workers = _discover_workers()
     except Exception as exc:
         try:
-            from agent_harness.server import _discover_workers  # type: ignore[attr-defined]
+            from minxg.server import _discover_workers  # type: ignore[attr-defined]
             workers = _discover_workers()
         except Exception as exc2:
             return "workers", False, [f"worker discovery failed: {exc2}"]
@@ -81,7 +81,7 @@ def _check_url_safety() -> Tuple[str, bool, List[str]]:
     notes: List[str] = []
     ok = True
     try:
-        from agent_harness.cli.url_safety import is_safe_url, normalize_url_for_request
+        from minxg.cli.url_safety import is_safe_url, normalize_url_for_request
         assert callable(is_safe_url)
         assert callable(normalize_url_for_request)
         notes.append("url_safety: importable ✔")
@@ -95,7 +95,7 @@ def _check_approval() -> Tuple[str, bool, List[str]]:
     notes: List[str] = []
     ok = True
     try:
-        from agent_harness.cli.approval import list_pending, enqueue, discard_pending
+        from minxg.cli.approval import list_pending, enqueue, discard_pending
         assert callable(list_pending)
         assert callable(enqueue)
         assert callable(discard_pending)
@@ -110,7 +110,7 @@ def _check_tui() -> Tuple[str, bool, List[str]]:
     notes: List[str] = []
     ok = True
     try:
-        from agent_harness.cli.app import HAS_PROMPT_TOOLKIT
+        from minxg.cli.app import HAS_PROMPT_TOOLKIT
         if HAS_PROMPT_TOOLKIT:
             notes.append("prompt_toolkit: available ✔")
         else:

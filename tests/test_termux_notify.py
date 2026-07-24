@@ -48,8 +48,8 @@ def test_send_does_not_raise_under_bad_env(monkeypatch):
 
 
 def test_termux_screen_helpers_use_resolved_paths(monkeypatch):
-    from agent_harness.screen.capture import termux_backend, camera_backend
-    from agent_harness.screen.action import input_engine
+    from minxg.screen.capture import termux_backend, camera_backend
+    from minxg.screen.action import input_engine
 
     fake_bin = "/custom/bin/termux-api"
     monkeypatch.setattr(termux_backend, "_resolve_termux_api_bin", lambda: fake_bin)
@@ -81,7 +81,7 @@ def test_termux_screen_helpers_use_resolved_paths(monkeypatch):
 
 
 def test_camera_available_requires_success_exit(monkeypatch):
-    from agent_harness.screen.capture import camera_backend
+    from minxg.screen.capture import camera_backend
 
     monkeypatch.setattr(camera_backend, "_resolve_camera_bin", lambda: "/custom/bin/termux-camera-photo")
 

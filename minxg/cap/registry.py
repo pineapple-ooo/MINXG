@@ -14,8 +14,8 @@ def _resolve_root() -> Path:
     """Locate the repository's Python source root."""
     here = Path(__file__).resolve()
     candidate = here.parent.parent
-    if (candidate / "agent_harness").is_dir() or (candidate / "multiling").is_dir():
-        return candidate / "agent_harness"
+    if (candidate / "minxg").is_dir() or (candidate / "multiling").is_dir():
+        return candidate / "minxg"
     return candidate
 
 

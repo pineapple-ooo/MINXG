@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Optional
 
 
-LOG_DIR = Path.home() / ".agent_harness" / "logs"
+LOG_DIR = Path.home() / ".minxg" / "logs"
 DEFAULT_ENABLED = True
 
 

@@ -35,7 +35,7 @@ from __future__ import annotations
 import math
 from typing import Any, Dict, List, Sequence, Tuple
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 # Type alias -- a 2D/3D point is just a sequence of floats.
 Point = Sequence[float]

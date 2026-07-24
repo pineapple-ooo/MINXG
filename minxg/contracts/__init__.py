@@ -1,4 +1,4 @@
-"""agent_harness.contracts — Operator Cell Architecture.
+"""minxg.contracts — Operator Cell Architecture.
 
 A pluggable contract framework. Every worker/ob●server in AgentHarness is a Cell that
 implements a small interface and is discovered through a central Registry.

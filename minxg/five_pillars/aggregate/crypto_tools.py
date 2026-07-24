@@ -13,7 +13,7 @@ import secrets
 import string
 import binascii
 from typing import Dict
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 try:

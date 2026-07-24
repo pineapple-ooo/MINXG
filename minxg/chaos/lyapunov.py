@@ -1,5 +1,5 @@
 """
-agent_harness/chaos/lyapunov.py — Lyapunov Exponents
+minxg/chaos/lyapunov.py — Lyapunov Exponents
 ====================================================
 
 The LYAPUNOV EXPONENT λ measures the rate at which nearby trajectories

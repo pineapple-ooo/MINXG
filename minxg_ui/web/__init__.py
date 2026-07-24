@@ -1,4 +1,4 @@
-"""agent_harness_ui.web — rewritten unified web UI.
+"""minxg_ui.web — rewritten unified web UI.
 
 Single FastAPI app with embedded SPA. Routes:
   * ``/`` — main app (chat + dashboard + agents + settings)
@@ -30,7 +30,7 @@ except ImportError:  # pragma: no cover
     CORSMiddleware = None  # type: ignore[misc,assignment]
 
 try:
-    from agent_harness.context.compression import (
+    from minxg.context.compression import (
         AutoCompressor,
         CompressedContext,
         compress,
@@ -39,10 +39,10 @@ try:
         estimate_tokens,
         usage_ratio,
     )
-    from agent_harness.context.memory import DayMemory
-    from agent_harness.context.model_probe import ModelContextProbe
-    from agent_harness.context.token_tracker import TokenBudgetTracker
-    from agent_harness.context.dev_utils import SavepointManager, diff_messages, DevToolbox
+    from minxg.context.memory import DayMemory
+    from minxg.context.model_probe import ModelContextProbe
+    from minxg.context.token_tracker import TokenBudgetTracker
+    from minxg.context.dev_utils import SavepointManager, diff_messages, DevToolbox
     _CONTEXT_AVAILABLE = True
 except ImportError:  # pragma: no cover
     _CONTEXT_AVAILABLE = False
@@ -109,7 +109,7 @@ else:
         _chat_history.append({"role": "assistant", "content": reply})
 
         if _tracker:
-            from agent_harness.context.compression import estimate_tokens
+            from minxg.context.compression import estimate_tokens
             inp = estimate_tokens([{"role": "user", "content": message}])
             out = estimate_tokens([{"role": "assistant", "content": reply}])
             _tracker.record_turn(inp, out)
@@ -238,11 +238,11 @@ else:
     @app.get("/api/system/version")
     async def system_version() -> JSONResponse:
         try:
-            from agent_harness import __version__
+            from minxg import __version__
             version = __version__
         except Exception:
             version = "0.19.0"
-        return _json({"version": version, "service": "agent_harness_ui.web"})
+        return _json({"version": version, "service": "minxg_ui.web"})
 
     # ------------------------------------------------------------------ #
     # SPA
@@ -589,7 +589,7 @@ else:
     async def health() -> JSONResponse:
         return _json({
             "status": "ok",
-            "service": "agent_harness_ui.web",
+            "service": "minxg_ui.web",
             "context": _CONTEXT_AVAILABLE,
         })
 

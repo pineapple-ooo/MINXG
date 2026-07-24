@@ -195,7 +195,7 @@ class TieredCache:
         self.l1: Dict[str, CacheEntry] = {}  # In-memory
         self.l1_max = 1000
 
-        self.cache_dir = Path(cache_dir) if cache_dir else Path.home() / ".agent_harness" / "cache"
+        self.cache_dir = Path(cache_dir) if cache_dir else Path.home() / ".minxg" / "cache"
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         self.l2_index: Dict[str, str] = self._load_l2_index()
 

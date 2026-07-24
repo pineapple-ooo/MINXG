@@ -1,5 +1,5 @@
 """
-agent_harness/topo/persistence.py — Persistence Diagrams and Images
+minxg/topo/persistence.py — Persistence Diagrams and Images
 ===================================================================
 
 A PERSISTENCE DIAGRAM is a multiset of points in the plane, where each

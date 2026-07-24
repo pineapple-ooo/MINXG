@@ -81,7 +81,7 @@ class MemoryEngine:
     def __init__(self, storage_path: Optional[str] = None):
         self.memories: Dict[str, Memory] = {}
         self.storage_path = Path(storage_path) if storage_path else (
-            Path.home() / ".agent_harness" / "memory" / "memories.json"
+            Path.home() / ".minxg" / "memory" / "memories.json"
         )
         self.storage_path.parent.mkdir(parents=True, exist_ok=True)
         self._load()

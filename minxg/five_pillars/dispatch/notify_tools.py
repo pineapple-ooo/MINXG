@@ -1,5 +1,5 @@
 """Notification tools — send notifications across platforms."""
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 class NotifyWorker(BaseWorker):
     facade_alias = "notify_worker"

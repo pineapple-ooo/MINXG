@@ -1,4 +1,4 @@
-"""agent_harness.cap — Corpus-based Capability Registry.
+"""minxg.cap — Corpus-based Capability Registry.
 
 Every AgentHarness module declares its capability surface in a docstring
 header. `cap_manifest` reads those declarations across the live
@@ -13,8 +13,8 @@ tree and provides:
 Convention: put two markers at the top of each file (typically the
 module docstring):
 
-    marker 1: `agent_harness.cap.provides: <cap>[, <cap>, ...]`
-    marker 2: `agent_harness.cap.requires: <cap>[, <cap>, ...]`
+    marker 1: `minxg.cap.provides: <cap>[, <cap>, ...]`
+    marker 2: `minxg.cap.requires: <cap>[, <cap>, ...]`
 
 Omit `requires` for leaves. Both markers may be combined into a
 single opening line: the parser treats each `cap.` tag separately.
@@ -22,7 +22,7 @@ single opening line: the parser treats each `cap.` tag separately.
 This is the architectural answer to "I changed one module and three
 others broke without my noticing."  The registry is human-readable,
 built at import time, queryable from a one-liner terminal command
-(`python -m agent_harness.cap <query>`).
+(`python -m minxg.cap <query>`).
 
 NOT a plugin system.  NOT a name service.  Just an inventory that
 survives rewrites because it lives in comment-bearing headers.

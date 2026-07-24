@@ -78,7 +78,7 @@ L0_TURNS = _env_int("AgentHarness_L0_TURNS", 32)
 L1_MAX_ITEMS = _env_int("AgentHarness_L1_MAX_ITEMS", 10_000)
 L2_DB_PATH = os.environ.get(
     "AgentHarness_L2_DB",
-    str(Path.home() / ".agent_harness" / "memory.db"),
+    str(Path.home() / ".minxg" / "memory.db"),
 )
 DEFAULT_VECTOR_DIM = _env_int("AgentHarness_VECTOR_DIM", 256)
 
@@ -166,7 +166,7 @@ class L0HotStore:
             capacity = 1
         self._cap = capacity
         self._items: Deque[MemoryItem] = collections.deque(maxlen=capacity)
-        self._log_path = Path(log_path or str(Path.home() / ".agent_harness" / "l0.jsonl"))
+        self._log_path = Path(log_path or str(Path.home() / ".minxg" / "l0.jsonl"))
         try:
             self._log_path.parent.mkdir(parents=True, exist_ok=True)
         except Exception:

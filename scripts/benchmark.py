@@ -11,7 +11,7 @@ from pathlib import Path
 def benchmark_import():
     """Benchmark module import time."""
     start = time.time()
-    import agent_harness
+    import minxg
     elapsed = (time.time() - start) * 1000
     return elapsed
 

@@ -1,6 +1,6 @@
-"""Tests for agent_harness.driver (Temporal Operator-Field driver engine)."""
+"""Tests for minxg.driver (Temporal Operator-Field driver engine)."""
 import pytest
-from agent_harness.driver import (
+from minxg.driver import (
     State, Operator, Identity, DriverEngine,
     arithmetic_field, parametric_field, smoothing_field, clamp_field,
     EnginePhase,

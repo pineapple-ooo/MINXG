@@ -15,9 +15,9 @@ from typing import Dict, Any
 
 __version__ = "0.0.0+unknown"
 try:
-    from agent_harness import VERSION as __version__  # noqa: F401  (canonical source)
+    from minxg import VERSION as __version__  # noqa: F401  (canonical source)
 except Exception:
-    # Source-tree mode without an installed agent_harness: fall back to the
+    # Source-tree mode without an installed minxg: fall back to the
     # bundled default so import-time consumers don't blow up.
     pass
 
@@ -41,7 +41,7 @@ logging.basicConfig(
     format="%(asctime)s | %(levelname)-7s | %(message)s",
     handlers=[logging.StreamHandler(sys.stderr)],
 )
-logger = logging.getLogger("agent_harness")
+logger = logging.getLogger("minxg")
 
 
 try:

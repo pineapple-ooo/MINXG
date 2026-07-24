@@ -15,7 +15,7 @@ import socket
 import resource
 from pathlib import Path
 from typing import Dict, List, Optional
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 class SystemWorker(BaseWorker):

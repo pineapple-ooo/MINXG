@@ -1,4 +1,4 @@
-"""agent_harness/five_pillars/aggregate/text_kit.py - unified text facade.
+"""minxg/five_pillars/aggregate/text_kit.py - unified text facade.
 
 Why this file exists
 --------------------
@@ -30,14 +30,14 @@ import difflib
 
 from typing import Any, Callable, Dict, List
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 # ── Native fast-path adapter (lazy) ────────────────────────────────────────────
 import sys as _sys
 
 _native: Dict[str, Any] = {}
-_mod = _sys.modules.get("agent_harness.five_pillars.scalar.core_native")
+_mod = _sys.modules.get("minxg.five_pillars.scalar.core_native")
 if _mod is not None:
     for k in ("slugify", "truncate", "extract_urls", "extract_emails",
               "extract_hashtags", "normalize_whitespace",

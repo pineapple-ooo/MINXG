@@ -8,7 +8,7 @@ import uuid
 from collections import defaultdict
 from dataclasses import dataclass, field, asdict
 from typing import Dict, List, Any
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 @dataclass

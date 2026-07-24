@@ -1,5 +1,5 @@
 """
-agent_harness.contracts.agent.sandbox — Agent Training Sandbox & Recursive Improvement
+minxg.contracts.agent.sandbox — Agent Training Sandbox & Recursive Improvement
 ================================================================================
 
 Bold design: agents learn by doing in an isolated sandbox, then promote
@@ -65,7 +65,7 @@ __all__ = [
 @dataclass
 class SandboxedWorkspace:
     """Ephemeral isolated workspace for agent experimentation."""
-    root: Path = field(default_factory=lambda: Path(tempfile.gettempdir()) / "agent_harness_sandbox")
+    root: Path = field(default_factory=lambda: Path(tempfile.gettempdir()) / "minxg_sandbox")
     run_id: str = field(default_factory=lambda: hashlib.sha256(str(time.time()).encode()).hexdigest()[:12])
     _path: Optional[Path] = field(default=None, repr=False)
 

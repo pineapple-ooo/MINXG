@@ -8,7 +8,7 @@ import math
 import random
 import operator
 from typing import Dict, List
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 _SAFE_OPS = {
     ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul,
@@ -66,7 +66,7 @@ class MathToolsWorker(BaseWorker):
             if n == 0:
                 return {"error": "empty list"}
             # Rust-backed batch stats in one ctypes call
-            from agent_harness.rust_bridge import vec_stats as _vec_stats
+            from minxg.rust_bridge import vec_stats as _vec_stats
             stats = _vec_stats(values)
             sorted_vals = sorted(values)
             median = sorted_vals[n // 2] if n % 2 else (sorted_vals[n // 2 - 1] + sorted_vals[n // 2]) / 2

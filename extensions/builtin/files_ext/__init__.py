@@ -7,7 +7,7 @@ capability to be useful out of the box.  ADB and ROOT remain
 opt-in because they touch the device privileged surface;
 files lives purely in userspace and defaults to ON.
 
-Disable with `agent_harness ext disable agent_harness-files` if you really
+Disable with `minxg ext disable minxg-files` if you really
 don't want it.
 """
 from __future__ import annotations
@@ -18,7 +18,7 @@ import os
 from extensions.loader import set_extension_enabled  # noqa: F401  (re-export)
 
 
-EXTENSION_NAME = "agent_harness-files"
+EXTENSION_NAME = "minxg-files"
 EXTENSION_DESCRIPTION = (
     "Cross-platform file browser: list directories, choose files, "
     "multi-select operations"
@@ -30,7 +30,7 @@ EXTENSION_ENABLED = True   # enabled by default since v0.19.x
 
 
 def handle_command(args) -> int:
-    """CLI entry: `agent_harness ext files <subcommand>`."""
+    """CLI entry: `minxg ext files <subcommand>`."""
     subcmd = getattr(args, "files_subcommand", None)
     if subcmd == "browse":
         return _browse(args)
@@ -102,7 +102,7 @@ def _select(args) -> int:
 
 def register_cli(subparsers) -> None:
     p = subparsers.add_parser(
-        "files", help="file browser (opt-in via `agent_harness ext add agent_harness-files`)"
+        "files", help="file browser (opt-in via `minxg ext add minxg-files`)"
     )
     sp_p = p.add_subparsers(dest="files_subcommand")
     browse = sp_p.add_parser("browse", help="browse a directory")

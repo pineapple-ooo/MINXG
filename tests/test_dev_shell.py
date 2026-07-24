@@ -7,8 +7,8 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from agent_harness.five_pillars.devtools.dev_shell import DevShellWorker
-from agent_harness.base import BaseWorker
+from minxg.five_pillars.devtools.dev_shell import DevShellWorker
+from minxg.base import BaseWorker
 
 
 def test_worker_subclass_baseworker():
@@ -22,7 +22,7 @@ def test_worker_attributes():
 
 
 def test_worker_has_tier():
-    from agent_harness.tiers import CODE_TIER
+    from minxg.tiers import CODE_TIER
     w = DevShellWorker()
     assert w.tier == CODE_TIER
 

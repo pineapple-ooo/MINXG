@@ -1,8 +1,8 @@
-"""agent_harness.twin — Python to Rust AST twin compiler.
+"""minxg.twin — Python to Rust AST twin compiler.
 
 The goal: take a Python function's AST and emit Cargo-compatible Rust
 source code semantically equivalent to the function. The emit pattern
-uses the OperatorGraph from agent_harness.polyglot so that:
+uses the OperatorGraph from minxg.polyglot so that:
 
     * Imports map to dependencies automatically.
     * Each Python statement becomes a Rust statement with explicit types.

@@ -1,5 +1,5 @@
 """
-agent_harness/fiber/connection.py — Connections, Parallel Transport, Curvature
+minxg/fiber/connection.py — Connections, Parallel Transport, Curvature
 ==============================================================================
 
 A CONNECTION on a fiber bundle is a rule for "comparing fibers at

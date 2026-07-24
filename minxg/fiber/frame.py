@@ -1,5 +1,5 @@
 """
-agent_harness/fiber/frame.py — Frame Bundle, Vielbein, Spinning
+minxg/fiber/frame.py — Frame Bundle, Vielbein, Spinning
 ===============================================================
 
 The FRAME BUNDLE F(M) of an n-dimensional manifold M is the principal

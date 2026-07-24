@@ -1,4 +1,4 @@
-"""agent_harness.polyglot — Multi-language AST normaliser.
+"""minxg.polyglot — Multi-language AST normaliser.
 
 Parses Python/Rust/JavaScript/Go/Shellscript into a single
 `OperatorGraph` representation that the driver engine, evolution loop,

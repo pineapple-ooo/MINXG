@@ -1,6 +1,6 @@
 """Category Theory: morphisms, functors, monads, Yoneda."""
-import agent_harness.cat as cat
-from agent_harness.cat import MaybeM, IdentityM, State, yoneda_embedding
+import minxg.cat as cat
+from minxg.cat import MaybeM, IdentityM, State, yoneda_embedding
 
 
 def test_morphism_composition_typed():

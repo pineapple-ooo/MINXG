@@ -1,4 +1,4 @@
-"""agent_harness/five_pillars/devtools/ -- build / package / ship.
+"""minxg/five_pillars/devtools/ -- build / package / ship.
 
 Houses AndroidForge (Buildozer / python-for-android wrapper),
 the quad-OS QuadForge dispatcher, the DevShell facade,

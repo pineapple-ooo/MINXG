@@ -1,4 +1,4 @@
-"""agent_harness.lossless — BIE-geometry-driven lossless compression.
+"""minxg.lossless — BIE-geometry-driven lossless compression.
 
 Conventional LZ family compressors work on byte repetition. This module
 works on *state trajectories* produced by the driver engine.
@@ -21,7 +21,7 @@ Properties:
       bit-for-bit.
     * Format-aware: identical bytes in repeated runs compress because
       the trajectory ligature is identical.
-    * State and operator graph from agent_harness.driver are used directly, so
+    * State and operator graph from minxg.driver are used directly, so
       the boundary between operator and compressor is shape-stable.
 """
 from .bie import BIEPoint, BIEBlade, sphere_embed, blade_between

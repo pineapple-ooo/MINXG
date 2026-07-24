@@ -1,5 +1,5 @@
 """
-agent_harness.contracts.agent.neurosymbolic — Neurosymbolic Reasoning Layer
+minxg.contracts.agent.neurosymbolic — Neurosymbolic Reasoning Layer
 ===================================================================
 
 Bold design: combine neural pattern recognition with symbolic logic for

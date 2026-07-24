@@ -8,10 +8,10 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from agent_harness.five_pillars.devtools.dev_forge import (
+from minxg.five_pillars.devtools.dev_forge import (
     QuadForgeWorker, DevForgeWorker,
 )
-from agent_harness.base import BaseWorker
+from minxg.base import BaseWorker
 
 
 def test_worker_subclass_baseworker():
@@ -30,7 +30,7 @@ def test_worker_attributes():
 
 
 def test_worker_has_tier():
-    from agent_harness.tiers import CODE_TIER
+    from minxg.tiers import CODE_TIER
     w = QuadForgeWorker()
     assert w.tier == CODE_TIER
 
@@ -70,12 +70,12 @@ async def test_forge_plan_android_kivy():
     res = await w.call("forge_plan", {
         "manifest": {
             "platform": "android", "framework": "kivy",
-            "package": "ai.agent_harness.demo", "title": "Demo",
+            "package": "ai.minxg.demo", "title": "Demo",
             "version": "0.1.0",
         },
     })
     assert res["status"] == "ok"
-    assert res["blueprint"]["package"] == "ai.agent_harness.demo"
+    assert res["blueprint"]["package"] == "ai.minxg.demo"
     assert "buildozer" in res["blueprint"]["build_cmd"]
 
 
@@ -98,7 +98,7 @@ async def test_forge_plan_windows_winui3():
     res = await w.call("forge_plan", {
         "manifest": {
             "platform": "windows", "framework": "winui3",
-            "package": "ai.agent_harness.wapp", "title": "MyWinApp",
+            "package": "ai.minxg.wapp", "title": "MyWinApp",
         },
     })
     assert res["status"] == "ok"
@@ -129,8 +129,8 @@ async def test_forge_scaffold_writes_files():
                           {"root_path": tmp, "blueprint": bp})
         assert sc["status"] == "ok"
         assert Path(tmp, "main.cs").exists()
-        assert Path(tmp, "agent_harness-manifest.json").exists()
-        manifest = json.loads(Path(tmp, "agent_harness-manifest.json").read_text())
+        assert Path(tmp, "minxg-manifest.json").exists()
+        manifest = json.loads(Path(tmp, "minxg-manifest.json").read_text())
         assert manifest["platform"] == "windows"
 
 

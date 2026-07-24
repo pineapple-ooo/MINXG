@@ -113,7 +113,7 @@ def register(api):
     api.register_command("zipscan", {
         "name": "zipscan",
         "description": "扫描ZIP包内代码文件，生成路径+代码统计报告",
-        "usage": "agent_harness ext zipscan <zip_path> [--format json|text]",
+        "usage": "minxg ext zipscan <zip_path> [--format json|text]",
         "handler": _cli_scan,
     })
 
@@ -148,7 +148,7 @@ def register(api):
 def _cli_scan(args, api=None):
     """CLI命令处理函数。"""
     if not args.files or len(args.files) < 1:
-        print("Usage: agent_harness ext zipscan <zip_path> [--format json|text]")
+        print("Usage: minxg ext zipscan <zip_path> [--format json|text]")
         return 1
 
     zip_path = args.files[0]

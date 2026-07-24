@@ -8,9 +8,9 @@ Tests cover:
   - -v / --verbose flag side-effects
   - --list-extensions behaviour
   - No-arg dispatch to TUI (mock tui_chat)
-  - agent_harness setup dispatches to cmd_setup
-  - agent_harness help prints structured cheatsheet
-  - agent_harness model / api / key / lang write config
+  - minxg setup dispatches to cmd_setup
+  - minxg help prints structured cheatsheet
+  - minxg model / api / key / lang write config
   - Unknown command errors nonzero
 """
 from __future__ import annotations
@@ -79,8 +79,8 @@ class TestVersionAndFlags:
             except SystemExit as e:
                 assert int(getattr(e, "code", 0) or 0) == 0
         out = buf_out.getvalue()
-        # Should contain 'agent_harness' and a version number
-        assert "agent_harness" in out
+        # Should contain 'minxg' and a version number
+        assert "minxg" in out
         # __version__ is imported in main.py
         assert main_mod.__version__ in out
 
@@ -156,8 +156,8 @@ class TestSubcommandRouting:
         rc, out = _silent_call(["help"])
         assert rc == 0
         assert "AgentHarness" in out
-        assert "agent_harness setup" in out
-        assert "agent_harness model" in out
+        assert "minxg setup" in out
+        assert "minxg model" in out
 
     def test_no_args_drops_into_tui(self, tmp_path, monkeypatch):
         """No args should attempt to enter the TUI (we mock it)."""

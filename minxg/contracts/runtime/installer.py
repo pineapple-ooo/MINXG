@@ -4,7 +4,7 @@ This module provides installation and rollback system with platform validation. 
 
 Typical usage::
 
-    from agent_harness.contracts.runtime import handle
+    from minxg.contracts.runtime import handle
     result = handle({"language": "julia", "mode": "eval", "code": "sqrt(4.0)"})
 
 All operations support async execution, security policies, and comprehensive error handling.
@@ -139,7 +139,7 @@ def detect_runtime(language: str) -> RuntimeStatus:
             note=(
                 "wasmtime CLI present"
                 if binary
-                else "optional — pure-python emulator fallback ships in agent_harness"
+                else "optional — pure-python emulator fallback ships in minxg"
             ),
             version_hint=version,
             checksum=checksum,

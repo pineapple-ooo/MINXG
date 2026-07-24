@@ -6,7 +6,7 @@ import time
 import asyncio
 import datetime
 from typing import Dict
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 class DateTimeToolsWorker(BaseWorker):

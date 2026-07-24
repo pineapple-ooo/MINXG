@@ -1,4 +1,4 @@
-"""agent_harness/five_pillars/devtools/reverse_studio.py — Reverse engineering studio.
+"""minxg/five_pillars/devtools/reverse_studio.py — Reverse engineering studio.
 
 Legal guard
 -----------
@@ -40,7 +40,7 @@ import zipfile
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 # ── Legal notice — emitted on every reverse tool call ────────────────

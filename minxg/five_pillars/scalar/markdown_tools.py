@@ -1,5 +1,5 @@
 """Markdown processing tools."""
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 class MarkdownWorker(BaseWorker):
     facade_alias = "markdown_worker"

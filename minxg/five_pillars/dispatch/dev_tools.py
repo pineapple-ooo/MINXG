@@ -1,5 +1,5 @@
 """
-agent_harness/dev_tools.py — Development & DevOps tools v1.0.0
+minxg/dev_tools.py — Development & DevOps tools v1.0.0
 
 Git, Docker, package managers (pip, npm, cargo), build systems (make, cmake).
 """
@@ -9,7 +9,7 @@ import shlex
 import subprocess
 from typing import Any, Dict, List, Optional
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 class DevToolsWorker(BaseWorker):

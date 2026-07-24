@@ -1,5 +1,5 @@
 """
-agent_harness/ga/rotor.py — Versors, Rotors, Translators, Dilators
+minxg/ga/rotor.py — Versors, Rotors, Translators, Dilators
 ====================================================================
 
 Versors are the multiplicative group of invertible multivectors. They act on

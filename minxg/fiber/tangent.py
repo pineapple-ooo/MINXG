@@ -1,5 +1,5 @@
 """
-agent_harness/fiber/tangent.py — Tangent Bundle
+minxg/fiber/tangent.py — Tangent Bundle
 ================================================
 
 The TANGENT BUNDLE T(M) of a manifold M is the vector bundle whose

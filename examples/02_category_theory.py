@@ -3,8 +3,8 @@
 
 Type-safe operator composition with mathematical guarantees.
 """
-import agent_harness.cat as cat
-from agent_harness.cat import Maybe, MaybeM, State, IdentityM, yoneda_embedding
+import minxg.cat as cat
+from minxg.cat import Maybe, MaybeM, State, IdentityM, yoneda_embedding
 
 f = cat.Morphism("int_to_str", (cat.Type("int"),), cat.Type("string"), str)
 g = cat.Morphism("str_to_len", (cat.Type("string"),), cat.Type("int"), len)

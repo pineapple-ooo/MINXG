@@ -1,4 +1,4 @@
-"""agent_harness.screen.ocr.ocr_pipeline — Tesseract OCR → structured UI text.
+"""minxg.screen.ocr.ocr_pipeline — Tesseract OCR → structured UI text.
 
 Turns raw screenshot PNGs into structured text data AI can reason about:
   - word-level bounding boxes (for element matching)
@@ -91,7 +91,7 @@ def ocr_image(
            "image_path": str(img_path), "image_size": img_size}
 
     # Prepare temp dir for TSV output
-    tmp_dir = Path.home() / ".agent_harness" / "screen" / "ocr"
+    tmp_dir = Path.home() / ".minxg" / "screen" / "ocr"
     tmp_dir.mkdir(parents=True, exist_ok=True)
     tsv_base = str(tmp_dir / f"_ocr_tsv_{int(time.time()*1000)}")
 

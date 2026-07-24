@@ -49,7 +49,7 @@ class Lens:
     def _render_sections(self, sections: Iterable[Dict[str, str]], lang: str, glossary: Glossary) -> str:
         out = [f"# {self._config.title_prefix}" if self._config.title_prefix else "# Lens export"]
         out.append("")
-        out.append(self._intl("This document was reverse-projected by agent_harness.lens.", lang))
+        out.append(self._intl("This document was reverse-projected by minxg.lens.", lang))
         out.append("")
         for section in sections:
             heading_raw = section.get("heading", "")
@@ -70,13 +70,13 @@ class Lens:
 
     def _intl(self, text: str, lang: str) -> str:
         if lang == "zh":
-            return "本文件由 agent_harness.lens 反向导出。"
+            return "本文件由 minxg.lens 反向导出。"
         if lang == "zh-TW":
-            return "本檔由 agent_harness.lens 反向匯出。"
+            return "本檔由 minxg.lens 反向匯出。"
         if lang == "ja":
-            return "このドキュメントは agent_harness.lens によって逆投影されました。"
+            return "このドキュメントは minxg.lens によって逆投影されました。"
         if lang == "ko":
-            return "이 문서는 agent_harness.lens 로 역방향 사출되었습니다."
+            return "이 문서는 minxg.lens 로 역방향 사출되었습니다."
         return text
 
     def _dump_glossary(self, glossary: Glossary) -> str:

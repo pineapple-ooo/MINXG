@@ -13,7 +13,7 @@ import tarfile
 import zipfile
 from pathlib import Path
 from typing import Dict, List
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 class FsSearchWorker(BaseWorker):

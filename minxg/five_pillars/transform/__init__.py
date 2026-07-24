@@ -1,4 +1,4 @@
-"""agent_harness.five_pillars.transform — State and events plane.
+"""minxg.five_pillars.transform — State and events plane.
 
 state_session, state_machine, persistence, rules,
 events, hotreload, ai_tools.

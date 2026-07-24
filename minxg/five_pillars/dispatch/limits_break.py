@@ -8,7 +8,7 @@ import asyncio
 from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Dict
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 class CircuitBreaker:

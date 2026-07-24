@@ -213,10 +213,10 @@ def ensure_tools_discovered():
     Extensions were previously never actually reachable from a live
     chat session — `extensions.loader.discover_extensions()` imports
     every extension's module (builtin or user, enabled or not, since it
-    needs metadata for `agent_harness ext list` either way), but nothing in the
+    needs metadata for `minxg ext list` either way), but nothing in the
     chat startup path ever called the `register_hooks(registry)`
     function several extensions already defined for exactly this
-    purpose. Extensions only ever reached `agent_harness ext <verb>` CLI
+    purpose. Extensions only ever reached `minxg ext <verb>` CLI
     dispatch, never a live conversation. This is the single place every
     chat turn already goes through to build its tool list, so it's the
     correct, minimal fix.
@@ -236,7 +236,7 @@ def _discover_extension_tools() -> None:
 
     `extensions.loader.discover_extensions()` already executes every
     extension's top-level module code (enabled or not — it needs the
-    metadata even from disabled ones for `agent_harness ext list`), but nothing
+    metadata even from disabled ones for `minxg ext list`), but nothing
     ever called the `register_hooks(registry)` function several builtin
     extensions already define for exactly this purpose — it existed,
     had the right signature, and was simply never wired up. This is

@@ -1,5 +1,5 @@
 """
-agent_harness/cat/monad.py — Monads and Common Instances
+minxg/cat/monad.py — Monads and Common Instances
 ========================================================
 
 A MONAD is a functor M with two additional operations:

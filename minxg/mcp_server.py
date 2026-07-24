@@ -6,13 +6,13 @@ to AgentHarness's 70+ workers: file I/O, network, crypto, math, polyglot, and mo
 
 Usage:
     # stdio (local agent)
-    python -m agent_harness.mcp_server
+    python -m minxg.mcp_server
 
     # HTTP (remote deployment)
-    MCP_TRANSPORT=http python -m agent_harness.mcp_server
+    MCP_TRANSPORT=http python -m minxg.mcp_server
 
 Install:
-    pip install agent_harness-beta fastmcp
+    pip install minxg-beta fastmcp
 """
 from __future__ import annotations
 
@@ -33,8 +33,8 @@ except ImportError:
 # ─── AgentHarness Workers ──────────────────────────────────────────────────────────
 
 try:
-    import agent_harness
-    from agent_harness import (
+    import minxg
+    from minxg import (
         FsIoWorker, FsCopyWorker, FsSearchWorker,
         NetworkWorker, CryptoToolsWorker, MathToolsWorker,
         TextToolsWorker, DataToolsWorker, EncodingToolsWorker,
@@ -47,7 +47,7 @@ try:
     _AgentHarness_AVAILABLE = True
 except ImportError:
     _AgentHarness_AVAILABLE = False
-    agent_harness = None  # type: ignore[assignment]
+    minxg = None  # type: ignore[assignment]
 
 # ─── Worker Registry ────────────────────────────────────────────────────────
 
@@ -139,7 +139,7 @@ registry = WorkerRegistry()
 
 # ─── MCP Server ─────────────────────────────────────────────────────────────
 
-SERVER_NAME = "agent_harness"
+SERVER_NAME = "minxg"
 SERVER_VERSION = os.getenv("AgentHarness_VERSION", "0.18.0")
 
 if FastMCP is not None:
@@ -171,83 +171,83 @@ _ERROR_MSG = {"error": "Install fastmcp or mcp package: pip install fastmcp"}
 
 if mcp is not None:
     @mcp.tool()
-    async def agent_harness_list_tools(category: Optional[str] = None) -> List[Dict[str, str]]:
+    async def minxg_list_tools(category: Optional[str] = None) -> List[Dict[str, str]]:
         """List all available AgentHarness tools, optionally filtered by category."""
         tools = registry.get_tools()
         return [t for t in tools if not category or t.get("category") == category] if category else tools
 
     @mcp.tool()
-    async def agent_harness_call_tool(worker: str, tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
+    async def minxg_call_tool(worker: str, tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
         """Call a AgentHarness tool by worker key and tool name."""
         return await registry.call_tool(worker, tool, params)
 
     @mcp.tool()
-    async def agent_harness_file_read(path: str, lines: int = 0, start: int = 0) -> Dict[str, Any]:
+    async def minxg_file_read(path: str, lines: int = 0, start: int = 0) -> Dict[str, Any]:
         """Read a file from disk."""
         return await registry.call_tool("fs_io", "read_file", {"path": path, "lines": lines, "start": start})
 
     @mcp.tool()
-    async def agent_harness_file_write(path: str, content: str, append: bool = False) -> Dict[str, Any]:
+    async def minxg_file_write(path: str, content: str, append: bool = False) -> Dict[str, Any]:
         """Write content to a file."""
         return await registry.call_tool("fs_io", "write_file", {"path": path, "content": content, "append": append})
 
     @mcp.tool()
-    async def agent_harness_list_dir(path: str = ".", show_hidden: bool = False) -> Dict[str, Any]:
+    async def minxg_list_dir(path: str = ".", show_hidden: bool = False) -> Dict[str, Any]:
         """List directory contents."""
         return await registry.call_tool("fs_io", "list_directory", {"path": path, "show_hidden": show_hidden})
 
     @mcp.tool()
-    async def agent_harness_http_get(url: str, timeout: int = 30) -> Dict[str, Any]:
+    async def minxg_http_get(url: str, timeout: int = 30) -> Dict[str, Any]:
         """Make an HTTP GET request."""
         return await registry.call_tool("network", "http_get", {"url": url, "timeout": timeout})
 
     @mcp.tool()
-    async def agent_harness_hash(data: str, algorithm: str = "sha256") -> Dict[str, Any]:
+    async def minxg_hash(data: str, algorithm: str = "sha256") -> Dict[str, Any]:
         """Hash data with various algorithms (md5, sha1, sha256, sha512, blake2b)."""
         return await registry.call_tool("crypto", "hash", {"data": data, "algorithm": algorithm})
 
     @mcp.tool()
-    async def agent_harness_math_eval(expression: str) -> Dict[str, Any]:
+    async def minxg_math_eval(expression: str) -> Dict[str, Any]:
         """Evaluate a mathematical expression safely."""
         return await registry.call_tool("math", "safe_eval", {"expression": expression})
 
     @mcp.tool()
-    async def agent_harness_version() -> Dict[str, Any]:
+    async def minxg_version() -> Dict[str, Any]:
         """Get AgentHarness version and platform info."""
-        if _AgentHarness_AVAILABLE and agent_harness:
+        if _AgentHarness_AVAILABLE and minxg:
             return {
-                "version": agent_harness.VERSION,
-                "platform": agent_harness.detect_platform(),
-                "workers": len(agent_harness.__all__),
+                "version": minxg.VERSION,
+                "platform": minxg.detect_platform(),
+                "workers": len(minxg.__all__),
             }
         return {"version": SERVER_VERSION, "platform": "unknown", "workers": 0}
 else:
     # Fallback stubs when MCP framework is not installed
-    async def agent_harness_list_tools(category: Optional[str] = None) -> List[Dict[str, str]]:
+    async def minxg_list_tools(category: Optional[str] = None) -> List[Dict[str, str]]:
         return []
 
-    async def agent_harness_call_tool(worker: str, tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
+    async def minxg_call_tool(worker: str, tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
         return _ERROR_MSG
 
-    async def agent_harness_file_read(path: str, lines: int = 0, start: int = 0) -> Dict[str, Any]:
+    async def minxg_file_read(path: str, lines: int = 0, start: int = 0) -> Dict[str, Any]:
         return _ERROR_MSG
 
-    async def agent_harness_file_write(path: str, content: str, append: bool = False) -> Dict[str, Any]:
+    async def minxg_file_write(path: str, content: str, append: bool = False) -> Dict[str, Any]:
         return _ERROR_MSG
 
-    async def agent_harness_list_dir(path: str = ".", show_hidden: bool = False) -> Dict[str, Any]:
+    async def minxg_list_dir(path: str = ".", show_hidden: bool = False) -> Dict[str, Any]:
         return _ERROR_MSG
 
-    async def agent_harness_http_get(url: str, timeout: int = 30) -> Dict[str, Any]:
+    async def minxg_http_get(url: str, timeout: int = 30) -> Dict[str, Any]:
         return _ERROR_MSG
 
-    async def agent_harness_hash(data: str, algorithm: str = "sha256") -> Dict[str, Any]:
+    async def minxg_hash(data: str, algorithm: str = "sha256") -> Dict[str, Any]:
         return _ERROR_MSG
 
-    async def agent_harness_math_eval(expression: str) -> Dict[str, Any]:
+    async def minxg_math_eval(expression: str) -> Dict[str, Any]:
         return _ERROR_MSG
 
-    async def agent_harness_version() -> Dict[str, Any]:
+    async def minxg_version() -> Dict[str, Any]:
         return {"version": SERVER_VERSION, **_ERROR_MSG}
 
 # ─── Entry Point ────────────────────────────────────────────────────────────

@@ -1,10 +1,10 @@
-"""agent_harness.driver.engine — Temporal Operator-Field integrator with adaptive
+"""minxg.driver.engine — Temporal Operator-Field integrator with adaptive
 sub-stepping, drift control, five-phase observability, RK4/RK45 integration,
 chaos detection, energy conservation tracking, and singularity awareness.
 
-agent_harness.cap.provides: driver.engine, driver.drift.control, driver.phases,
+minxg.cap.provides: driver.engine, driver.drift.control, driver.phases,
 driver.rk4, driver.rk45, driver.chaos, driver.energy, driver.singularity
-agent_harness.cap.requires: state.bag, state.bounds
+minxg.cap.requires: state.bag, state.bounds
 """
 from __future__ import annotations
 import math

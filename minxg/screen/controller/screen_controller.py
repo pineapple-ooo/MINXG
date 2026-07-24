@@ -1,4 +1,4 @@
-"""agent_harness.screen.controller — ScreenController: capture → understand → act closure.
+"""minxg.screen.controller — ScreenController: capture → understand → act closure.
 
 This is the high-level API that ties all SPA subsystems together.
 An AI agent can work with screens through this single class.
@@ -9,7 +9,7 @@ import time
 from pathlib import Path
 from typing import Optional, Dict, List, Any
 
-from agent_harness.screen.constants import ScreenSource, SCREEN_RAW, SCREEN_CACHE
+from minxg.screen.constants import ScreenSource, SCREEN_RAW, SCREEN_CACHE
 
 
 class ScreenController:
@@ -59,10 +59,10 @@ class ScreenController:
         """Probe which capture backends are actually available.
 
         Migrated from the legacy ``from .capture import …`` form to the
-        top-level ``agent_harness.screen.capture`` package — the controller no
+        top-level ``minxg.screen.capture`` package — the controller no
         longer owns its own capture submodule.
         """
-        from agent_harness.screen.capture import (
+        from minxg.screen.capture import (
             adb_screencap, mock_screencap,
             termux_api_screencap, termux_api_available,
             camera_photo_available,
@@ -71,7 +71,7 @@ class ScreenController:
         self._available_sources = []
         if adb_screencap:
             try:
-                from agent_harness.screen.capture import adb_device_connected
+                from minxg.screen.capture import adb_device_connected
                 if adb_device_connected():
                     self._available_sources.append(ScreenSource.ADB)
             except Exception:
@@ -107,7 +107,7 @@ class ScreenController:
         Returns a frame dict: {path, width, height, format, source,
         timestamp, ok, error?}
         """
-        from agent_harness.screen.capture import (
+        from minxg.screen.capture import (
             adb_screencap, mock_screencap,
             termux_api_screencap,
             camera_photo,
@@ -166,7 +166,7 @@ class ScreenController:
         if self.verbose:
             print(f"[SPA] Capturing layout via {source}...")
 
-        from agent_harness.screen.capture.adb_backend import adb_uiautomator_dump
+        from minxg.screen.capture.adb_backend import adb_uiautomator_dump
         layout = adb_uiautomator_dump()
         self._last_layout = layout
         return layout
@@ -193,7 +193,7 @@ class ScreenController:
         screen_size = {"w": frame.get("width", 0), "h": frame.get("height", 0)}
 
         # Step 1: OCR
-        from agent_harness.screen.ocr import ocr_image
+        from minxg.screen.ocr import ocr_image
         ocr_result = ocr_image(img_path)
         self._last_ocr = ocr_result
 
@@ -205,13 +205,13 @@ class ScreenController:
         try:
             layout = self.capture_layout()
             if layout.get("ok"):
-                from agent_harness.screen.perception.layout_analyzer import parse_uiautomator_xml
+                from minxg.screen.perception.layout_analyzer import parse_uiautomator_xml
                 xml_nodes = parse_uiautomator_xml(layout.get("xml", ""))
         except Exception:
             pass  # layout is optional; OCR alone is still useful
 
         # Step 3: Merge
-        from agent_harness.screen.perception.layout_analyzer import (
+        from minxg.screen.perception.layout_analyzer import (
             merge_xml_and_ocr, build_screen_description, find_tappable_elements
         )
         merged = merge_xml_and_ocr(
@@ -246,12 +246,12 @@ class ScreenController:
         - tap(x=N, y=N) — tap absolute coordinates
         - tap(bounds={left,top,right,bottom}) — tap center of a bounds rect
         """
-        from agent_harness.screen.action.input_engine import tap_center_of_element
+        from minxg.screen.action.input_engine import tap_center_of_element
 
         if bounds:
             return tap_center_of_element(bounds)
         elif x and y:
-            from agent_harness.screen.action.input_engine import tap as _tap
+            from minxg.screen.action.input_engine import tap as _tap
             source = "adb" if ScreenSource.ADB in self._available_sources else "termux_api"
             return _tap(x, y, source=source)
 
@@ -287,11 +287,11 @@ class ScreenController:
         If target is given, find that input field first.
         If target is empty, type into whatever is focused.
         """
-        from agent_harness.screen.action.input_engine import type_text
+        from minxg.screen.action.input_engine import type_text
 
         if target:
             understanding = self._last_understanding or self.understand()
-            from agent_harness.screen.perception.layout_analyzer import find_text_elements
+            from minxg.screen.perception.layout_analyzer import find_text_elements
             els = find_text_elements(understanding.get("elements", []), search_text=target)
             for el in els:
                 if "edit" in el.get("class", "").lower() or "input" in el.get("class", "").lower():
@@ -304,7 +304,7 @@ class ScreenController:
 
     def swipe(self, direction: str = "up", *, distance: int = 500) -> Dict:
         """Swipe screen in a direction."""
-        from agent_harness.screen.action.input_engine import swipe_up, swipe_down
+        from minxg.screen.action.input_engine import swipe_up, swipe_down
         if direction == "up":
             return swipe_up()
         elif direction == "down":
@@ -313,12 +313,12 @@ class ScreenController:
 
     def back(self) -> Dict:
         """Press BACK button."""
-        from agent_harness.screen.action.input_engine import back as _back
+        from minxg.screen.action.input_engine import back as _back
         return _back()
 
     def home(self) -> Dict:
         """Press HOME button."""
-        from agent_harness.screen.action.input_engine import home as _home
+        from minxg.screen.action.input_engine import home as _home
         return _home()
 
     # ── Autonomous loop ────────────────────────────────────────────
@@ -406,7 +406,7 @@ class ScreenController:
                     if kw in label:
                         bnd = el.get("bounds", {})
                         if bnd:
-                            from agent_harness.screen.action import tap
+                            from minxg.screen.action import tap
                             r = tap_center_of_element(bnd)
                             r["action_label"] = f"tap '{el.get('label','')}'"
                             return r
@@ -414,7 +414,7 @@ class ScreenController:
             if tappable:
                 bnd = tappable[0].get("bounds", {})
                 if bnd:
-                    from agent_harness.screen.action import tap
+                    from minxg.screen.action import tap
                     r = tap_center_of_element(bnd)
                     r["action_label"] = f"tap first tappable '{tappable[0].get('label','')}'"
                     return r
@@ -432,7 +432,7 @@ class ScreenController:
             return r
 
         elif any(kw in il for kw in ["swipe", "scroll"]):
-            from agent_harness.screen.action import swipe_up, swipe_down
+            from minxg.screen.action import swipe_up, swipe_down
             direction = "down" if any(kw in il for kw in ["scroll up", "down"]) else "up"
             r = swipe_up() if direction == "up" else swipe_down()
             r["action_label"] = f"swipe {direction}"

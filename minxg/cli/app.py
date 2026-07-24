@@ -38,15 +38,15 @@ try:
 except ImportError:  # pragma: no cover - optional dependency
     HAS_PROMPT_TOOLKIT = False
 
-from agent_harness.cli.completer import SlashCommandCompleter
-from agent_harness.cli.handlers import (
+from minxg.cli.completer import SlashCommandCompleter
+from minxg.cli.handlers import (
     handle_clear,
     handle_help,
     handle_status,
     handle_tools,
 )
-from agent_harness.cli.history import History
-from agent_harness.cli.theme import build_prompt_toolkit_style
+from minxg.cli.history import History
+from minxg.cli.theme import build_prompt_toolkit_style
 
 
 MessageResult = Union[str, Dict[str, Any], AsyncIterator[str], None]

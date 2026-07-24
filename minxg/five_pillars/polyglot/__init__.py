@@ -1,7 +1,7 @@
 """Polyglot workers for AgentHarness — bridges to non-Python language runtimes.
 
 Each worker exposes a small set of ``@tool``-decorated async methods that
-forward to ``agent_harness.contracts.runtime.<lang>.invoke()``. When the runtime
+forward to ``minxg.contracts.runtime.<lang>.invoke()``. When the runtime
 is missing the tool returns ``{"status":"disabled","hint":...}`` rather
 than raising, so the AI layer can surface failure cleanly.
 """

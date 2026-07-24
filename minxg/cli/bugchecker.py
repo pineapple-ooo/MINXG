@@ -1,4 +1,4 @@
-"""agent_harness.cli.bugchecker — built-in bug checker integrated with test suite.
+"""minxg.cli.bugchecker — built-in bug checker integrated with test suite.
 
 Scans the project for:
   * Syntax errors

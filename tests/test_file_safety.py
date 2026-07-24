@@ -1,6 +1,6 @@
-"""tests/test_file_safety.py — agent_harness/core_ops/file_safety.py, the shared
+"""tests/test_file_safety.py — minxg/core_ops/file_safety.py, the shared
 guard now used by both tools/file_tools.py (chat-agent) and
-agent_harness/workers/file/file_workers.py (MCP surface). Before this module
+minxg/workers/file/file_workers.py (MCP surface). Before this module
 existed the MCP surface had none of these guards at all.
 """
 from __future__ import annotations
@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from agent_harness.core_ops.file_safety import (
+from minxg.core_ops.file_safety import (
     is_blocked_path, is_binary_file, check_readable_text_file,
     BLOCKED_DEVICE_PATHS, MAX_READABLE_BYTES,
 )
@@ -66,7 +66,7 @@ class TestCheckReadableTextFile:
         f = tmp_path / "big.txt"
         f.write_text("x")
         monkeypatch.setattr(
-            "agent_harness.core_ops.file_safety.MAX_READABLE_BYTES", 0
+            "minxg.core_ops.file_safety.MAX_READABLE_BYTES", 0
         )
         ok, err = check_readable_text_file(f)
         assert ok is False

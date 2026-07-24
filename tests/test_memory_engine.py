@@ -116,7 +116,7 @@ def test_working_memory_keeps_turns_in_order():
     w = WorkingMemory(capacity=4)
     w.prime("hello", role="user")
     w.prime("hi, what's up?", role="assistant")
-    w.prime("building agent_harness", role="user")
+    w.prime("building minxg", role="user")
     snap = w.snapshot()
     roles = [t["role"] for t in snap["turns"]]
     assert roles == ["user", "assistant", "user"]

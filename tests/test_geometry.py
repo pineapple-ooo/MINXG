@@ -12,8 +12,8 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from agent_harness.five_pillars.math_pillar.geometry import GeometryWorker
-from agent_harness.base import BaseWorker
+from minxg.five_pillars.math_pillar.geometry import GeometryWorker
+from minxg.base import BaseWorker
 
 
 def _run(coro):

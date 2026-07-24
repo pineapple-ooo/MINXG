@@ -9,14 +9,14 @@ flagged subtasks get re-delegated with the review feedback attached
 the *orchestration policy* on top of that execution primitive, not a
 second implementation of it.
 
-Ships **disabled by default** (`agent_harness ext add agent_harness-multiagent` to opt
+Ships **disabled by default** (`minxg ext add minxg-multiagent` to opt
 in), same convention as adb_ext/root_ext: this spins up multiple real
 sub-agent conversations (each one a real, potentially expensive AI
 call once a provider is configured) and shouldn't fire without the
 person asking for it.
 
 Two ways to reach it:
-  - CLI: `agent_harness ext multiagent run "<goal>"` — standalone, non-interactive.
+  - CLI: `minxg ext multiagent run "<goal>"` — standalone, non-interactive.
   - Chat tool: `multi_agent_code_task` — reachable mid-conversation once
     enabled, wired up via `register_hooks()` (see
     `multiling/model_tools.py::ensure_tools_discovered` for why that
@@ -42,7 +42,7 @@ from typing import Any, Callable, Dict, List, Optional
 logger = logging.getLogger(__name__)
 
 
-EXTENSION_NAME = "agent_harness-multiagent"
+EXTENSION_NAME = "minxg-multiagent"
 EXTENSION_DESCRIPTION = (
     "Multi-agent coding crew: Planner -> parallel Coders -> Reviewer, "
     "with a bounded revise loop, built on tools/delegate_tool.py"
@@ -267,7 +267,7 @@ def _summarize_tasks(tasks: List["Any"]) -> List[Dict[str, Any]]:
 # ───────────────────────────────────────────────────────────── CLI surface
 
 def handle_command(args) -> int:
-    """CLI entry: `agent_harness ext multiagent <subcommand>`."""
+    """CLI entry: `minxg ext multiagent <subcommand>`."""
     subcmd = getattr(args, "multiagent_subcommand", None)
     if subcmd == "run":
         return _cli_run(args)
@@ -306,7 +306,7 @@ def _cli_run(args) -> int:
 def register_cli(subparsers) -> None:
     p = subparsers.add_parser(
         "multiagent",
-        help="multi-agent coding crew (opt-in via `agent_harness ext add agent_harness-multiagent`)",
+        help="multi-agent coding crew (opt-in via `minxg ext add minxg-multiagent`)",
     )
     sp = p.add_subparsers(dest="multiagent_subcommand")
     run = sp.add_parser("run", help="run the planner/coder/reviewer pipeline on a goal")

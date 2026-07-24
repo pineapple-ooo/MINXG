@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import pytest
 
-from agent_harness.contracts.runtime.wasm import (
+from minxg.contracts.runtime.wasm import (
     WasmModule,
     WasmFunc,
     WasmExport,
@@ -179,7 +179,7 @@ class TestWasmMemoryManager:
     
     def test_memory_grow(self):
         """Test memory growth."""
-        from agent_harness.contracts.runtime.wasm import WasmMemoryManager
+        from minxg.contracts.runtime.wasm import WasmMemoryManager
         mem = WasmMemoryManager(initial_pages=1, max_pages=10)
         assert mem.pages == 1
         mem.grow(2)
@@ -187,7 +187,7 @@ class TestWasmMemoryManager:
     
     def test_memory_grow_limit(self):
         """Test memory growth limit."""
-        from agent_harness.contracts.runtime.wasm import WasmMemoryManager
+        from minxg.contracts.runtime.wasm import WasmMemoryManager
         mem = WasmMemoryManager(initial_pages=1, max_pages=2)
         mem.grow(1)
         assert mem.pages == 2
@@ -196,14 +196,14 @@ class TestWasmMemoryManager:
     
     def test_memory_read_write(self):
         """Test memory read/write."""
-        from agent_harness.contracts.runtime.wasm import WasmMemoryManager
+        from minxg.contracts.runtime.wasm import WasmMemoryManager
         mem = WasmMemoryManager(initial_pages=1)
         mem.write(0, b"hello")
         assert mem.read(0, 5) == b"hello"
     
     def test_memory_out_of_bounds(self):
         """Test out of bounds access."""
-        from agent_harness.contracts.runtime.wasm import WasmMemoryManager
+        from minxg.contracts.runtime.wasm import WasmMemoryManager
         mem = WasmMemoryManager(initial_pages=1)
         with pytest.raises(ValueError, match="out of bounds"):
             mem.read(0, 70000)
@@ -214,14 +214,14 @@ class TestWasmTableManager:
     
     def test_table_set_get(self):
         """Test table set/get."""
-        from agent_harness.contracts.runtime.wasm import WasmTableManager
+        from minxg.contracts.runtime.wasm import WasmTableManager
         table = WasmTableManager(initial_size=5)
         table.set(0, "func_a")
         assert table.get(0) == "func_a"
     
     def test_table_grow(self):
         """Test table growth."""
-        from agent_harness.contracts.runtime.wasm import WasmTableManager
+        from minxg.contracts.runtime.wasm import WasmTableManager
         table = WasmTableManager(initial_size=2)
         assert table.size == 2
         table.grow(3)
@@ -229,7 +229,7 @@ class TestWasmTableManager:
     
     def test_table_out_of_bounds(self):
         """Test out of bounds access."""
-        from agent_harness.contracts.runtime.wasm import WasmTableManager
+        from minxg.contracts.runtime.wasm import WasmTableManager
         table = WasmTableManager(initial_size=2)
         with pytest.raises(ValueError, match="out of bounds"):
             table.get(5)
@@ -240,14 +240,14 @@ class TestWasmInstance:
     
     def test_instance_creation(self):
         """Test instance creation."""
-        from agent_harness.contracts.runtime.wasm import WasmInstance, WasmModule
+        from minxg.contracts.runtime.wasm import WasmInstance, WasmModule
         module = WasmModule(name="test")
         instance = WasmInstance(module)
         assert instance.module.name == "test"
     
     def test_instance_initialize(self):
         """Test instance initialization."""
-        from agent_harness.contracts.runtime.wasm import WasmInstance, WasmModule, WasmGlobal, WasmExport, WasmType
+        from minxg.contracts.runtime.wasm import WasmInstance, WasmModule, WasmGlobal, WasmExport, WasmType
         module = WasmModule(name="test")
         module.globals = [WasmGlobal(type=WasmType(), mutable=False, init=42)]
         module.exports = [WasmExport(name="test_export", kind="func", index=0)]
@@ -262,14 +262,14 @@ class TestWasmValidationResult:
     
     def test_valid_result(self):
         """Test valid validation result."""
-        from agent_harness.contracts.runtime.wasm import WasmValidationResult
+        from minxg.contracts.runtime.wasm import WasmValidationResult
         result = WasmValidationResult(valid=True)
         assert result.valid is True
         assert bool(result) is True
     
     def test_invalid_result(self):
         """Test invalid validation result."""
-        from agent_harness.contracts.runtime.wasm import WasmValidationResult
+        from minxg.contracts.runtime.wasm import WasmValidationResult
         result = WasmValidationResult(valid=False, errors=["parse error"])
         assert result.valid is False
         assert bool(result) is False
@@ -281,20 +281,20 @@ class TestWasmHelpers:
     
     def test_validate_wat_valid(self):
         """Test valid WAT validation."""
-        from agent_harness.contracts.runtime.wasm import validate_wat
+        from minxg.contracts.runtime.wasm import validate_wat
         result = validate_wat("(module)")
         assert result.valid is True
     
     def test_validate_wat_invalid(self):
         """Test invalid WAT validation."""
-        from agent_harness.contracts.runtime.wasm import validate_wat
+        from minxg.contracts.runtime.wasm import validate_wat
         result = validate_wat("invalid wat!!!")
         assert result.valid is False
         assert len(result.errors) > 0
     
     def test_wat_to_hex(self):
         """Test WAT to hex conversion."""
-        from agent_harness.contracts.runtime.wasm import wat_to_hex
+        from minxg.contracts.runtime.wasm import wat_to_hex
         result = wat_to_hex("(module)")
         assert isinstance(result, str)
         assert len(result) > 0

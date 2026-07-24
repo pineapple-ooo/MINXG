@@ -1,8 +1,8 @@
 """
-agent_harness/ga/operators_ga.py — Register GA operators into the global registry
+minxg/ga/operators_ga.py — Register GA operators into the global registry
 ====================================================================================
 
-This file bridges the geometric algebra engine to the agent_harness operator registry.
+This file bridges the geometric algebra engine to the minxg operator registry.
 Operators are auto-registered when the module is imported.
 
 Operator IDs in range 5000-5049 are reserved for Geometric Algebra.

@@ -8,8 +8,8 @@ import asyncio
 import uuid
 from collections import defaultdict
 from typing import Dict, List, Optional, Any, Callable, Union
-from agent_harness.base import BaseWorker, tool
-from agent_harness.sandbox import safe_eval as _safe_eval, safe_exec as _safe_exec
+from minxg.base import BaseWorker, tool
+from minxg.sandbox import safe_eval as _safe_eval, safe_exec as _safe_exec
 
 
 

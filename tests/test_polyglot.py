@@ -1,6 +1,6 @@
-"""Tests for agent_harness.polyglot."""
+"""Tests for minxg.polyglot."""
 import pytest
-from agent_harness.polyglot import (
+from minxg.polyglot import (
     OperatorGraph, OperatorNode, OperatorEdge,
     normalize, detect_language, detect_language_from_path,
 )

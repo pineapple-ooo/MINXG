@@ -1,5 +1,5 @@
 """
-agent_harness/cat/operators_cat.py — Register CAT (Category-Theoretic) operators
+minxg/cat/operators_cat.py — Register CAT (Category-Theoretic) operators
 ================================================================================
 
 100+ categorical operators. Each operator has its TYPE SIGNATURE encoded

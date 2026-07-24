@@ -94,7 +94,7 @@ def _status_handler(_: str) -> str:
 
 def _doctor_handler(_: str) -> str:
     try:
-        from agent_harness.cli.doctor import run_doctor
+        from minxg.cli.doctor import run_doctor
         return run_doctor()
     except Exception as exc:
         return f"doctor failed: {exc}"

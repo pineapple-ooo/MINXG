@@ -1,5 +1,5 @@
 """Color conversion and manipulation tools."""
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 class ColorWorker(BaseWorker):
     facade_alias = "color_worker"

@@ -1,5 +1,5 @@
 """
-agent_harness/extension_api.py — v0.18.3 unified extension surface.
+minxg/extension_api.py — v0.18.3 unified extension surface.
 
 Three bridges:
   1. Plugin schema    — Python decorator-based plugin registry (like hermes-agent plugins/)
@@ -29,7 +29,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
-log = logging.getLogger("agent_harness.extensions")
+log = logging.getLogger("minxg.extensions")
 
 # ── Plugin schema ───────────────────────────────────────────────
 
@@ -42,7 +42,7 @@ class PluginManifest:
     description: str
     author: str = "AgentHarness community"
     requires_python: str = ">=3.8"
-    agent_harness_min_version: str = "0.18.0"
+    minxg_min_version: str = "0.18.0"
     entrypoint: str = ""         # dotted module path of register() fn
     toolsets: List[str] = field(default_factory=list)  # e.g. ["file", "web", "terminal"]
     env_vars: Dict[str, str] = field(default_factory=dict)

@@ -40,7 +40,7 @@ class Metric:
 class MetricsCollector:
     """Multi-dimensional metrics collector with counters, gauges, and histograms"""
 
-    def __init__(self, prefix="agent_harness", max_points=DEFAULT_MAX_POINTS):
+    def __init__(self, prefix="minxg", max_points=DEFAULT_MAX_POINTS):
         self.prefix = prefix
         self.max_points = max_points
         self._metrics = defaultdict(lambda: deque(maxlen=max_points))

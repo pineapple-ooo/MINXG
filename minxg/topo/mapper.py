@@ -1,5 +1,5 @@
 """
-agent_harness/topo/mapper.py — Mapper Algorithm for Topological Simplification
+minxg/topo/mapper.py — Mapper Algorithm for Topological Simplification
 ==============================================================================
 
 The MAPPER ALGORITHM (Singh, Mémoli, Carlsson 2007) is a topological

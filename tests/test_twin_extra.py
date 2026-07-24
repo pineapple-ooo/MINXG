@@ -1,7 +1,7 @@
-"""Extra coverage for agent_harness.twin — Python<->Rust AST twin compiler."""
+"""Extra coverage for minxg.twin — Python<->Rust AST twin compiler."""
 import textwrap
 import pytest
-from agent_harness.twin import (
+from minxg.twin import (
     python_to_rust,
     rust_to_python,
     UnsupportedTwinOp,
@@ -11,8 +11,8 @@ from agent_harness.twin import (
 
 def test_twin_module_imports_cleanly():
     import importlib
-    import agent_harness.twin
-    importlib.reload(agent_harness.twin)
+    import minxg.twin
+    importlib.reload(minxg.twin)
 
 
 def test_python_to_rust_if_else_chain():

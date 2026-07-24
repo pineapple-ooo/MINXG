@@ -7,7 +7,7 @@ import difflib
 import re
 from typing import Dict, List
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 _has_native = False
 _slugify = _truncate = _extract_urls = _extract_emails = None

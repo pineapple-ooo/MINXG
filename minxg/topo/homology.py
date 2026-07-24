@@ -1,5 +1,5 @@
 """
-agent_harness/topo/homology.py — Homology Computations
+minxg/topo/homology.py — Homology Computations
 =======================================================
 
 HOMOLOGY is the algebraic-topology tool for detecting "holes":

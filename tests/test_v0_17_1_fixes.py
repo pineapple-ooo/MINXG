@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 def test_baseworker_statistics_exposes_metadata():
     """Workers expose metadata in stats."""
-    from agent_harness.five_pillars.dispatch.platform_tools import PlatformWorker
+    from minxg.five_pillars.dispatch.platform_tools import PlatformWorker
     w = PlatformWorker()
     stat = w.statistics()
     assert "tool_count" in stat
@@ -25,8 +25,8 @@ def test_baseworker_statistics_exposes_metadata():
 
 def test_baseworker_list_tools_returns_registered_tools():
     """All workers list their registered tools, including aliased ones."""
-    from agent_harness.five_pillars.dispatch.platform_tools import PlatformWorker
-    from agent_harness.five_pillars.io.fs_io import FsIoWorker
+    from minxg.five_pillars.dispatch.platform_tools import PlatformWorker
+    from minxg.five_pillars.io.fs_io import FsIoWorker
     w = PlatformWorker()
     tools = w.list_tools()
     assert isinstance(tools, list)
@@ -40,7 +40,7 @@ def test_baseworker_list_tools_returns_registered_tools():
 
 def test_baseworker_statistics_tool_count_matches_list():
     """statistics() tool_count matches list_tools() length."""
-    from agent_harness.five_pillars.io.fs_io import FsIoWorker
+    from minxg.five_pillars.io.fs_io import FsIoWorker
     w = FsIoWorker()
     stat = w.statistics()
     tools = w.list_tools()
@@ -49,7 +49,7 @@ def test_baseworker_statistics_tool_count_matches_list():
 
 def test_unaliased_worker_has_no_facade_alias_field():
     """A non-aliased worker still has facade_alias = None in its stats."""
-    from agent_harness.five_pillars.devtools.android_forge import AndroidForgeWorker
+    from minxg.five_pillars.devtools.android_forge import AndroidForgeWorker
     w = AndroidForgeWorker()
     s = w.statistics()
     assert s["facade_alias"] is None
@@ -59,7 +59,7 @@ def test_unaliased_worker_has_no_facade_alias_field():
 @pytest.mark.asyncio
 async def test_concurrent_runner_active_count_increases():
     """Active counter ticks up while futures are in-flight."""
-    from agent_harness.five_pillars.transform.concurrent_runner import (
+    from minxg.five_pillars.transform.concurrent_runner import (
         ConcurrentRunner, _Runner)
     _Runner._in_flight = 0  # reset state between tests
     w = ConcurrentRunner()
@@ -72,7 +72,7 @@ async def test_concurrent_runner_active_count_increases():
 
 @pytest.mark.asyncio
 async def test_concurrent_runner_stats_returns_real_active():
-    from agent_harness.five_pillars.transform.concurrent_runner import ConcurrentRunner, _Runner
+    from minxg.five_pillars.transform.concurrent_runner import ConcurrentRunner, _Runner
     _Runner._in_flight = 0
     w = ConcurrentRunner()
     res = await w.call("runner_stats", {"shutdown": False})
@@ -83,7 +83,7 @@ async def test_concurrent_runner_stats_returns_real_active():
 
 @pytest.mark.asyncio
 async def test_concurrent_runner_map_increments_counter():
-    from agent_harness.five_pillars.transform.concurrent_runner import ConcurrentRunner, _Runner
+    from minxg.five_pillars.transform.concurrent_runner import ConcurrentRunner, _Runner
     _Runner._in_flight = 0
     w = ConcurrentRunner()
     res = await w.call("runner_map", {"callable_name": "cpu_factorial",

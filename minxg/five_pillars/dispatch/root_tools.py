@@ -1,5 +1,5 @@
 """
-agent_harness/root_tools.py — Android ROOT command tools v1.0.0
+minxg/root_tools.py — Android ROOT command tools v1.0.0
 
 Superuser operations: root check, su execution, mount, chroot, iptables,
 sysctl, kernel modules, SELinux, Magisk management, system backup/restore.
@@ -14,7 +14,7 @@ import subprocess
 import tempfile
 from typing import Any, Dict, List, Optional
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 def _is_android() -> bool:
@@ -176,7 +176,7 @@ class RootWorker(BaseWorker):
         if not packages:
             return {"status": "error", "error": "Specify packages to backup"}
         if not output:
-            output = f"/sdcard/agent_harness_backup_{packages[0]}.tar"
+            output = f"/sdcard/minxg_backup_{packages[0]}.tar"
         pkgs = " ".join(packages)
         
         results = []

@@ -12,7 +12,7 @@ from pathlib import Path
 
 def test_file_read_worker():
     """Test file read worker."""
-    from agent_harness.workers.file.file_workers import FileReadWorker
+    from minxg.workers.file.file_workers import FileReadWorker
 
     with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
         f.write("Hello, World!\nLine 2\nLine 3")
@@ -29,7 +29,7 @@ def test_file_read_worker():
 
 def test_file_write_worker():
     """Test file write worker."""
-    from agent_harness.workers.file.file_workers import FileWriteWorker
+    from minxg.workers.file.file_workers import FileWriteWorker
 
     with tempfile.TemporaryDirectory() as tmpdir:
         path = Path(tmpdir) / "test.txt"
@@ -43,7 +43,7 @@ def test_file_write_worker():
 
 def test_file_hash_worker():
     """Test file hash worker."""
-    from agent_harness.workers.file.file_workers import FileHashWorker
+    from minxg.workers.file.file_workers import FileHashWorker
 
     with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
         f.write("test")
@@ -64,7 +64,7 @@ def test_file_hash_worker():
 
 def test_url_parse_worker():
     """Test URL parse worker."""
-    from agent_harness.workers.network.network_workers import URLParseWorker
+    from minxg.workers.network.network_workers import URLParseWorker
 
     worker = URLParseWorker()
     result = worker.execute("https://example.com:8080/path?key=value#fragment")
@@ -77,7 +77,7 @@ def test_url_parse_worker():
 
 def test_ping_worker():
     """Test ping worker."""
-    from agent_harness.workers.network.network_workers import PingWorker
+    from minxg.workers.network.network_workers import PingWorker
 
     worker = PingWorker()
     result = worker.execute("127.0.0.1", count=1, timeout=2)
@@ -92,7 +92,7 @@ def test_ping_worker():
 
 def test_hash_worker():
     """Test hash worker."""
-    from agent_harness.workers.crypto.crypto_workers import HashWorker
+    from minxg.workers.crypto.crypto_workers import HashWorker
 
     worker = HashWorker()
     result = worker.execute("hello", "sha256")
@@ -103,7 +103,7 @@ def test_hash_worker():
 
 def test_hmac_worker():
     """Test HMAC worker."""
-    from agent_harness.workers.crypto.crypto_workers import HMACWorker
+    from minxg.workers.crypto.crypto_workers import HMACWorker
 
     worker = HMACWorker()
     result = worker.execute("message", "secret", "sha256")
@@ -114,7 +114,7 @@ def test_hmac_worker():
 
 def test_random_bytes_worker():
     """Test random bytes worker."""
-    from agent_harness.workers.crypto.crypto_workers import RandomBytesWorker
+    from minxg.workers.crypto.crypto_workers import RandomBytesWorker
 
     worker = RandomBytesWorker()
     result = worker.execute(32, "hex")
@@ -128,7 +128,7 @@ def test_random_bytes_worker():
 
 def test_calculator_worker():
     """Test calculator worker."""
-    from agent_harness.workers.math.math_workers import CalculatorWorker
+    from minxg.workers.math.math_workers import CalculatorWorker
 
     worker = CalculatorWorker()
     result = worker.execute("2 + 3 * 4")
@@ -138,7 +138,7 @@ def test_calculator_worker():
 
 def test_statistics_worker():
     """Test statistics worker."""
-    from agent_harness.workers.math.math_workers import StatisticsWorker
+    from minxg.workers.math.math_workers import StatisticsWorker
 
     worker = StatisticsWorker()
     result = worker.execute([1, 2, 3, 4, 5])
@@ -151,7 +151,7 @@ def test_statistics_worker():
 
 def test_prime_worker():
     """Test prime worker."""
-    from agent_harness.workers.math.math_workers import PrimeWorker
+    from minxg.workers.math.math_workers import PrimeWorker
 
     worker = PrimeWorker()
     assert worker.execute(7, "is_prime")["is_prime"] is True
@@ -163,7 +163,7 @@ def test_prime_worker():
 
 def test_geometry_worker():
     """Test geometry worker."""
-    from agent_harness.workers.math.math_workers import GeometryWorker
+    from minxg.workers.math.math_workers import GeometryWorker
     import math
 
     worker = GeometryWorker()
@@ -179,7 +179,7 @@ def test_geometry_worker():
 
 def test_text_process_worker():
     """Test text process worker."""
-    from agent_harness.workers.text.text_workers import TextProcessWorker
+    from minxg.workers.text.text_workers import TextProcessWorker
 
     worker = TextProcessWorker()
     result = worker.execute("Hello World", "word_count")
@@ -190,7 +190,7 @@ def test_text_process_worker():
 
 def test_regex_worker():
     """Test regex worker."""
-    from agent_harness.workers.text.text_workers import RegexWorker
+    from minxg.workers.text.text_workers import RegexWorker
 
     worker = RegexWorker()
     result = worker.execute("abc123def", r"\d+", "findall")
@@ -201,7 +201,7 @@ def test_regex_worker():
 
 def test_text_diff_worker():
     """Test text diff worker."""
-    from agent_harness.workers.text.text_workers import TextDiffWorker
+    from minxg.workers.text.text_workers import TextDiffWorker
 
     worker = TextDiffWorker()
     result = worker.execute("hello world", "hello there", "similarity")
@@ -216,7 +216,7 @@ def test_text_diff_worker():
 
 def test_system_info_worker():
     """Test system info worker."""
-    from agent_harness.workers.system.system_workers import SystemInfoWorker
+    from minxg.workers.system.system_workers import SystemInfoWorker
 
     worker = SystemInfoWorker()
     result = worker.execute()
@@ -228,7 +228,7 @@ def test_system_info_worker():
 
 def test_disk_worker():
     """Test disk worker."""
-    from agent_harness.workers.system.system_workers import DiskWorker
+    from minxg.workers.system.system_workers import DiskWorker
 
     worker = DiskWorker()
     result = worker.execute("/")
@@ -240,7 +240,7 @@ def test_disk_worker():
 
 def test_uptime_worker():
     """Test uptime worker."""
-    from agent_harness.workers.system.system_workers import UptimeWorker
+    from minxg.workers.system.system_workers import UptimeWorker
 
     worker = UptimeWorker()
     result = worker.execute()
@@ -256,7 +256,7 @@ def test_uptime_worker():
 
 def test_classify_worker():
     """Test classify worker."""
-    from agent_harness.workers.ai.ai_workers import ClassifyWorker
+    from minxg.workers.ai.ai_workers import ClassifyWorker
 
     worker = ClassifyWorker()
     result = worker.execute("I love programming in Python", ["python", "java", "rust"])
@@ -267,7 +267,7 @@ def test_classify_worker():
 
 def test_extract_worker():
     """Test extract worker."""
-    from agent_harness.workers.ai.ai_workers import ExtractWorker
+    from minxg.workers.ai.ai_workers import ExtractWorker
 
     worker = ExtractWorker()
     result = worker.execute("Contact us at test@example.com or visit https://example.com", ["email", "url"])
@@ -283,7 +283,7 @@ def test_extract_worker():
 
 def test_registry_list():
     """Test worker registry listing."""
-    from agent_harness.workers.registry import WorkerRegistry
+    from minxg.workers.registry import WorkerRegistry
 
     workers = WorkerRegistry.list_all()
     # Registry may be empty if auto-discovery didn't find workers
@@ -292,7 +292,7 @@ def test_registry_list():
 
 def test_registry_execute():
     """Test worker registry execution."""
-    from agent_harness.workers.registry import WorkerRegistry
+    from minxg.workers.registry import WorkerRegistry
 
     result = WorkerRegistry.execute("nonexistent_worker")
     assert "error" in result  # Should return error for unknown worker

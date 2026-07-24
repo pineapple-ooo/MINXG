@@ -4,14 +4,14 @@ extensions/package_cli.py CLI wiring.
 Covers three real, chained bugs found while building the multiagent
 extension, all in the "an enabled extension's CLI command is
 reachable" path — before this pass, NONE of files/adb/root/hello's
-`agent_harness <verb>` commands worked at all (`register_cli_extensions`/
+`minxg <verb>` commands worked at all (`register_cli_extensions`/
 `dispatch_extension` were never called from main.py), and even after
 wiring that up, `cmd in ext_map` never matched anything because the
-map was keyed by `EXTENSION_NAME` (e.g. "agent_harness-files") while every
+map was keyed by `EXTENSION_NAME` (e.g. "minxg-files") while every
 extension's `register_cli` registers a *different*, short argparse
-verb ("files"). On top of that, `agent_harness ext enable/disable` mutated an
+verb ("files"). On top of that, `minxg ext enable/disable` mutated an
 in-memory attribute that a fresh CLI process (i.e. every real
-invocation) never saw, and `agent_harness ext list` read that same
+invocation) never saw, and `minxg ext list` read that same
 never-persisted attribute directly instead of the state-file-aware
 `ext.enabled`. Each of the four is covered here independently.
 """
@@ -25,7 +25,7 @@ from pathlib import Path
 import pytest
 
 
-EXT_NAME = "agent_harness-test-cli-ext"
+EXT_NAME = "minxg-test-cli-ext"
 EXT_VERB = "testcliext"  # deliberately different from EXT_NAME, like the real builtins
 
 EXT_SOURCE = '''
@@ -123,7 +123,7 @@ class TestRegisterCliExtensions_VerbKeying:
 
 
 class TestEnableDisablePersistence:
-    """agent_harness ext enable/disable must survive a fresh process (i.e. a
+    """minxg ext enable/disable must survive a fresh process (i.e. a
     fresh discover_extensions() call), not just mutate the in-memory
     module object of the process that ran the command."""
 

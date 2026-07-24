@@ -1,5 +1,5 @@
 """
-agent_harness/chaos/bifurcation.py — Bifurcation Diagrams
+minxg/chaos/bifurcation.py — Bifurcation Diagrams
 =========================================================
 
 A BIFURCATION DIAGRAM plots the long-term behavior of a dynamical system

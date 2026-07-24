@@ -47,7 +47,7 @@ class ReActAgent:
 
     def __init__(
         self,
-        name: str = "agent_harness-agent",
+        name: str = "minxg-agent",
         max_steps: int = 50,
         tools: Optional[Dict[str, Callable]] = None,
     ):

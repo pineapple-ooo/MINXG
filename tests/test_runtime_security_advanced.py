@@ -3,8 +3,8 @@ from __future__ import annotations
 
 import pytest
 
-from agent_harness.contracts.runtime import handle
-from agent_harness.contracts.runtime._exec import SecurityPolicy, sanitize_env, validate_file_path, AuditLogger
+from minxg.contracts.runtime import handle
+from minxg.contracts.runtime._exec import SecurityPolicy, sanitize_env, validate_file_path, AuditLogger
 
 
 class TestSecurityPolicy:

@@ -1,4 +1,4 @@
-"""agent_harness.lens — Reverse docstring export.
+"""minxg.lens — Reverse docstring export.
 
 Implements the "reverse" of docstrings. Given a Python file or a parsed
 `OperatorGraph`, the lens produces:

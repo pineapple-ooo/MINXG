@@ -1,5 +1,5 @@
 """
-agent_harness/infogeo/fisher.py — Fisher Information & Natural Gradient
+minxg/infogeo/fisher.py — Fisher Information & Natural Gradient
 ========================================================================
 
 Fisher information and natural gradient descent — pure Python, no numpy.

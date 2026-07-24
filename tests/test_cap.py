@@ -1,21 +1,21 @@
-"""Tests for agent_harness.cap Corpus-based Capability Registry."""
+"""Tests for minxg.cap Corpus-based Capability Registry."""
 import pytest
 from pathlib import Path
-from agent_harness.cap import (
+from minxg.cap import (
     CapManifest, CapChange,
     CapModule,
     scan_file, scan_tree,
     get_manifest,
 )
-from agent_harness.cap import cli
-from agent_harness.cap import registry
+from minxg.cap import cli
+from minxg.cap import registry
 
 
 def test_scan_file_extracts_both_tags(tmp_path):
     fp = tmp_path / "x.py"
     fp.write_text(
-        "agent_harness.cap.provides: foo, foo.bar\n"
-        "agent_harness.cap.requires: net.http\n"
+        "minxg.cap.provides: foo, foo.bar\n"
+        "minxg.cap.requires: net.http\n"
         "import sys\n"
     )
     record = scan_file(fp)
@@ -33,7 +33,7 @@ def test_scan_file_returns_none_when_no_tags(tmp_path):
 def test_scan_file_only_provides(tmp_path):
     fp = tmp_path / "x.py"
     fp.write_text(
-        "agent_harness.cap.provides: alone\n"
+        "minxg.cap.provides: alone\n"
         "import sys\n"
     )
     record = scan_file(fp)
@@ -43,8 +43,8 @@ def test_scan_file_only_provides(tmp_path):
 
 
 def test_scan_tree_collects_in_path_order(tmp_path):
-    (tmp_path / "a.py").write_text('agent_harness.cap.provides: alpha\nimport sys\n')
-    (tmp_path / "b.py").write_text('agent_harness.cap.provides: beta\nimport sys\n')
+    (tmp_path / "a.py").write_text('minxg.cap.provides: alpha\nimport sys\n')
+    (tmp_path / "b.py").write_text('minxg.cap.provides: beta\nimport sys\n')
     (tmp_path / "nope.py").write_text('"""plain"""\n')
     records = scan_tree(tmp_path)
     assert [r.provides for r in records] == [("alpha",), ("beta",)]
@@ -141,9 +141,9 @@ def test_cli_check_returns_nonzero_on_missing(capsys):
 
 
 def test_get_manifest_scans_caller_module():
-    from agent_harness.cap import registry
+    from minxg.cap import registry
     registry.reset_manifest()
     manifest = get_manifest()
     paths = {m.path for m in manifest.modules.values()}
-    assert any("/agent_harness/cap/" in p for p in paths), \
+    assert any("/minxg/cap/" in p for p in paths), \
         f"expected cap module in scanned tree, got {list(paths)[:5]}"

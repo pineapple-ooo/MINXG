@@ -25,7 +25,7 @@ from concurrent.futures import (
 from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, TypeVar
 
 T = TypeVar("T")
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 class _Runner:

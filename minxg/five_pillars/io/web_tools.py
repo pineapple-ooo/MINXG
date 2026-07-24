@@ -6,9 +6,9 @@ from typing import Dict, List
 import urllib.parse
 import re
 import urllib.request
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
-from agent_harness.utils.network_safety import validate_url
+from minxg.utils.network_safety import validate_url
 
 
 def _safe_urlopen(url, **kwargs):

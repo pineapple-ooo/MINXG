@@ -1,8 +1,8 @@
-"""Extra coverage for agent_harness.lossless — codec, skeleton, and BIE primitives."""
+"""Extra coverage for minxg.lossless — codec, skeleton, and BIE primitives."""
 import struct
 import zlib
 import pytest
-from agent_harness.lossless import (
+from minxg.lossless import (
     sphere_embed,
     blade_between,
     BIEBlade,
@@ -14,8 +14,8 @@ from agent_harness.lossless import (
 
 def test_lossless_module_imports_cleanly():
     import importlib
-    import agent_harness.lossless
-    importlib.reload(agent_harness.lossless)
+    import minxg.lossless
+    importlib.reload(minxg.lossless)
 
 
 def test_codec_round_trip_empty_bytes():

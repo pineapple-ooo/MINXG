@@ -1,10 +1,10 @@
-"""agent_harness.screen.action.action_engine — Unified screen action dispatcher.
+"""minxg.screen.action.action_engine — Unified screen action dispatcher.
 
 Each action (tap/swipe/type/keyevent) has a primary + fallback implementation
 and built-in retry/adaptation logic. This is the single entry point for
 all AI-generated screen operations.
 
-Primary backend : agent_harness.screen.action.input_engine (in-process)
+Primary backend : minxg.screen.action.input_engine (in-process)
 Fallback        : adb shell subprocess with coordinate perturbation
 """
 from __future__ import annotations
@@ -17,7 +17,7 @@ from .input_engine import tap as _input_tap, swipe as _input_swipe, \
     type_text as _input_type_text, keyevent as _input_keyevent
 from ..perception.element_index import ElementIndex
 
-log = logging.getLogger("agent_harness.screen.action_engine")
+log = logging.getLogger("minxg.screen.action_engine")
 
 
 # ── Action record (audit trail) ───────────────────────────

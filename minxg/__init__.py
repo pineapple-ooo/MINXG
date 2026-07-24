@@ -1,4 +1,4 @@
-"""agent_harness — Seven-Pillar Operator Architecture v0.16.0
+"""minxg — Seven-Pillar Operator Architecture v0.16.0
 
 A modular worker platform organized along seven mathematical/functional
 operator dimensions. Each pillar is independently importable so that
@@ -138,7 +138,7 @@ __all__ = [
     "twin", "lens", "self_evolution", "polyglot", "symbdiff", "screen",
 ]
 
-# Single source of truth: see agent_harness/_version.py
+# Single source of truth: see minxg/_version.py
 from ._version import VERSION, banner, parse, get_version
 try:
     __version__ = VERSION
@@ -191,7 +191,7 @@ except ImportError:
     _symbdiff = None
 
 # Promote standalone subsystems to top-level so callers can do
-# `import agent_harness; agent_harness.twin` the same way they do `agent_harness.ga`.
+# `import minxg; minxg.twin` the same way they do `minxg.ga`.
 if _cap is not None:
     cap = _cap
 if _contracts is not None:

@@ -1,4 +1,4 @@
-"""agent_harness.screen.perception.layout_analyzer — UI understanding from layout + OCR.
+"""minxg.screen.perception.layout_analyzer — UI understanding from layout + OCR.
 
 Combines UIAutomator XML + OCR text to produce a structured description
 AI can reason about. This is the CORE capability that lets AI "understand"

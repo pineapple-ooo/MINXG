@@ -4,10 +4,10 @@ get_process_list, get_network_info
 """
 from __future__ import annotations
 from typing import Dict
-from agent_harness.base import BaseWorker, tool
-from agent_harness.five_pillars.io.fs_io import FsIoWorker
-from agent_harness.five_pillars.io.fs_search import FsSearchWorker
-from agent_harness.five_pillars.dispatch.system import SystemWorker
+from minxg.base import BaseWorker, tool
+from minxg.five_pillars.io.fs_io import FsIoWorker
+from minxg.five_pillars.io.fs_search import FsSearchWorker
+from minxg.five_pillars.dispatch.system import SystemWorker
 
 
 class ShQueryWorker(BaseWorker):

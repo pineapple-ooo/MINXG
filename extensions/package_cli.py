@@ -1,18 +1,18 @@
 """
-extensions/package_cli.py — `agent_harness ext ...` subcommand dispatch.
+extensions/package_cli.py — `minxg ext ...` subcommand dispatch.
 
 Pure-English CLI surface. Subcommands:
 
-    agent_harness ext list                  show installed extensions
-    agent_harness ext available             show built-in optional extensions
-    agent_harness ext add <slug-or-path>    install a built-in or a user-supplied .py
-    agent_harness ext remove <name>         remove an installed extension
-    agent_harness ext info <name>           show details of one extension
-    agent_harness ext enable <name>         enable without re-installing
-    agent_harness ext disable <name>        disable without removing
+    minxg ext list                  show installed extensions
+    minxg ext available             show built-in optional extensions
+    minxg ext add <slug-or-path>    install a built-in or a user-supplied .py
+    minxg ext remove <name>         remove an installed extension
+    minxg ext info <name>           show details of one extension
+    minxg ext enable <name>         enable without re-installing
+    minxg ext disable <name>        disable without removing
 
 Built-in optional extensions (adb / root / files) are NOT enabled at
-install time — users opt in explicitly with `agent_harness ext add agent_harness-adb`
+install time — users opt in explicitly with `minxg ext add minxg-adb`
 etc. The `available` subcommand surfaces these so users can see the
 menu without reading the docs.
 """
@@ -47,10 +47,10 @@ BUILTIN_DIR = Path(__file__).parent / "builtin"
 USER_DIR = Path(__file__).parent / "user"
 
 BUILTIN_OPTIONAL = {
-    "agent_harness-adb":  ("adb_ext",  "ADB tools: manage connected Android devices"),
-    "agent_harness-root": ("root_ext", "ROOT tools: su / mount / iptables / sysctl"),
-    "agent_harness-files":("files_ext","Cross-platform interactive file browser"),
-    "agent_harness-multiagent": ("multiagent_ext",
+    "minxg-adb":  ("adb_ext",  "ADB tools: manage connected Android devices"),
+    "minxg-root": ("root_ext", "ROOT tools: su / mount / iptables / sysctl"),
+    "minxg-files":("files_ext","Cross-platform interactive file browser"),
+    "minxg-multiagent": ("multiagent_ext",
                           "Multi-agent coding crew: Planner -> parallel Coders -> Reviewer"),
 }
 
@@ -86,7 +86,7 @@ def _emit_enabled_state(ext: ExtensionModule) -> str:
 def _find_by_name(name: str) -> Optional[ExtensionModule]:
     """Find an installed extension by its EXTENSION_NAME."""
     for ext in get_extensions():
-        if ext.name == name or ext.name == f"agent_harness-{name}":
+        if ext.name == name or ext.name == f"minxg-{name}":
             return ext
     return None
 
@@ -96,12 +96,12 @@ def _find_by_name(name: str) -> Optional[ExtensionModule]:
 # ---------------------------------------------------------------------------
 
 def cmd_list(args) -> int:
-    """`agent_harness ext list` — show every installed extension and its state."""
+    """`minxg ext list` — show every installed extension and its state."""
     rows = list_extensions()
     if not rows:
         print_info("No extensions installed.")
-        print_info("Run `agent_harness ext available` to see built-in options, "
-                   "or `agent_harness ext add <path>` to install your own.")
+        print_info("Run `minxg ext available` to see built-in options, "
+                   "or `minxg ext add <path>` to install your own.")
         return 0
 
     header = "  name                  source     version     state      description"
@@ -116,7 +116,7 @@ def cmd_list(args) -> int:
         # the module's own EXTENSION_ENABLED default (ExtensionModule.enabled
         # already computes this correctly — reuse it instead of
         # re-deriving straight from the module's source-code attribute,
-        # which ignores any `agent_harness ext enable/disable` the person ran).
+        # which ignores any `minxg ext enable/disable` the person ran).
         loaded = True  # default: opt-in flag is True unless ext sets it False
         for ext in get_extensions():
             if ext.name == name:
@@ -129,7 +129,7 @@ def cmd_list(args) -> int:
 
 
 def cmd_available(args) -> int:
-    """`agent_harness ext available` — show built-in optional extensions."""
+    """`minxg ext available` — show built-in optional extensions."""
     print_info("Built-in optional extensions (default OFF, opt-in only):")
     print_dim("  " + "─" * 60)
     for slug, (folder, desc) in BUILTIN_OPTIONAL.items():
@@ -138,12 +138,12 @@ def cmd_available(args) -> int:
         sys.stdout.write(f"  {slug:<14}  {desc}  {marker}\n")
     sys.stdout.flush()
     print_info("")
-    print_info("Install any of them with `agent_harness ext add <slug>`.")
+    print_info("Install any of them with `minxg ext add <slug>`.")
     return 0
 
 
 def cmd_add(args) -> int:
-    """`agent_harness ext add <spec>` — install a built-in slug or a local .py path."""
+    """`minxg ext add <spec>` — install a built-in slug or a local .py path."""
     specs = getattr(args, "spec", None) or []
     rc = 0
     for spec in specs:
@@ -178,7 +178,7 @@ def _install_one(spec: str) -> int:
                     shutil.copy2(entry, dest)
             print_success(f"Installed built-in {spec}")
             print_info(f"  Path: {target_dir}")
-            print_info("  Run `agent_harness ext list` to see it.")
+            print_info("  Run `minxg ext list` to see it.")
             return 0
         except Exception as e:
             print_error(f"Install failed: {e}")
@@ -217,7 +217,7 @@ def _install_one(spec: str) -> int:
 
 
 def cmd_remove(args) -> int:
-    """`agent_harness ext remove <name>` — uninstall an extension by name."""
+    """`minxg ext remove <name>` — uninstall an extension by name."""
     name = getattr(args, "name", "")
     ext = _find_by_name(name)
     if ext is None:
@@ -230,7 +230,7 @@ def cmd_remove(args) -> int:
         # Fallback: locate by slug under extensions/user
         if USER_DIR.exists():
             for entry in USER_DIR.iterdir():
-                if entry.name.startswith(name.split("agent_harness-")[-1]):
+                if entry.name.startswith(name.split("minxg-")[-1]):
                     target = entry
                     break
 
@@ -250,12 +250,12 @@ def cmd_remove(args) -> int:
 
 
 def cmd_info(args) -> int:
-    """`agent_harness ext info <name>` — show details of one extension."""
+    """`minxg ext info <name>` — show details of one extension."""
     name = getattr(args, "name", "")
     ext = _find_by_name(name)
     if ext is None:
         print_error(f"Extension not installed: {name}")
-        print_info("Run `agent_harness ext list` to see installed extensions.")
+        print_info("Run `minxg ext list` to see installed extensions.")
         return 1
 
     print_info("")
@@ -321,7 +321,7 @@ SUB_COMMANDS = {
 
 def _show_help() -> int:
     """Print ext subcommand help when invoked with no action."""
-    print_info("Usage: agent_harness ext <action> [args]")
+    print_info("Usage: minxg ext <action> [args]")
     print_info("")
     print_info("Actions:")
     print_info("  list                          List installed extensions")
@@ -333,9 +333,9 @@ def _show_help() -> int:
     print_info("  disable <name>                Disable without removing")
     print_info("")
     print_info("Examples:")
-    print_info("  agent_harness ext available")
-    print_info("  agent_harness ext add agent_harness-adb")
-    print_info("  agent_harness ext add /path/to/my_ext.py")
+    print_info("  minxg ext available")
+    print_info("  minxg ext add minxg-adb")
+    print_info("  minxg ext add /path/to/my_ext.py")
     return 0
 
 

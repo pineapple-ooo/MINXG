@@ -15,7 +15,7 @@ from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, List, Optional, Tuple
 from pathlib import Path
 
-logger = logging.getLogger("agent_harness.agent")
+logger = logging.getLogger("minxg.agent")
 
 
 @dataclass

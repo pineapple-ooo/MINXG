@@ -1,5 +1,5 @@
 """
-agent_harness/fiber/operators_fiber.py — Register Fiber Bundle operators
+minxg/fiber/operators_fiber.py — Register Fiber Bundle operators
 ==========================================================================
 
 50+ fiber bundle operators. Operator IDs 6000-6499 are reserved.

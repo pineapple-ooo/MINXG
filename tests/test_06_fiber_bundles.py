@@ -1,6 +1,6 @@
 """Fiber Bundles: connections, curvature, geodesics, parallel transport."""
 import math
-from agent_harness.fiber import (
+from minxg.fiber import (
     Connection, ParallelTransport, Curvature,
     TangentBundle, RiemannianMetric,
 )

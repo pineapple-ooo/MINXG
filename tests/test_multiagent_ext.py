@@ -249,6 +249,6 @@ class TestExtensionMetadata:
 
     def test_has_required_contract_attrs(self):
         import extensions.builtin.multiagent_ext as ext_mod
-        assert ext_mod.EXTENSION_NAME == "agent_harness-multiagent"
+        assert ext_mod.EXTENSION_NAME == "minxg-multiagent"
         assert ext_mod.EXTENSION_DESCRIPTION
         assert callable(ext_mod.handle_command)

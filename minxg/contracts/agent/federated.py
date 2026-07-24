@@ -1,5 +1,5 @@
 """
-agent_harness.contracts.agent.federated — Federated Agent Mesh
+minxg.contracts.agent.federated — Federated Agent Mesh
 ======================================================
 
 Bold design: multiple AgentHarness instances collaborate across network boundaries

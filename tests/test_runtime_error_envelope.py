@@ -3,8 +3,8 @@ from __future__ import annotations
 
 import pytest
 
-from agent_harness.contracts.runtime import handle
-from agent_harness.contracts.runtime._exec import SecurityPolicy, AuditLogger
+from minxg.contracts.runtime import handle
+from minxg.contracts.runtime._exec import SecurityPolicy, AuditLogger
 
 
 class TestErrorEnvelope:
@@ -95,7 +95,7 @@ class TestErrorEnvelope:
         result = handle({"language": "invalid_lang", "mode": "eval"})
         # Should not contain stack traces or internal paths
         assert "Traceback" not in str(result)
-        assert "agent_harness/contracts" not in str(result) or "language" in result
+        assert "minxg/contracts" not in str(result) or "language" in result
 
     def test_timeout_error_envelope(self):
         """Test timeout error envelope."""

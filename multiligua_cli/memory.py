@@ -35,7 +35,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 
 
-AgentHarness_HOME = Path.home() / ".agent_harness"
+AgentHarness_HOME = Path.home() / ".minxg"
 MEMORY_DIR = AgentHarness_HOME / "memory"
 MEMORY_DB = MEMORY_DIR / "memory.db"
 

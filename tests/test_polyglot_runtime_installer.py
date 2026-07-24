@@ -1,6 +1,6 @@
 """tests/test_polyglot_runtime_installer.py — polyglot runtime install helpers.
 
-Covers ``agent_harness/contracts/runtime/installer.py`` plus the two
+Covers ``minxg/contracts/runtime/installer.py`` plus the two
 [EXPERIMENTAL] CLI verbs wired in
 ``multiligua_cli/experimental.py`` (0.14+).
 
@@ -67,14 +67,14 @@ class PlatformIDTests(unittest.TestCase):
     """
 
     def test_termux_via_env_var(self):
-        from agent_harness.contracts.runtime.installer import platform_id
+        from minxg.contracts.runtime.installer import platform_id
         with mock.patch.dict(
             os.environ, {"TERMUX_VERSION": "0.118"}, clear=False
         ):
             self.assertEqual(platform_id(), "termux")
 
     def test_termux_via_app_dir(self):
-        from agent_harness.contracts.runtime.installer import platform_id
+        from minxg.contracts.runtime.installer import platform_id
         env = {k: v for k, v in os.environ.items() if k != "TERMUX_VERSION"}
         with mock.patch.dict(os.environ, env, clear=True), \
              mock.patch("os.path.isdir", return_value=True):
@@ -82,7 +82,7 @@ class PlatformIDTests(unittest.TestCase):
 
     def test_linux_when_neither_termux_nor_darwin(self):
         """v0.18.0: Linux is officially supported; returns 'linux'."""
-        from agent_harness.contracts.runtime.installer import platform_id
+        from minxg.contracts.runtime.installer import platform_id
         env = {k: v for k, v in os.environ.items() if k != "TERMUX_VERSION"}
         with mock.patch.dict(os.environ, env, clear=True), \
              mock.patch("os.path.isdir", return_value=False), \
@@ -91,7 +91,7 @@ class PlatformIDTests(unittest.TestCase):
 
     def test_macos(self):
         """v0.18.0: macOS is officially supported; returns 'macos'."""
-        from agent_harness.contracts.runtime.installer import platform_id
+        from minxg.contracts.runtime.installer import platform_id
         env = {k: v for k, v in os.environ.items() if k != "TERMUX_VERSION"}
         with mock.patch.dict(os.environ, env, clear=True), \
              mock.patch("os.path.isdir", return_value=False), \
@@ -99,7 +99,7 @@ class PlatformIDTests(unittest.TestCase):
             self.assertEqual(platform_id(), "macos")
 
     def test_windows_msys(self):
-        from agent_harness.contracts.runtime.installer import platform_id
+        from minxg.contracts.runtime.installer import platform_id
         env = {k: v for k, v in os.environ.items() if k != "TERMUX_VERSION"}
         with mock.patch.dict(os.environ, env, clear=True), \
              mock.patch("os.path.isdir", return_value=False), \
@@ -107,7 +107,7 @@ class PlatformIDTests(unittest.TestCase):
             self.assertEqual(platform_id(), "windows")
 
     def test_unknown_for_exotic_system(self):
-        from agent_harness.contracts.runtime.installer import platform_id
+        from minxg.contracts.runtime.installer import platform_id
         env = {k: v for k, v in os.environ.items() if k != "TERMUX_VERSION"}
         with mock.patch.dict(os.environ, env, clear=True), \
              mock.patch("os.path.isdir", return_value=False), \
@@ -125,7 +125,7 @@ class DetectRuntimeTests(unittest.TestCase):
 
 
     def test_wasm_optional_missing_is_fine(self):
-        from agent_harness.contracts.runtime.installer import detect_runtime
+        from minxg.contracts.runtime.installer import detect_runtime
         with mock.patch("shutil.which", return_value=None):
             st = detect_runtime("wasm")
         self.assertFalse(st.available)
@@ -134,11 +134,11 @@ class DetectRuntimeTests(unittest.TestCase):
 
 
     def test_julia_with_version(self):
-        from agent_harness.contracts.runtime.installer import detect_runtime
+        from minxg.contracts.runtime.installer import detect_runtime
         with mock.patch(
             "shutil.which", return_value="/usr/local/julia/bin/julia"
         ), mock.patch(
-            "agent_harness.contracts.runtime._exec.run",
+            "minxg.contracts.runtime._exec.run",
             return_value={"ok": True, "stdout": "1.10.5", "stderr": ""},
         ):
             st = detect_runtime("julia")
@@ -146,14 +146,14 @@ class DetectRuntimeTests(unittest.TestCase):
         self.assertEqual(st.version_hint, "1.10.5")
 
     def test_datalog_clingo_preferred(self):
-        from agent_harness.contracts.runtime.installer import detect_runtime
+        from minxg.contracts.runtime.installer import detect_runtime
         with mock.patch("shutil.which", return_value="/usr/bin/clingo"):
             st = detect_runtime("datalog")
         self.assertTrue(st.available)
         self.assertIn("clingo", st.binary)
 
     def test_datalog_pydatalog_fallback(self):
-        from agent_harness.contracts.runtime.installer import detect_runtime
+        from minxg.contracts.runtime.installer import detect_runtime
         with mock.patch("shutil.which", return_value=None), \
              mock.patch.dict(sys.modules, {"pyDatalog": mock.MagicMock()}):
             st = detect_runtime("datalog")
@@ -161,7 +161,7 @@ class DetectRuntimeTests(unittest.TestCase):
         self.assertIn("pyDatalog", st.binary)
 
     def test_unknown_language_says_so(self):
-        from agent_harness.contracts.runtime.installer import detect_runtime
+        from minxg.contracts.runtime.installer import detect_runtime
         st = detect_runtime("brainfuck")
         self.assertFalse(st.available)
         self.assertIn("unknown", st.note)
@@ -179,7 +179,7 @@ class PlanInstallTests(unittest.TestCase):
     PLATS = ("termux", "linux", "macos", "windows", "unknown")
 
     def test_managed_languages_have_a_plan(self):
-        from agent_harness.contracts.runtime.installer import (
+        from minxg.contracts.runtime.installer import (
             plan_install, MANAGED_LANGUAGES,
         )
         self.assertEqual(
@@ -194,7 +194,7 @@ class PlanInstallTests(unittest.TestCase):
             self.assertEqual(set(plan.commands.keys()), set(self.PLATS))
 
     def test_unmanaged_language_still_yields_a_plan(self):
-        from agent_harness.contracts.runtime.installer import plan_install
+        from minxg.contracts.runtime.installer import plan_install
         plan = plan_install("brainfuck")
         self.assertEqual(plan.language, "brainfuck")
         # All platforms present, but no real cmd.
@@ -203,14 +203,14 @@ class PlanInstallTests(unittest.TestCase):
             self.assertEqual(cmd, "")
 
     def test_unknown_platform_falls_back_to_unknown_key(self):
-        from agent_harness.contracts.runtime.installer import plan_install
+        from minxg.contracts.runtime.installer import plan_install
         plan = plan_install("cpp")
         cmd, _ = plan.command_for("Plan9")
         # Unknown plat picks the ``unknown`` recipe (empty).
         self.assertEqual(cmd, plan.commands["unknown"])
 
     def test_render_includes_status_per_language(self):
-        from agent_harness.contracts.runtime.installer import (
+        from minxg.contracts.runtime.installer import (
             plan_install, render_install_plan,
         )
         plans = [plan_install(lang) for lang in ("wasm", "julia")]
@@ -221,7 +221,7 @@ class PlanInstallTests(unittest.TestCase):
         self.assertIn("pkg install -y wasmtime", rendered)
 
     def test_status_snapshot_layout(self):
-        from agent_harness.contracts.runtime.installer import status_snapshot
+        from minxg.contracts.runtime.installer import status_snapshot
         rows = status_snapshot()
         self.assertEqual(len(rows), 3)
         for row in rows:
@@ -232,7 +232,7 @@ class PlanInstallTests(unittest.TestCase):
             self.assertIn(row["available"], ("yes", "no"))
 
     def test_current_plan_all_handles_unknown_id(self):
-        from agent_harness.contracts.runtime.installer import current_plan
+        from minxg.contracts.runtime.installer import current_plan
         # ``all`` returns one plan per managed language, ``brainfuck``
         # returns a single no-op plan.
         plans = current_plan("brainfuck")
@@ -250,7 +250,7 @@ class RunInstallTests(unittest.TestCase):
     """The executor is the only place subprocess calls are made."""
 
     def test_dry_run_never_calls_runner(self):
-        from agent_harness.contracts.runtime.installer import run_install
+        from minxg.contracts.runtime.installer import run_install
         calls = []
 
         def tracker(cmd):
@@ -258,7 +258,7 @@ class RunInstallTests(unittest.TestCase):
             return {"ok": True, "stdout": "", "stderr": ""}
 
         with mock.patch(
-            "agent_harness.contracts.runtime._exec.run"
+            "minxg.contracts.runtime._exec.run"
         ) as runner, mock.patch("shutil.which", return_value=None):
             runner.side_effect = lambda *a, **kw: (_ for _ in ()).throw(
                 AssertionError("dry-run must not call _exec.run")
@@ -269,7 +269,7 @@ class RunInstallTests(unittest.TestCase):
         self.assertFalse(result["plans"][0]["applied"])
 
     def test_apply_uses_runner_and_marks_applied(self):
-        from agent_harness.contracts.runtime.installer import run_install
+        from minxg.contracts.runtime.installer import run_install
         seen = []
 
         def fake_runner(cmd):
@@ -288,7 +288,7 @@ class RunInstallTests(unittest.TestCase):
         self.assertTrue(rows[0]["runner_output"]["ok"])
 
     def test_apply_surfaces_failure(self):
-        from agent_harness.contracts.runtime.installer import run_install
+        from minxg.contracts.runtime.installer import run_install
 
         def bad_runner(cmd):
             return {"ok": False, "stdout": "", "stderr": "permission denied"}
@@ -307,7 +307,7 @@ class RunInstallTests(unittest.TestCase):
         a sentinel ``echo 'already on PATH'`` cmd which the executor
         short-circuits without invoking the runner.
         """
-        from agent_harness.contracts.runtime.installer import run_install
+        from minxg.contracts.runtime.installer import run_install
         triggered = []
 
         def failing_runner(cmd):
@@ -326,7 +326,7 @@ class RunInstallTests(unittest.TestCase):
         self.assertFalse(result["plans"][0]["applied"])
 
     def test_apply_unknown_platform_records_empty_command(self):
-        from agent_harness.contracts.runtime.installer import run_install
+        from minxg.contracts.runtime.installer import run_install
         triggered = []
 
         def tracker(cmd):
@@ -411,7 +411,7 @@ class RunInstallTests(unittest.TestCase):
 
 
 class DoctorPolyglotSectionTests(unittest.TestCase):
-    """`agent_harness doctor` adds a Polyglot runtimes panel; we assert the
+    """`minxg doctor` adds a Polyglot runtimes panel; we assert the
     public threshold: at least one row per managed language, never
     a FAIL status.
     """

@@ -1,4 +1,4 @@
-"""agent_harness.driver — Temporal Operator-Field driver engine.
+"""minxg.driver — Temporal Operator-Field driver engine.
 
 This is AgentHarness's self-developed driver architecture. Unlike standard task
 graphs that simply invoke callables in order, the driver treats each

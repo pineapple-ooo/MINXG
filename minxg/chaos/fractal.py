@@ -1,5 +1,5 @@
 """
-agent_harness/chaos/fractal.py — Fractal Dimensions
+minxg/chaos/fractal.py — Fractal Dimensions
 ====================================================
 
 Different notions of "dimension" for fractals:

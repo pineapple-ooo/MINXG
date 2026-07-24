@@ -1,4 +1,4 @@
-"""agent_harness/tiers/devtools/__init__.py — Tier-aware developer tools.
+"""minxg/tiers/devtools/__init__.py — Tier-aware developer tools.
 
 This sub-module provides tier classification for every worker
 in the current registry and exposes a ``classify`` helper that
@@ -11,7 +11,7 @@ is declarative.
 
 from __future__ import annotations
 
-from agent_harness.tiers import AI_TIER, USER_TIER, CODE_TIER, TierRegistry, classify
+from minxg.tiers import AI_TIER, USER_TIER, CODE_TIER, TierRegistry, classify
 
 __all__ = [
     "AI_TIER", "USER_TIER", "CODE_TIER",

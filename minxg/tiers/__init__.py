@@ -1,4 +1,4 @@
-"""agent_harness/tiers/__init__.py — Three-tier architecture for AgentHarness.
+"""minxg/tiers/__init__.py — Three-tier architecture for AgentHarness.
 
 The three-tier model organises every worker into exactly one
 "tier" — the layer it serves in the overall AI-user-compute
@@ -38,7 +38,7 @@ the whole worker list.
 Usage
 -----
 
-    from agent_harness.tiers import AI_TIER, USER_TIER, CODE_TIER, classify, TierRegistry
+    from minxg.tiers import AI_TIER, USER_TIER, CODE_TIER, classify, TierRegistry
 
     reg = TierRegistry()
     reg.scan(...)            # auto-tags workers by their ``.tier`` attr
@@ -82,7 +82,7 @@ class TierRegistry:
 
     def scan(self, worker_registry):
         """Walk every registered worker and read its .tier attribute."""
-        from agent_harness.base import BaseWorker, WorkerRegistry
+        from minxg.base import BaseWorker, WorkerRegistry
         for wid, w in worker_registry.workers.items():
             tier = getattr(w, "tier", None)
             if tier and tier in ALL_TIERS:

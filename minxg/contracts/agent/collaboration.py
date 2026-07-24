@@ -1,5 +1,5 @@
 """
-agent_harness.contracts.agent.collaboration — Multi-Agent Collaboration Protocols
+minxg.contracts.agent.collaboration — Multi-Agent Collaboration Protocols
 =========================================================================
 
 Bold design: specialized agents collaborate on complex engineering tasks.

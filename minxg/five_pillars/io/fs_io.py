@@ -5,8 +5,8 @@ from __future__ import annotations
 import os
 from pathlib import Path
 from typing import Dict, List
-from agent_harness.base import BaseWorker, tool
-from agent_harness.core_ops.file_safety import is_write_denied as _is_write_denied
+from minxg.base import BaseWorker, tool
+from minxg.core_ops.file_safety import is_write_denied as _is_write_denied
 
 
 class FsIoWorker(BaseWorker):

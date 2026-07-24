@@ -6,7 +6,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Dict, Any, List
 
-from agent_harness.core_ops.file_safety import is_blocked_path, check_readable_text_file
+from minxg.core_ops.file_safety import is_blocked_path, check_readable_text_file
 
 
 class FileReadWorker:

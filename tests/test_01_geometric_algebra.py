@@ -1,7 +1,7 @@
 """Geometric Algebra correctness — the bedrock of the GA pillar."""
 import math
 import pytest
-from agent_harness.ga import Multivector, Signature, Rotor, Reflector, Dilator
+from minxg.ga import Multivector, Signature, Rotor, Reflector, Dilator
 
 
 def test_euclidean_squared_bases():

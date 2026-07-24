@@ -2,13 +2,13 @@
 multiligua_cli/gateway_cli.py — OpenHTTP Gateway lifecycle commands.
 
 Commands:
-    agent_harness gateway              Run the gateway in foreground (default)
-    agent_harness gateway --detach     Start gateway as background service
-    agent_harness gateway stop          Stop the gateway service / process
-    agent_harness gateway status       Show gateway status
+    minxg gateway              Run the gateway in foreground (default)
+    minxg gateway --detach     Start gateway as background service
+    minxg gateway stop          Stop the gateway service / process
+    minxg gateway status       Show gateway status
 
 v0.18.2 — the old `gateway start` sub-command has been removed.
-`agent_harness gateway` with no sub-command IS the start command (foreground
+`minxg gateway` with no sub-command IS the start command (foreground
 by default, --detach for background).  This is simpler and matches
 the user's preference for fewer, cleaner commands.
 """
@@ -37,7 +37,7 @@ from multiligua_cli.utils import (
 def gateway_foreground(args) -> int:
     """Run the OpenHTTP Gateway in foreground (blocking).
 
-    This is the default when the user runs `agent_harness gateway` with no
+    This is the default when the user runs `minxg gateway` with no
     sub-command.  If --detach is passed, the caller should have
     already dispatched to gateway_detach() instead — but if we
     somehow get here with --detach, redirect.
@@ -69,7 +69,7 @@ def gateway_foreground(args) -> int:
 def gateway_detach(args) -> int:
     """Start the gateway as a background service (systemd or nohup).
 
-    Replaces the old `gateway_start`.  Triggered by `agent_harness gateway --detach`.
+    Replaces the old `gateway_start`.  Triggered by `minxg gateway --detach`.
     """
     print_banner()
     print_info("Starting gateway in background mode...\n")
@@ -136,7 +136,7 @@ def _start_background_nohup() -> int:
         f.write("0")
 
     # Build the argv for the background gateway process.
-    # The child re-enters `agent_harness gateway` (no sub) which runs
+    # The child re-enters `minxg gateway` (no sub) which runs
     # gateway_foreground() and actually serves.
     argv = [sys.executable, "-m", "multiligua_cli.main", "gateway"]
     proc = subprocess.Popen(

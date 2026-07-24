@@ -5,11 +5,11 @@ Goal
 Every place that asks ``what host/port does the gateway bind?``, ``what
 model does it proxy?`` or ``which channels are enabled?`` used to read a
 hodgepodge of kwargs, env-vars, and inline dicts. That made the gateway
-fragile: tweaking ``config/agent_harness.yaml`` often meant re-implementing the
+fragile: tweaking ``config/minxg.yaml`` often meant re-implementing the
 same defaults in three files.
 
 ``GatewayConfig`` fixes that. It is the only object that knows how
-``config/gateway.yaml`` (and the legacy ``config/agent_harness.yaml``) maps to
+``config/gateway.yaml`` (and the legacy ``config/minxg.yaml``) maps to
 runtime settings. ``GatewayServer.__init__`` consumes one; CLI verbs
 construct one; tests instantiate one with overrides.
 
@@ -175,7 +175,7 @@ class GatewayConfig:
 
         root = Path(project_root) if project_root else Path(__file__).resolve().parent.parent
         primary = root / "config" / "gateway.yaml"
-        legacy_path = root / "config" / "agent_harness.yaml"
+        legacy_path = root / "config" / "minxg.yaml"
         merged: Dict[str, Any] = {}
         for candidate in (primary, legacy_path):
             if candidate.exists():

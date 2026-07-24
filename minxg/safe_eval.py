@@ -1,4 +1,4 @@
-"""agent_harness/safe_eval.py — restricted math expression evaluator.
+"""minxg/safe_eval.py — restricted math expression evaluator.
 
 Replaces unsafe ``eval(...)`` calls with a safe AST-based evaluator that
 only allows:

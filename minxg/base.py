@@ -1,5 +1,5 @@
 """
-agent_harness/base.py - Worker base class, tool decorator, registry.
+minxg/base.py - Worker base class, tool decorator, registry.
 """
 from __future__ import annotations
 import asyncio
@@ -236,6 +236,6 @@ class WorkerRegistry:
     def health(self) -> Dict:
         return {
             "status": "ok",
-            "version": VERSION if (VERSION := __import__("agent_harness").VERSION) else "?",
+            "version": VERSION if (VERSION := __import__("minxg").VERSION) else "?",
             "registered_workers": list(self.workers.keys()),
         }

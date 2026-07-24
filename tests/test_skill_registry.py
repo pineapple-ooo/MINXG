@@ -1,5 +1,5 @@
-"""tests/test_skill_registry.py — agent_harness/core_ops/skill_registry.py, the
-engine behind `agent_harness skill` (install/search/new/publish/list).
+"""tests/test_skill_registry.py — minxg/core_ops/skill_registry.py, the
+engine behind `minxg skill` (install/search/new/publish/list).
 
 Uses a real local git repo (created as a fixture, cloned via a real
 `git clone` subprocess) to actually exercise the git-install code path
@@ -16,7 +16,7 @@ import subprocess
 
 import pytest
 
-from agent_harness.core_ops import skill_registry as sr
+from minxg.core_ops import skill_registry as sr
 
 
 SAMPLE_SKILL_MD = """---
@@ -36,9 +36,9 @@ Step one. Step two.
 
 @pytest.fixture(autouse=True)
 def _isolated_home(tmp_path, monkeypatch):
-    """Every test gets its own ~/.agent_harness so installs/lockfiles never
+    """Every test gets its own ~/.minxg so installs/lockfiles never
     touch the real thing or leak between tests."""
-    home = tmp_path / "agent_harness_home"
+    home = tmp_path / "minxg_home"
     monkeypatch.setenv("AgentHarness_HOME", str(home))
     yield home
 
@@ -179,7 +179,7 @@ class TestCatalog:
     def test_search_catalog_by_tag(self):
         results = sr.search_catalog(tags=["development"])
         names = {e["name"] for e in results}
-        assert "writing-agent_harness-skills" in names
+        assert "writing-minxg-skills" in names
         assert "daily-standup-notes" not in names
 
     def test_search_catalog_no_match(self):
@@ -209,7 +209,7 @@ class TestListLocalSkills:
     def test_bundled_skills_are_discovered(self):
         skills = sr.list_local_skills(include_user=False)
         names = {s.name for s in skills}
-        assert "writing-agent_harness-skills" in names
+        assert "writing-minxg-skills" in names
         assert "daily-standup-notes" in names
 
     def test_user_skills_are_discovered_after_install(self, local_skill_dir):

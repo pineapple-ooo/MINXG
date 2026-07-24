@@ -1,5 +1,5 @@
 """
-agent_harness/fiber/bundle.py — Fiber Bundles
+minxg/fiber/bundle.py — Fiber Bundles
 ==============================================
 
 A FIBER BUNDLE is a structure (E, B, π, F) where:

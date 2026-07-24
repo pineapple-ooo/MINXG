@@ -8,7 +8,7 @@ modules; previously these all lived behind ``facade_alias`` so the AI had no
 way to call them.
 
 Now: the AI calls ``math_dispatch(pillar="ga", op="rotor", **kwargs)`` and
-gets a result dict back.  Old direct calls (``from agent_harness.ga import rotor``)
+gets a result dict back.  Old direct calls (``from minxg.ga import rotor``)
 continue to work — the dispatcher is additive, not a replacement.
 
 Operator registry is cached at construction time so the dispatch hot path
@@ -23,20 +23,20 @@ import sys
 import traceback
 from typing import Any, Dict, List, Optional
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 # Pillar → list of (module_name, obj_name) pairs.
 # Operators are imported lazily during DashWorker._scan() so a cold-start
 # does not pay the full import cost.
 _PILLAR_INDEX: Dict[str, List[str]] = {
-    "ga":          "agent_harness.ga",
-    "cat":         "agent_harness.cat",
-    "infogeo":     "agent_harness.infogeo",
-    "topo":        "agent_harness.topo",
-    "chaos":       "agent_harness.chaos",
-    "fiber":       "agent_harness.fiber",
-    "math_pillar": "agent_harness.five_pillars.math_pillar",
+    "ga":          "minxg.ga",
+    "cat":         "minxg.cat",
+    "infogeo":     "minxg.infogeo",
+    "topo":        "minxg.topo",
+    "chaos":       "minxg.chaos",
+    "fiber":       "minxg.fiber",
+    "math_pillar": "minxg.five_pillars.math_pillar",
 }
 
 
@@ -135,7 +135,7 @@ class MathPillarDispatcher(BaseWorker):
             self._ops_count += len(bucket)
         # Stash summary to console — caller inspect via stats().
         sys.modules.setdefault(
-            "agent_harness.five_pillars.devtools.math_pillar_dispatcher",
+            "minxg.five_pillars.devtools.math_pillar_dispatcher",
         ).__math_pillar_ops__ = self._ops_index  # type: ignore[attr-defined]
 
     # ── Tool entry: one fat dispatcher ──────────────────────────────

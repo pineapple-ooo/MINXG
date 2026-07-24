@@ -9,7 +9,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from agent_harness.five_pillars.devtools.reverse_studio import ReverseStudioWorker, LEGAL_NOTICE
+from minxg.five_pillars.devtools.reverse_studio import ReverseStudioWorker, LEGAL_NOTICE
 
 
 def _run(coro):

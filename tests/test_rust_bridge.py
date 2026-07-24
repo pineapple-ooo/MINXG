@@ -1,7 +1,7 @@
 """tests/test_rust_bridge.py — tests for Python ↔ Rust FFI bridge.
 
 Tests skip gracefully if:
-- The Rust shared library wasn't built (no `libagent_harness_rust.so` in target/release)
+- The Rust shared library wasn't built (no `libminxg_rust.so` in target/release)
 - The library exists but can't be dlopened (e.g. Termux external-storage namespace)
 
 In both cases, the test reports "skipped" rather than failing — this is an
@@ -12,7 +12,7 @@ import os
 import sys
 import pytest
 
-import agent_harness.rust_bridge as bridge
+import minxg.rust_bridge as bridge
 
 
 def _try_load():

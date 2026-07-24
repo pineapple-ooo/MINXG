@@ -32,7 +32,7 @@ import tokenize
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 # ── severity levels ──────────────────────────────────────────

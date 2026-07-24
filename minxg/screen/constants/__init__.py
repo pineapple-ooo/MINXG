@@ -1,4 +1,4 @@
-"""agent_harness.screen.constants — shared types, paths, and thresholds.
+"""minxg.screen.constants — shared types, paths, and thresholds.
 
 ScreenSource — where the screenshot comes from
       ADB               — 'adb shell screencap' (requires ADB connection)
@@ -102,7 +102,7 @@ thresholds = {
 # ── Paths ───────────────────────────────────────────────────────────
 
 def _screen_cache_dir() -> Path:
-    root = Path.home() / ".agent_harness" / "screen"
+    root = Path.home() / ".minxg" / "screen"
     root.mkdir(parents=True, exist_ok=True)
     return root
 

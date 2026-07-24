@@ -1,19 +1,19 @@
-"""Extra coverage for agent_harness operator registry and pillar operator modules."""
-import agent_harness
-import agent_harness.ga
-import agent_harness.cat
-import agent_harness.chaos
-import agent_harness.topo
-import agent_harness.fiber
-import agent_harness.infogeo
+"""Extra coverage for minxg operator registry and pillar operator modules."""
+import minxg
+import minxg.ga
+import minxg.cat
+import minxg.chaos
+import minxg.topo
+import minxg.fiber
+import minxg.infogeo
 
-from agent_harness.operators import OPERATOR_REGISTRY, Operator
-from agent_harness.ga.operators_ga import register_ga_operators
-from agent_harness.cat.operators_cat import register_cat_operators
-from agent_harness.chaos.operators_chaos import register_chaos_operators
-from agent_harness.topo.operators_topo import register_topo_operators
-from agent_harness.fiber.operators_fiber import register_fiber_operators
-from agent_harness.infogeo.operators_ig import register_ig_operators
+from minxg.operators import OPERATOR_REGISTRY, Operator
+from minxg.ga.operators_ga import register_ga_operators
+from minxg.cat.operators_cat import register_cat_operators
+from minxg.chaos.operators_chaos import register_chaos_operators
+from minxg.topo.operators_topo import register_topo_operators
+from minxg.fiber.operators_fiber import register_fiber_operators
+from minxg.infogeo.operators_ig import register_ig_operators
 
 
 def test_operator_worker_registers_all_six_pillar_sets():

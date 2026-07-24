@@ -166,7 +166,7 @@ def _check_skills_reqs() -> bool:
     return True
 
 
-from agent_harness.core_ops import skill_registry as _sr
+from minxg.core_ops import skill_registry as _sr
 from tools.registry import registry
 
 SKILL_SEARCH_SCHEMA = {

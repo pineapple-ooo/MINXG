@@ -19,7 +19,7 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 from multiling.constants import TIMEOUT_HTTP_SKILL_FETCH, TIMEOUT_SUBPROCESS_QUICK, TIMEOUT_SUBPROCESS_NORMAL, TIMEOUT_SUBPROCESS_TOOL, TIMEOUT_SUBPROCESS_BUILD, TIMEOUT_SUBPROCESS_HEAVY, TIMEOUT_SUBPROCESS_INSTALL
 
 

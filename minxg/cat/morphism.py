@@ -1,5 +1,5 @@
 """
-agent_harness/cat/morphism.py — Morphisms, Types, Composition
+minxg/cat/morphism.py — Morphisms, Types, Composition
 ============================================================
 
 Core categorical constructs. Every operator in AgentHarness is a Morphism.

@@ -15,7 +15,7 @@ import re
 
 import pytest
 
-from agent_harness.contracts.runtime import (
+from minxg.contracts.runtime import (
     capabilities_for,
     dependency_graph,
     handle,
@@ -24,8 +24,8 @@ from agent_harness.contracts.runtime import (
     supported_languages,
     tool_count_for,
 )
-from agent_harness.contracts.runtime._exec import validate_url, safe_json_dumps, sanitize_path
-from agent_harness.contracts.runtime.installer import MANAGED_LANGUAGES
+from minxg.contracts.runtime._exec import validate_url, safe_json_dumps, sanitize_path
+from minxg.contracts.runtime.installer import MANAGED_LANGUAGES
 
 
 class TestLegacyCleanup:
@@ -34,14 +34,14 @@ class TestLegacyCleanup:
     def test_no_c_cpp_go_r_assets(self):
         """Legacy C/C++/Go/R directories should not exist."""
         import os
-        assets_root = os.path.join(os.path.dirname(__file__), "..", "agent_harness", "contracts", "runtime", "assets")
+        assets_root = os.path.join(os.path.dirname(__file__), "..", "minxg", "contracts", "runtime", "assets")
         for lang in ("c", "cpp", "go", "r"):
             assert not os.path.exists(os.path.join(assets_root, lang)), f"legacy asset {lang} still exists"
 
     def test_no_c_cpp_go_r_imports(self):
         """No Python files should import from c/cpp/go/r modules."""
         import os
-        root = os.path.join(os.path.dirname(__file__), "..", "agent_harness")
+        root = os.path.join(os.path.dirname(__file__), "..", "minxg")
         for dirpath, dirnames, filenames in os.walk(root):
             # Skip __pycache__ and test directories
             dirnames[:] = [d for d in dirnames if d not in ("__pycache__", "tests")]
@@ -60,7 +60,7 @@ class TestLegacyCleanup:
                         f"from .{lang}$",
                         f"from {lang}.",
                         f"import {lang}.",
-                        f"from agent_harness.contracts.runtime.{lang}",
+                        f"from minxg.contracts.runtime.{lang}",
                         f"contracts/runtime/{lang}",
                     ]
                     for bad in bad_imports:
@@ -142,7 +142,7 @@ class TestManifestCompleteness:
                     pytest.fail(f"dependency graph has cycle involving {node}")
 
     def test_manifest_serializable(self):
-        from agent_harness.contracts.runtime.manifest import serialize_manifest
+        from minxg.contracts.runtime.manifest import serialize_manifest
         json_str = serialize_manifest()
         data = json.loads(json_str)
         assert isinstance(data, dict)
@@ -154,19 +154,19 @@ class TestWorkerToolCoverage:
     """Verify workers cover manifest tool counts."""
 
     def test_wasm_worker_tool_count(self):
-        from agent_harness.five_pillars.polyglot.wasm_worker import WasmWorker
+        from minxg.five_pillars.polyglot.wasm_worker import WasmWorker
         worker = WasmWorker()
         manifest_count = tool_count_for("wasm")
         assert len(worker.tools) <= manifest_count * 2, "worker tools exceed reasonable manifest count"
 
     def test_julia_worker_tool_count(self):
-        from agent_harness.five_pillars.polyglot.julia_worker import JuliaWorker
+        from minxg.five_pillars.polyglot.julia_worker import JuliaWorker
         worker = JuliaWorker()
         manifest_count = tool_count_for("julia")
         assert len(worker.tools) <= manifest_count * 2, "worker tools exceed reasonable manifest count"
 
     def test_datalog_worker_tool_count(self):
-        from agent_harness.five_pillars.polyglot.datalog_worker import DatalogWorker
+        from minxg.five_pillars.polyglot.datalog_worker import DatalogWorker
         worker = DatalogWorker()
         manifest_count = tool_count_for("datalog")
         assert len(worker.tools) <= manifest_count * 2, "worker tools exceed reasonable manifest count"
@@ -178,7 +178,7 @@ class TestBridgeFileValidity:
     def test_julia_bridge_has_run_payload(self):
         import os
         bridge_path = os.path.join(
-            os.path.dirname(__file__), "..", "agent_harness", "contracts", "runtime", "assets", "julia", "bridge.jl"
+            os.path.dirname(__file__), "..", "minxg", "contracts", "runtime", "assets", "julia", "bridge.jl"
         )
         content = open(bridge_path, "r", encoding="utf-8").read()
         assert "function run_payload" in content, "Julia bridge missing run_payload function"
@@ -187,7 +187,7 @@ class TestBridgeFileValidity:
     def test_datalog_bridge_has_rules(self):
         import os
         bridge_path = os.path.join(
-            os.path.dirname(__file__), "..", "agent_harness", "contracts", "runtime", "assets", "datalog", "bridge.lp"
+            os.path.dirname(__file__), "..", "minxg", "contracts", "runtime", "assets", "datalog", "bridge.lp"
         )
         content = open(bridge_path, "r", encoding="utf-8").read()
         assert ":-" in content or "%" in content, "Datalog bridge appears empty"

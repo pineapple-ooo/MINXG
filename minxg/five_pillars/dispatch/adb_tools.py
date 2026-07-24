@@ -1,5 +1,5 @@
 """
-agent_harness/adb_tools.py — Android Debug Bridge (ADB) tools v1.0.0
+minxg/adb_tools.py — Android Debug Bridge (ADB) tools v1.0.0
 
 Complete ADB command suite for Android devices: device management, shell,
 app install/uninstall, file push/pull, logcat, screencap, input, reboot.
@@ -13,7 +13,7 @@ import base64
 import tempfile
 from typing import Any, Dict, List, Optional
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 from multiling.constants import TIMEOUT_HTTP_SKILL_FETCH, TIMEOUT_SUBPROCESS_QUICK, TIMEOUT_SUBPROCESS_NORMAL, TIMEOUT_SUBPROCESS_TOOL, TIMEOUT_SUBPROCESS_BUILD, TIMEOUT_SUBPROCESS_HEAVY, TIMEOUT_SUBPROCESS_INSTALL
 
 
@@ -164,7 +164,7 @@ class AdbWorker(BaseWorker):
         return _adb(cmd, timeout=TIMEOUT_SUBPROCESS_QUICK)
 
     def _adb_screencap(self, device: str = "") -> Dict[str, Any]:
-        tmp = "/sdcard/agent_harness_screencap.png"
+        tmp = "/sdcard/minxg_screencap.png"
         r = _adb(["shell", "screencap", "-p", tmp], timeout=TIMEOUT_SUBPROCESS_QUICK)
         if r["status"] != "success":
             return r
@@ -179,7 +179,7 @@ class AdbWorker(BaseWorker):
 
     def _adb_screenrecord(self, duration_sec: int = 10,
                           device: str = "") -> Dict[str, Any]:
-        tmp = "/sdcard/agent_harness_record.mp4"
+        tmp = "/sdcard/minxg_record.mp4"
         _adb(["shell", "screenrecord", "--time-limit", str(duration_sec), tmp],
              timeout=duration_sec + 10)
         with tempfile.NamedTemporaryFile(suffix=".mp4", delete=False) as f:

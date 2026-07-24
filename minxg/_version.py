@@ -1,24 +1,24 @@
-"""agent_harness._version — single source of truth for the project version.
+"""minxg._version — single source of truth for the project version.
 
 WHY a dedicated file?
 ---------------------
 The codebase touches the version number in three logical places:
 
 1. ``pyproject.toml``  — what gets uploaded to PyPI
-2. ``agent_harness/__init__.py``  — what ``import agent_harness; agent_harness.__version__`` shows
+2. ``minxg/__init__.py``  — what ``import minxg; minxg.__version__`` shows
 3. ``CHANGELOG.md`` / banner strings  — what humans see/read
 
 Before this file existed you'd have to remember to bump all three in
 lockstep and any miss would silently desync them. Now you change ONE line
 in this file and three thin re-exporters pull from it:
 
-* ``pyproject.toml`` reads ``agent_harness._version.VERSION`` via setuptools
+* ``pyproject.toml`` reads ``minxg._version.VERSION`` via setuptools
   ``dynamic`` (``[project] dynamic = ["version"]``)
-* ``agent_harness/__init__.py`` does ``from ._version import VERSION as __version__``
+* ``minxg/__init__.py`` does ``from ._version import VERSION as __version__``
 * ``version_tools/version_worker`` (and friends) call ``get_version()``
 
 That is the entire contract. If you need to bump the release, just edit
-``VERSION`` below and run ``python -m agent_harness._version`` to confirm the
+``VERSION`` below and run ``python -m minxg._version`` to confirm the
 new value, then commit. Everything else propagates automatically.
 """
 from __future__ import annotations

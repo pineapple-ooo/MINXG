@@ -498,7 +498,7 @@ class ConfigWatcher:
 
 def create_default_config() -> Config:
     """Create application config with sensible defaults"""
-    cfg = Config("agent_harness")
+    cfg = Config("minxg")
 
     
     server = cfg.section("server")
@@ -516,7 +516,7 @@ def create_default_config() -> Config:
                  validator=lambda v: Validator.choice(v, ["sqlite", "postgresql", "mysql"]))
     db.add_field("host", "localhost", str)
     db.add_field("port", 5432, int, validator=lambda v: Validator.integer(v, min_val=1, max_val=65535))
-    db.add_field("name", "agent_harness", str)
+    db.add_field("name", "minxg", str)
     db.add_field("user", "", str)
     db.add_field("password", "", str, sensitive=True)
     db.add_field("pool_size", 5, int, validator=lambda v: Validator.integer(v, min_val=1, max_val=50))

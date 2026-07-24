@@ -1,4 +1,4 @@
-"""agent_harness.screen.action — input injection with fallback + retry.
+"""minxg.screen.action — input injection with fallback + retry.
 
 Two surfaces:
 

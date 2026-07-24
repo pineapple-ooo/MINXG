@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import pytest
-from agent_harness.contracts.runtime import handle
+from minxg.contracts.runtime import handle
 
 
 class TestEdgeCases:

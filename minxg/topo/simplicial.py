@@ -1,5 +1,5 @@
 """
-agent_harness/topo/simplicial.py — Simplices and Simplicial Complexes
+minxg/topo/simplicial.py — Simplices and Simplicial Complexes
 ====================================================================
 
 A k-SIMPLEX is a k-dimensional polytope with k+1 vertices:

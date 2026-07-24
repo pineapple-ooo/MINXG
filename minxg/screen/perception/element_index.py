@@ -1,4 +1,4 @@
-"""agent_harness.screen.perception.element_index — Fuzz-matchable UI element index.
+"""minxg.screen.perception.element_index — Fuzz-matchable UI element index.
 
 Converts UIAutomator XML + OCR into a searchable index so AI can ask
 "where is the login button?" and get coordinates back without vision models.

@@ -1,8 +1,8 @@
 """Operator Registry: all 376 operators correctly registered."""
 import pytest
-from agent_harness.operators import OPERATOR_REGISTRY
-import agent_harness  
-import agent_harness.ga, agent_harness.cat, agent_harness.infogeo, agent_harness.topo, agent_harness.chaos, agent_harness.fiber
+from minxg.operators import OPERATOR_REGISTRY
+import minxg  
+import minxg.ga, minxg.cat, minxg.infogeo, minxg.topo, minxg.chaos, minxg.fiber
 
 
 def test_total_operator_count():
@@ -58,8 +58,8 @@ def test_lookup_by_name_and_id_consistent():
 
 def test_idempotent_registration():
     """Re-registering a sub-package should not duplicate operators."""
-    import agent_harness.ga as ga
+    import minxg.ga as ga
     initial = OPERATOR_REGISTRY.total_operators
-    from agent_harness.ga import operators_ga
+    from minxg.ga import operators_ga
     operators_ga.register_ga_operators()  
     assert OPERATOR_REGISTRY.total_operators == initial

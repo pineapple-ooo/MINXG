@@ -854,7 +854,7 @@ body {
   // ════════════════════════════════════════════════════════════
   //  Multi-session memory (localStorage — survives restarts)
   // ════════════════════════════════════════════════════════════
-  const STORE_KEY = 'agent_harness-sessions';
+  const STORE_KEY = 'minxg-sessions';
   function loadStore() {
     try { const s = localStorage.getItem(STORE_KEY); if (s) return JSON.parse(s); } catch {}
     return { active: null, sessions: {} };

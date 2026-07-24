@@ -1,5 +1,5 @@
 """
-agent_harness/infogeo/connection.py — α-Connections (pure Python)
+minxg/infogeo/connection.py — α-Connections (pure Python)
 =================================================================
 
 Amari's α-connection on statistical manifolds — pure Python.

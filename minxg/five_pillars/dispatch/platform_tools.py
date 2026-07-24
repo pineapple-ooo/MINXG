@@ -3,8 +3,8 @@
 v0.16.0: Only android + windows are supported platforms.
 All tool availability goes through the canonical platform_registry.
 """
-from agent_harness.base import BaseWorker, tool
-from agent_harness.five_pillars.dispatch.platform_registry import (
+from minxg.base import BaseWorker, tool
+from minxg.five_pillars.dispatch.platform_registry import (
     CURRENT_PLATFORM,
     SUPPORTED_PLATFORMS,
     is_android,

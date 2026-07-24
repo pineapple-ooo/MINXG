@@ -1,7 +1,7 @@
 """AgentHarness CLI write-approval layer.
 
 Mirrors Hermes' write-approval UX, but adapted to our codebase and
-stored in ``~/.agent_harness/approvals/`` instead of Hermes' internal
+stored in ``~/.minxg/approvals/`` instead of Hermes' internal
 paths.  Public surface is intentionally tiny:
 
   * ``pending(subsystem)`` — list pending writes
@@ -25,7 +25,7 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
 
 
-_AGENT_HARNESS_HOME = Path.home() / ".agent_harness"
+_AGENT_HARNESS_HOME = Path.home() / ".minxg"
 _APPROVALS_DIR = _AGENT_HARNESS_HOME / "approvals"
 _APPROVALS_DIR.mkdir(parents=True, exist_ok=True)
 

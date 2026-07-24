@@ -1,4 +1,4 @@
-"""agent_harness.five_pillars.io — Input/Output plane.
+"""minxg.five_pillars.io — Input/Output plane.
 
 fs_io, fs_copy, fs_search, web_tools, web_search,
 network, network_adv, media_tools, media_adv,

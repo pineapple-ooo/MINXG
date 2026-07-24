@@ -1,7 +1,7 @@
 """extensions/builtin/hello.py -- minimal reference extension.
 
-Kept intentionally tiny: this is what `writing-agent_harness-extensions` (see
-`skills/development/writing-agent_harness-extensions/SKILL.md`) points to as
+Kept intentionally tiny: this is what `writing-minxg-extensions` (see
+`skills/development/writing-minxg-extensions/SKILL.md`) points to as
 the smallest complete example of the required contract
 (EXTENSION_NAME, EXTENSION_DESCRIPTION, handle_command) plus the two
 optional hooks (register_cli, register_hooks).

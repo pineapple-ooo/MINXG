@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List
 
-from agent_harness.cli.theme import get_style
+from minxg.cli.theme import get_style
 
 
 def handle_help() -> str:

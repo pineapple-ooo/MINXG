@@ -15,7 +15,7 @@ import threading
 from dataclasses import dataclass, field
 from typing import Dict, List, Any, Optional, Tuple, Set
 from collections import defaultdict
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 # ─── Data Structures ───────────────────────────────────────────────────────────

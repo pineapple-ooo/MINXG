@@ -1,5 +1,5 @@
 """Version management tools."""
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 class VersionWorker(BaseWorker):
     facade_alias = "version_worker"
@@ -26,7 +26,7 @@ class VersionWorker(BaseWorker):
         return {"old": version, "new": ".".join(parts), "level": level}
 
     @tool
-    async def agent_harness_version(self) -> dict:
+    async def minxg_version(self) -> dict:
         """Get AgentHarness version info."""
         try:
             import sys; sys.path.insert(0, '.')

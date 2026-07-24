@@ -1,8 +1,8 @@
-"""agent_harness.driver.state — typed scalar bag with optional bounds, used
+"""minxg.driver.state — typed scalar bag with optional bounds, used
 by the Temporal Operator-Field engine and the self_evolution twin.
 
-agent_harness.cap.provides: state.bag, state.bounds
-agent_harness.cap.requires: (none)
+minxg.cap.provides: state.bag, state.bounds
+minxg.cap.requires: (none)
 """
 from __future__ import annotations
 from dataclasses import dataclass, field

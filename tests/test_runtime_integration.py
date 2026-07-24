@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import pytest
 
-from agent_harness.contracts.runtime import handle
+from minxg.contracts.runtime import handle
 
 
 # ----------------------------------------------------------------------
@@ -163,7 +163,7 @@ async def test_datalog_with_many_edges():
 @pytest.mark.asyncio
 async def test_legacy_julia_wrapper():
     """Test that julia.py wrapper still works."""
-    from agent_harness.contracts.runtime import julia
+    from minxg.contracts.runtime import julia
     result = julia.handle({"mode": "eval", "code": "sqrt(4.0)"})
     assert "status" in result
     assert "language" in result
@@ -173,7 +173,7 @@ async def test_legacy_julia_wrapper():
 @pytest.mark.asyncio
 async def test_legacy_datalog_wrapper():
     """Test that datalog.py wrapper still works."""
-    from agent_harness.contracts.runtime import datalog
+    from minxg.contracts.runtime import datalog
     result = datalog.handle({"mode": "demo"})
     assert "status" in result
     assert "language" in result
@@ -183,7 +183,7 @@ async def test_legacy_datalog_wrapper():
 @pytest.mark.asyncio
 async def test_legacy_python_wrapper():
     """Test that python.py wrapper still works."""
-    from agent_harness.contracts.runtime import python
+    from minxg.contracts.runtime import python
     result = python.handle({"code": "2+2"})
     assert "status" in result
     assert "language" in result

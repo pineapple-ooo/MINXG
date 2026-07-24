@@ -1,4 +1,4 @@
-"""Extra coverage for agent_harness.cap — scanner, manifest, and CLI."""
+"""Extra coverage for minxg.cap — scanner, manifest, and CLI."""
 import os
 import subprocess
 import sys
@@ -6,25 +6,25 @@ import textwrap
 from pathlib import Path
 
 import pytest
-from agent_harness.cap import (
+from minxg.cap import (
     CapManifest,
     CapModule,
     CapChange,
     scan_tree,
     scan_file,
 )
-from agent_harness.cap import cli
+from minxg.cap import cli
 
 
 def test_cap_module_imports_cleanly():
     import importlib
-    import agent_harness.cap
-    importlib.reload(agent_harness.cap)
+    import minxg.cap
+    importlib.reload(minxg.cap)
 
 
 def test_scan_tree_collects_files_in_path_order(tmp_path):
-    (tmp_path / "a.py").write_text("agent_harness.cap.provides: alpha\nimport sys\n")
-    (tmp_path / "b.py").write_text("agent_harness.cap.provides: beta\nimport sys\n")
+    (tmp_path / "a.py").write_text("minxg.cap.provides: alpha\nimport sys\n")
+    (tmp_path / "b.py").write_text("minxg.cap.provides: beta\nimport sys\n")
     (tmp_path / "ignored.txt").write_text("not python\n")
     records = scan_tree(tmp_path)
     names = [r.path.split("/")[-1] for r in records]
@@ -83,12 +83,12 @@ def test_cli_cap_check_returns_zero_on_clean_tree_subprocess(tmp_path):
     script = tmp_path / "run_check.py"
     inner = (
         "import sys\n"
-        "from agent_harness.cap.registry import _default\n"
-        "from agent_harness.cap import CapManifest, CapModule, cli\n"
+        "from minxg.cap.registry import _default\n"
+        "from minxg.cap import CapManifest, CapModule, cli\n"
         "manifest = CapManifest()\n"
         "manifest.add(CapModule(path='/p.py', provides=('clean.cap',)))\n"
         "manifest.add(CapModule(path='/c.py', requires=('clean.cap',)))\n"
-        "import agent_harness.cap.registry as reg\n"
+        "import minxg.cap.registry as reg\n"
         "reg._default = manifest\n"
         "sys.exit(cli.main(['check']))\n"
     )

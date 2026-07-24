@@ -2,7 +2,7 @@
 
 These exercise `multiligua_cli/experimental.py` (bench, replay, theme,
 safe-eval, ext-reload), the in-parser wiring inside `main.py`, and the
-`agent_harness.__init__` top-level promotions of eight subsystem modules.
+`minxg.__init__` top-level promotions of eight subsystem modules.
 """
 from __future__ import annotations
 
@@ -167,7 +167,7 @@ class ExtReloadTests(unittest.TestCase):
 
 
 # ----------------------------------------------------------------------
-# submodule promotion inside agent_harness/__init__.py
+# submodule promotion inside minxg/__init__.py
 # ----------------------------------------------------------------------
 
 class TopLevelSubsystemsTests(unittest.TestCase):
@@ -177,40 +177,40 @@ class TopLevelSubsystemsTests(unittest.TestCase):
     )
 
     def setUp(self):
-        # Re-run agent_harness/__init__.py's top-level SUBSYSTEMS promotion via
+        # Re-run minxg/__init__.py's top-level SUBSYSTEMS promotion via
         # importlib.reload() rather than deleting-and-re-importing.
         # reload() re-executes the module body *in place*, keeping the
-        # `agent_harness` module object's identity stable — every other
-        # already-imported `agent_harness.*` submodule (e.g. agent_harness.core_ops.*,
-        # agent_harness.workers.*) keeps pointing at the same objects it always
+        # `minxg` module object's identity stable — every other
+        # already-imported `minxg.*` submodule (e.g. minxg.core_ops.*,
+        # minxg.workers.*) keeps pointing at the same objects it always
         # did. A previous version of this setUp() did
-        # `del sys.modules[name] for name starting with "agent_harness"` and
-        # then a fresh `import agent_harness`, which silently split module
-        # identity for every unrelated agent_harness.* submodule already
-        # imported elsewhere: the fresh `import agent_harness` doesn't
+        # `del sys.modules[name] for name starting with "minxg"` and
+        # then a fresh `import minxg`, which silently split module
+        # identity for every unrelated minxg.* submodule already
+        # imported elsewhere: the fresh `import minxg` doesn't
         # automatically re-attach previously-cached submodules as
         # attributes of the new module object, which broke
-        # sys.modules-path-based `monkeypatch.setattr("agent_harness.x.y", ...)`
+        # sys.modules-path-based `monkeypatch.setattr("minxg.x.y", ...)`
         # in *other* test files for the rest of the pytest session.
-        import agent_harness
-        importlib.reload(agent_harness)
-        self._agent_harness = agent_harness
+        import minxg
+        importlib.reload(minxg)
+        self._minxg = minxg
 
     def test_top_level_promotion(self):
-        import agent_harness
+        import minxg
         for name in self.SUBSYSTEMS:
             with self.subTest(name=name):
                 self.assertTrue(
-                    hasattr(agent_harness, name),
-                    f"agent_harness.{name} must be a top-level attribute after 0.13.0",
+                    hasattr(minxg, name),
+                    f"minxg.{name} must be a top-level attribute after 0.13.0",
                 )
-                self.assertIsNotNone(getattr(agent_harness, name))
+                self.assertIsNotNone(getattr(minxg, name))
 
     def test_all_lists_subsystems(self):
-        import agent_harness
+        import minxg
         for name in self.SUBSYSTEMS:
             with self.subTest(name=name):
-                self.assertIn(name, agent_harness.__all__)
+                self.assertIn(name, minxg.__all__)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-"""agent_harness/core/tool_chain.py — Tool Chain Executor: run N tools in one AI call.
+"""minxg/core/tool_chain.py — Tool Chain Executor: run N tools in one AI call.
 
 Traditional agent framework: LLM says "call tool A" → tool runs → LLM says
 "call tool B" → tool runs → ... → 5 round-trips for one task.
@@ -42,8 +42,8 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Union
 from enum import Enum
 
-from agent_harness.base import tool
-from agent_harness.rust_bridge import RustLib
+from minxg.base import tool
+from minxg.rust_bridge import RustLib
 
 
 # ── Types ────────────────────────────────────────────────────────────────────
@@ -115,7 +115,7 @@ class ToolRegistry:
         """Lazy-load the AgentHarness tool explorer to avoid circular imports."""
         if self._explorer_cache is None:
             try:
-                from agent_harness.five_pillars.ai.explorer import AIToolExplorer
+                from minxg.five_pillars.ai.explorer import AIToolExplorer
                 self._explorer_cache = AIToolExplorer()
             except Exception:
                 self._explorer_cache = None
@@ -125,7 +125,7 @@ class ToolRegistry:
         """Find a tool by fully-qualified name (e.g. 'self_evolution.evolution_record').
 
         Supports two lookup paths:
-        1. module.attr  — e.g.  rust_bridge.vec_dot  →  agent_harness.rust_bridge.vec_dot
+        1. module.attr  — e.g.  rust_bridge.vec_dot  →  minxg.rust_bridge.vec_dot
         2. worker.method — e.g.  self_evolution.evolution_record  →  SelfEvolutionWorker().evolution_record
         """
         if name in self._cache:
@@ -137,7 +137,7 @@ class ToolRegistry:
             module_name, attr_name = parts
             try:
                 import importlib
-                mod = importlib.import_module(f"agent_harness.{module_name}")
+                mod = importlib.import_module(f"minxg.{module_name}")
                 attr = getattr(mod, attr_name, None)
                 if attr is not None:
                     self._cache[name] = attr
@@ -161,10 +161,10 @@ class ToolRegistry:
                 except Exception:
                     pass
 
-        # ── Try top-level agent_harness.* ───────────────────────────────────
+        # ── Try top-level minxg.* ───────────────────────────────────
         try:
             import importlib
-            mod = importlib.import_module(f"agent_harness.{name}")
+            mod = importlib.import_module(f"minxg.{name}")
             self._cache[name] = mod
             return mod
         except ImportError:
@@ -179,18 +179,18 @@ class ToolRegistry:
 
         # ── Required imports ──────────────────────────────────────────
         try:
-            from agent_harness.five_pillars.devtools import (
+            from minxg.five_pillars.devtools import (
                 AndroidForgeWorker, QuadForgeWorker, DevShellWorker,
                 ReverseStudioWorker, UnifiedChannelWorker,
                 HarmonyOSWorker, BinaryToolbeltWorker,
             )
-            from agent_harness.five_pillars.devtools.self_evolution import SelfEvolutionWorker
+            from minxg.five_pillars.devtools.self_evolution import SelfEvolutionWorker
         except ImportError:
             return None
 
         # ── Optional imports (may not exist in all builds) ─────────────
         try:
-            from agent_harness.five_pillars.ai.explorer import AIToolExplorer
+            from minxg.five_pillars.ai.explorer import AIToolExplorer
         except ImportError:
             AIToolExplorer = None
 
@@ -213,7 +213,7 @@ class ToolRegistry:
     def _iter_workers(self):
         """Yield (worker_name, class) from devtools."""
         try:
-            from agent_harness.five_pillars.devtools import (
+            from minxg.five_pillars.devtools import (
                 AndroidForgeWorker, QuadForgeWorker, DevShellWorker,
                 ReverseStudioWorker, UnifiedChannelWorker,
                 HarmonyOSWorker, BinaryToolbeltWorker,
@@ -510,7 +510,7 @@ async def bench_tool_chain(n_steps: int = 10) -> Dict[str, Any]:
     Uses self_evolution.evolution_record as the actual AgentHarness @tool —
     no external deps, works on every platform.
     """
-    from agent_harness.five_pillars.devtools.self_evolution import SelfEvolutionWorker
+    from minxg.five_pillars.devtools.self_evolution import SelfEvolutionWorker
 
     w = SelfEvolutionWorker()
 

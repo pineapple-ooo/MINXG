@@ -1,7 +1,7 @@
 """Scanner — walks a directory tree and extracts CapModule records.
 
-agent_harness.cap.provides: cap.scan.file, cap.scan.tree
-agent_harness.cap.requires: (none)
+minxg.cap.provides: cap.scan.file, cap.scan.tree
+minxg.cap.requires: (none)
 """
 from __future__ import annotations
 import re
@@ -11,8 +11,8 @@ from typing import Iterable, List, Optional
 from .manifest import CapModule, PROVIDE_TAG, REQUIRE_TAG
 
 
-_PROVIDE_RE = re.compile(r"(?m)^[ \t]*agent_harness\.cap\.provides\s*:\s*([^\n]+)")
-_REQUIRE_RE = re.compile(r"(?m)^[ \t]*agent_harness\.cap\.requires\s*:\s*([^\n]+)")
+_PROVIDE_RE = re.compile(r"(?m)^[ \t]*minxg\.cap\.provides\s*:\s*([^\n]+)")
+_REQUIRE_RE = re.compile(r"(?m)^[ \t]*minxg\.cap\.requires\s*:\s*([^\n]+)")
 
 
 def _parse_caps(raw: str) -> tuple:

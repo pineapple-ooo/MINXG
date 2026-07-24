@@ -1,4 +1,4 @@
-"""agent_harness.self_evolution.loop — orchestration layer for closed-loop
+"""minxg.self_evolution.loop — orchestration layer for closed-loop
 self-improvement. The four components form a four-stroke cycle:
 
     1. FailureTour collects failures from driver step reports.
@@ -6,8 +6,8 @@ self-improvement. The four components form a four-stroke cycle:
     3. TwinEngine validates a swap on a shadow clone of the engine.
     4. Accepted swaps land on the live engine.
 
-agent_harness.cap.provides: self.evolution.cycle
-agent_harness.cap.requires: driver.engine, contracts.registry, driver.drift.control
+minxg.cap.provides: self.evolution.cycle
+minxg.cap.requires: driver.engine, contracts.registry, driver.drift.control
 """
 from __future__ import annotations
 from dataclasses import dataclass, field
@@ -119,7 +119,7 @@ class EvolutionLoop:
                     # misbehaving twin swap leaves a fingerprint instead
                     # of a no-op commit that looks like "no change".
                     import logging, traceback
-                    logging.getLogger("agent_harness.self_evolution").debug(
+                    logging.getLogger("minxg.self_evolution").debug(
                         "candidate %s apply() raised: %s\n%s",
                         cell_id, exc, traceback.format_exc(),
                     )

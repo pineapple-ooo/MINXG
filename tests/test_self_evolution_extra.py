@@ -1,5 +1,5 @@
 """
-test_self_evolution_extra.py — cover agent_harness/self_evolution/*.py
+test_self_evolution_extra.py — cover minxg/self_evolution/*.py
 
 Tests cover:
   - failure_tour module imports
@@ -17,14 +17,14 @@ import math
 
 import pytest
 
-from agent_harness.self_evolution.failure_tour import FailureTour, Failure
-from agent_harness.self_evolution.field_forge import FieldForge, FieldProposal
-from agent_harness.self_evolution.loop import EvolutionLoop, LoopConfig, CycleRecord
-from agent_harness.self_evolution.twin import TwinEngine, TwinOutcome
-from agent_harness.driver import DriverEngine, State, Operator
-from agent_harness.contracts.registry import get_registry, reset_registry, Registry
-from agent_harness.contracts.cell import Cell
-from agent_harness.contracts.lifecycle import LifecyclePhase
+from minxg.self_evolution.failure_tour import FailureTour, Failure
+from minxg.self_evolution.field_forge import FieldForge, FieldProposal
+from minxg.self_evolution.loop import EvolutionLoop, LoopConfig, CycleRecord
+from minxg.self_evolution.twin import TwinEngine, TwinOutcome
+from minxg.driver import DriverEngine, State, Operator
+from minxg.contracts.registry import get_registry, reset_registry, Registry
+from minxg.contracts.cell import Cell
+from minxg.contracts.lifecycle import LifecyclePhase
 
 
 # ---------------------------------------------------------------------------

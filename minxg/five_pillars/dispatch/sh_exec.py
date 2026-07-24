@@ -7,9 +7,9 @@ import re
 import shutil
 from pathlib import Path
 from typing import Dict, List
-from agent_harness.base import BaseWorker, tool
-from agent_harness.five_pillars.dispatch.system import SystemWorker
-from agent_harness.five_pillars.io.network import NetworkWorker
+from minxg.base import BaseWorker, tool
+from minxg.five_pillars.dispatch.system import SystemWorker
+from minxg.five_pillars.io.network import NetworkWorker
 
 
 class ShExecWorker(BaseWorker):

@@ -19,12 +19,12 @@ from __future__ import annotations
 import asyncio
 from typing import Any, Dict, List, Optional
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 # Late-bind so test-time mocks can swap the runtime away without
 # touching this module — same lazy-ref pattern as ``utils.ensure_config``.
 import sys as _sys
-_ADAPTER = _sys.modules.get("agent_harness.contracts.runtime.julia")
+_ADAPTER = _sys.modules.get("minxg.contracts.runtime.julia")
 
 
 def _adapters():

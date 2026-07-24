@@ -1,6 +1,6 @@
 """Algebraic Topology: Betti numbers, Euler, persistence."""
 import math
-from agent_harness.topo import (
+from minxg.topo import (
     Simplex, SimplicialComplex, VietorisRips, Filtration,
     persistent_homology, PersistenceDiagram, wasserstein_distance,
 )

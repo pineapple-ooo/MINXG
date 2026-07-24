@@ -14,7 +14,7 @@ import tempfile
 from typing import Any, Dict, List, Optional
 from pathlib import Path
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 

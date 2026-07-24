@@ -1,5 +1,5 @@
 """
-agent_harness/media_adv.py — Advanced media processing tools v1.0.0
+minxg/media_adv.py — Advanced media processing tools v1.0.0
 
 Image, audio, video: info, resize, crop, convert, thumbnail, spectrogram, GIF.
 Uses Pillow for images and ffprobe for audio/video when available.
@@ -11,7 +11,7 @@ import subprocess
 import tempfile
 from typing import Any, Dict, List, Optional, Tuple
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 def _parse_frame_rate(expr: str) -> float:

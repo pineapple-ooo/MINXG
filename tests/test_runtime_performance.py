@@ -4,7 +4,7 @@ from __future__ import annotations
 import time
 import pytest
 
-from agent_harness.contracts.runtime import handle
+from minxg.contracts.runtime import handle
 
 
 class TestPerformanceBenchmarks:

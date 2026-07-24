@@ -7,8 +7,8 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from agent_harness.five_pillars.devtools.self_evolution import SelfEvolutionWorker
-from agent_harness.base import BaseWorker
+from minxg.five_pillars.devtools.self_evolution import SelfEvolutionWorker
+from minxg.base import BaseWorker
 
 
 def _run(coro):
@@ -101,7 +101,7 @@ def test_record_has_checksum(w):
     ))
     assert r["status"] == "ok"
     # Read the file directly
-    from agent_harness.five_pillars.devtools.self_evolution import _evolution_path, _verify_checksum
+    from minxg.five_pillars.devtools.self_evolution import _evolution_path, _verify_checksum
     import json as _json
     lines = _evolution_path().read_text(encoding="utf-8").strip().split("\n")
     last = _json.loads(lines[-1])
@@ -120,7 +120,7 @@ def test_record_schema_version(w):
         cost_seconds=3,
     ))
     assert r["status"] == "ok"
-    from agent_harness.five_pillars.devtools.self_evolution import _evolution_path
+    from minxg.five_pillars.devtools.self_evolution import _evolution_path
     import json as _json
     lines = _evolution_path().read_text(encoding="utf-8").strip().split("\n")
     last = _json.loads(lines[-1])

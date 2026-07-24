@@ -1,4 +1,4 @@
-"""agent_harness.screen.capture.termux_backend — Termux:API screencap.
+"""minxg.screen.capture.termux_backend — Termux:API screencap.
 
 Uses the termux-api binary from the `termux-api` pkg to grab screenshots.
 Requires the Termux:API Android companion app to be installed + running.

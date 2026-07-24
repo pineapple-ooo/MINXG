@@ -4,7 +4,7 @@ from __future__ import annotations
 from typing import Dict, List, Optional
 import math
 import re
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 class AiToolsWorker(BaseWorker):

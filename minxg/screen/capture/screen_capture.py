@@ -1,4 +1,4 @@
-"""agent_harness.screen.capture.screen_capture — Unified capture bridge.
+"""minxg.screen.capture.screen_capture — Unified capture bridge.
 
 Provides a single entry point for all screen capture operations:
 - capture()      → screenshot (ADB/Termux/Camera/Mock)
@@ -15,7 +15,7 @@ import time
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from agent_harness.screen.constants import (
+from minxg.screen.constants import (
     SCREEN_RAW,
     SCREEN_LAYOUT,
     SCREEN_OCR,

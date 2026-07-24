@@ -12,25 +12,25 @@ import pytest
 def test_mcp_server_imports():
     """Test that mcp_server module can be imported."""
     # This should not raise even without fastmcp installed
-    from agent_harness import mcp_server
+    from minxg import mcp_server
     assert hasattr(mcp_server, 'WorkerRegistry')
     assert hasattr(mcp_server, 'registry')
     assert hasattr(mcp_server, 'main')
     assert hasattr(mcp_server, 'SERVER_NAME')
-    assert mcp_server.SERVER_NAME == "agent_harness"
+    assert mcp_server.SERVER_NAME == "minxg"
 
 
 def test_worker_registry_init():
     """Test WorkerRegistry initializes correctly."""
-    from agent_harness.mcp_server import WorkerRegistry
+    from minxg.mcp_server import WorkerRegistry
     reg = WorkerRegistry()
     assert reg._workers == {}
     assert reg._loaded is False
 
 
-def test_worker_registry_load_without_agent_harness(monkeypatch):
+def test_worker_registry_load_without_minxg(monkeypatch):
     """Test that registry.load() is a no-op when AgentHarness is not available."""
-    from agent_harness import mcp_server
+    from minxg import mcp_server
     monkeypatch.setattr(mcp_server, '_AgentHarness_AVAILABLE', False)
     reg = mcp_server.WorkerRegistry()
     reg.load()  # Should not raise
@@ -43,17 +43,17 @@ def test_worker_registry_load_without_agent_harness(monkeypatch):
 @pytest.mark.asyncio
 async def test_fallback_tools_return_error():
     """Test that fallback tools return error when MCP is not installed."""
-    from agent_harness import mcp_server
+    from minxg import mcp_server
 
     # These should all return error dict when fastmcp is not installed
     if mcp_server.mcp is None:
-        result = await mcp_server.agent_harness_file_read("/tmp/test")
+        result = await mcp_server.minxg_file_read("/tmp/test")
         assert "error" in result
 
-        result = await mcp_server.agent_harness_hash("hello")
+        result = await mcp_server.minxg_hash("hello")
         assert "error" in result
 
-        result = await mcp_server.agent_harness_version()
+        result = await mcp_server.minxg_version()
         assert "version" in result
         assert "error" in result
 
@@ -62,7 +62,7 @@ async def test_fallback_tools_return_error():
 
 def test_main_exits_without_mcp(monkeypatch, capsys):
     """Test that main() exits with error when MCP is not available."""
-    from agent_harness import mcp_server
+    from minxg import mcp_server
 
     # Force mcp to None
     monkeypatch.setattr(mcp_server, 'mcp', None)
@@ -80,7 +80,7 @@ def test_main_exits_without_mcp(monkeypatch, capsys):
 
 def test_worker_registry_has_expected_workers():
     """Test that WORKERS list contains expected entries."""
-    from agent_harness.mcp_server import WorkerRegistry
+    from minxg.mcp_server import WorkerRegistry
 
     worker_keys = [w[0] for w in WorkerRegistry.WORKERS]
 
@@ -97,6 +97,6 @@ def test_worker_registry_has_expected_workers():
 
 def test_worker_registry_keys_unique():
     """Test that all worker keys are unique."""
-    from agent_harness.mcp_server import WorkerRegistry
+    from minxg.mcp_server import WorkerRegistry
     keys = [w[0] for w in WorkerRegistry.WORKERS]
     assert len(keys) == len(set(keys)), "Worker keys must be unique"

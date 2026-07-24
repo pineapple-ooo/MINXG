@@ -30,7 +30,7 @@ from multiligua_cli.wizard_ui import (
 
 __version__ = "0.0.0+unknown"
 try:
-    from agent_harness import VERSION as __version__
+    from minxg import VERSION as __version__
 except Exception:
     pass
 
@@ -342,7 +342,7 @@ def _print_setup_banner() -> None:
         notice = Text()
         notice.append("  This wizard configures your AI provider, model, vision,\n"
                       "  and runtime settings. All changes are saved to config.yaml\n"
-                      "  and can be re-run anytime with: agent_harness setup\n",
+                      "  and can be re-run anytime with: minxg setup\n",
                       style="dim gold3 on rgb(50,32,15)")
         console.print(Panel(notice, border_style="gold3", padding=(0, 2), width=72))
         console.print()
@@ -359,7 +359,7 @@ def _print_setup_banner() -> None:
         sys.stdout.write(f"{Colors.INDIGO}?{bar}?{Colors.RESET}\n\n")
         for ln in [
             "  This wizard configures your AI provider, model, vision,",
-            "  and runtime settings. Re-run anytime with: agent_harness setup",
+            "  and runtime settings. Re-run anytime with: minxg setup",
         ]:
             sys.stdout.write(f"{Colors.bg('17')}{Colors.SLATE}{ln}{Colors.RESET}\n")
         sys.stdout.write("\n")
@@ -1057,7 +1057,7 @@ def _post_setup_hints(config: Dict[str, Any]) -> None:
         console.print(Panel.fit(
             f"[bold {_C_ACCENT}]? Setup Complete[/]\n"
             f"[dim]Your configuration is saved. Re-run with:[/]\n"
-            f"[bold]agent_harness setup[/]",
+            f"[bold]minxg setup[/]",
             title=f"[bold {_C_ACCENT}]AgentHarness[/]",
             border_style="bright_blue",
             padding=(1, 4),
@@ -1067,12 +1067,12 @@ def _post_setup_hints(config: Dict[str, Any]) -> None:
         t = Table.grid(padding=(0, 3))
         t.add_column(style=f"bold {_C_ACCENT}", justify="right")
         t.add_column(style="dim")
-        t.add_row("agent_harness",               "start the TUI chat")
-        t.add_row("agent_harness chat",          "alias for the chat CLI")
-        t.add_row("agent_harness gateway",        "OpenAI-compatible v1 endpoint (--detach for background)")
-        t.add_row("agent_harness doctor",        "self-check (config + tools + extensions)")
-        t.add_row("agent_harness --help",        "command cheatsheet")
-        t.add_row("agent_harness -v status",     "runtime status with verbose logging")
+        t.add_row("minxg",               "start the TUI chat")
+        t.add_row("minxg chat",          "alias for the chat CLI")
+        t.add_row("minxg gateway",        "OpenAI-compatible v1 endpoint (--detach for background)")
+        t.add_row("minxg doctor",        "self-check (config + tools + extensions)")
+        t.add_row("minxg --help",        "command cheatsheet")
+        t.add_row("minxg -v status",     "runtime status with verbose logging")
         console.print(t)
     else:
         bar = "?" * 54
@@ -1082,17 +1082,17 @@ def _post_setup_hints(config: Dict[str, Any]) -> None:
             f"{' ' * (54 - 18)}{_A_RESET}{_A_BLUE}?{_A_RESET}\n"
         )
         sys.stdout.write(
-            f"{_A_BLUE}?{_A_RESET}{_A_BG_DEEP}{_A_DIM}  Config saved. Re-run with: agent_harness setup"
+            f"{_A_BLUE}?{_A_RESET}{_A_BG_DEEP}{_A_DIM}  Config saved. Re-run with: minxg setup"
             f"{' ' * max(0, 54 - 42)}{_A_RESET}{_A_BLUE}?{_A_RESET}\n"
         )
         sys.stdout.write(f"{_A_BLUE}?{bar}?{_A_RESET}\n")
         hints = [
-            ("agent_harness",               "start the TUI chat"),
-            ("agent_harness chat",          "alias for the chat CLI"),
-            ("agent_harness gateway",        "OpenAI-compatible v1 endpoint (--detach for background)"),
-            ("agent_harness doctor",        "self-check (config + tools + extensions)"),
-            ("agent_harness --help",        "command cheatsheet"),
-            ("agent_harness -v status",     "runtime status with verbose logging"),
+            ("minxg",               "start the TUI chat"),
+            ("minxg chat",          "alias for the chat CLI"),
+            ("minxg gateway",        "OpenAI-compatible v1 endpoint (--detach for background)"),
+            ("minxg doctor",        "self-check (config + tools + extensions)"),
+            ("minxg --help",        "command cheatsheet"),
+            ("minxg -v status",     "runtime status with verbose logging"),
         ]
         for cmd, desc in hints:
             row = f"  {_A_CYAN}{cmd:<22}{_A_RESET} {_A_DIM_BLUE}{desc}{_A_RESET}"

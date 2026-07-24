@@ -46,7 +46,7 @@ from typing import Any, Dict, List, Optional
 
 
 _DB_FILENAME = "sessions.sqlite"
-_DEFAULT_DIR = Path.home() / ".agent_harness" / "sessions"
+_DEFAULT_DIR = Path.home() / ".minxg" / "sessions"
 
 
 class SessionStore:

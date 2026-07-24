@@ -1,4 +1,4 @@
-"""agent_harness.symbdiff — Symbolic Differential Algebra System.
+"""minxg.symbdiff — Symbolic Differential Algebra System.
 
 The SEVENTH mathematical pillar of AgentHarness (v0.16.0).
 

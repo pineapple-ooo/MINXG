@@ -1,4 +1,4 @@
-"""agent_harness/five_pillars/devtools/binary_toolbelt.py — Binary analysis + deobfuscation belt.
+"""minxg/five_pillars/devtools/binary_toolbelt.py — Binary analysis + deobfuscation belt.
 
 Integrates MIT-licensed reverse engineering tools that go beyond APK:
 
@@ -30,7 +30,7 @@ import tempfile
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 # ── Legal disclaimer (attached per-call) ──────────────────────────
@@ -48,7 +48,7 @@ class BinaryToolbeltWorker(BaseWorker):
     Three MIT-licensed engines:
     - BAP (CMU): symbolic execution, taint, multi-arch disasm
     - omill: LLVM IR lifter + deobfuscator (x86-64 PE)
-    - agent_harness_rust FFI: entropy, FFT, autocorrelation on binary segments
+    - minxg_rust FFI: entropy, FFT, autocorrelation on binary segments
     """
 
     worker_id = "binary_toolbelt"
@@ -210,7 +210,7 @@ class BinaryToolbeltWorker(BaseWorker):
             return {"status": "error", "error": f"Binary not found: {binary_path}"}
 
         try:
-            from agent_harness.rust_bridge import signal_entropy, signal_autocorr
+            from minxg.rust_bridge import signal_entropy, signal_autocorr
         except ImportError:
             return {
                 "status": "disabled",

@@ -1,6 +1,6 @@
-"""Tests for agent_harness.lens reverse doc projector."""
+"""Tests for minxg.lens reverse doc projector."""
 import pytest
-from agent_harness.lens import (
+from minxg.lens import (
     Glossary, Entry, load_default_glossary,
     Lens, LensConfig, export,
 )

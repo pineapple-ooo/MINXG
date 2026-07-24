@@ -1,4 +1,4 @@
-"""agent_harness.screen.capture.camera_backend — termux-camera-photo fallback.
+"""minxg.screen.capture.camera_backend — termux-camera-photo fallback.
 
 Captures the screen indirectly via the device camera. Front camera
 gives a reasonable screen approximation; back camera is worse but

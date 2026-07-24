@@ -1,5 +1,5 @@
 """
-agent_harness/platform_registry.py — Platform-aware tool registry v2.0.0
+minxg/platform_registry.py — Platform-aware tool registry v2.0.0
 
 Every tool in AgentHarness declares which platforms it supports. This module:
   1. Auto-detects the current platform

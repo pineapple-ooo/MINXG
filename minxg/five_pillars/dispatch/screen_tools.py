@@ -1,4 +1,4 @@
-"""agent_harness.five_pillars.dispatch.screen_tools — AI worker exposing screen actions as tools.
+"""minxg.five_pillars.dispatch.screen_tools — AI worker exposing screen actions as tools.
 
 Wraps ScreenControllerV2 as a BaseWorker so the AI can discover and call
 all screen operations via the standard tool-call interface.
@@ -20,12 +20,12 @@ import os
 import subprocess
 from typing import Any, Dict, List, Optional
 
-from agent_harness.base import BaseWorker, tool
-from agent_harness.screen.capture.screen_capture import ScreenCapture
-from agent_harness.screen.screen_controller_v2 import ScreenControllerV2
-from agent_harness.five_pillars.dispatch.platform_registry import is_adb_available
+from minxg.base import BaseWorker, tool
+from minxg.screen.capture.screen_capture import ScreenCapture
+from minxg.screen.screen_controller_v2 import ScreenControllerV2
+from minxg.five_pillars.dispatch.platform_registry import is_adb_available
 
-log = logging.getLogger("agent_harness.five_pillars.dispatch.screen_tools")
+log = logging.getLogger("minxg.five_pillars.dispatch.screen_tools")
 
 
 def _adb_not_available_error() -> Dict[str, Any]:
@@ -87,7 +87,7 @@ class ScreenWorker(BaseWorker):
     def _get_controller(self) -> ScreenControllerV2:
         """Lazy-create ScreenControllerV2 on first use."""
         if self._ctrl is None:
-            from agent_harness.screen.constants import ScreenSource
+            from minxg.screen.constants import ScreenSource
             # Only force MOCK if ADB is not available
             if _is_adb_available():
                 preferred = ScreenSource.ADB

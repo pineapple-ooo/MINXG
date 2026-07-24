@@ -7,7 +7,7 @@ from __future__ import annotations
 from typing import Dict, List, Any
 import re
 import json as _json
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 _HAS_CPP = False
@@ -15,7 +15,7 @@ _cpp_csv_info = None
 _cpp_csv_cell = None
 
 try:
-    from multiling import agent_harness_core as _mc
+    from multiling import minxg_core as _mc
     if hasattr(_mc, 'csv_info') and hasattr(_mc, 'csv_cell'):
         _cpp_csv_info = _mc.csv_info
         _cpp_csv_cell = _mc.csv_cell

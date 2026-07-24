@@ -18,7 +18,7 @@ from datetime import datetime, timedelta
 # (e.g. Termux + Python 3.13 where the Rust binding's symbol table is
 # incompatible with the interpreter). All actual usage is confined to
 # `_generate_ssl_cert`, which only runs when the IPC server is started
-# with TLS. Keep the imports lazy so unrelated `agent_harness` subcommands
+# with TLS. Keep the imports lazy so unrelated `minxg` subcommands
 # (status, tools, config, etc.) never load it.
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s | %(levelname)-7s | %(name)-18s | %(message)s')
@@ -30,7 +30,7 @@ CONNECTION_TIMEOUT = TIMEOUT_AIOHTTP_TOTAL
 ENABLE_SSL = os.getenv("IPC_SSL", "false").lower() == "true"
 SSL_CERT_PATH = os.getenv("IPC_SSL_CERT", "/tmp/ipc_server.crt")
 SSL_KEY_PATH = os.getenv("IPC_SSL_KEY", "/tmp/ipc_server.key")
-AUTH_SECRET = os.getenv("IPC_AUTH_SECRET", "agent_harness-secret-key-change-me")
+AUTH_SECRET = os.getenv("IPC_AUTH_SECRET", "minxg-secret-key-change-me")
 ENABLE_AUTH = os.getenv("IPC_AUTH", "true").lower() == "true"
 
 class MessageType:
@@ -413,7 +413,7 @@ class TCPIPCServer:
                 x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "Beijing"),
                 x509.NameAttribute(NameOID.LOCALITY_NAME, "Beijing"),
                 x509.NameAttribute(NameOID.ORGANIZATION_NAME, "AgentHarness"),
-                x509.NameAttribute(NameOID.COMMON_NAME, "agent_harness-orchestrator"),
+                x509.NameAttribute(NameOID.COMMON_NAME, "minxg-orchestrator"),
             ])
             cert = x509.CertificateBuilder().subject_name(subject).issuer_name(issuer).public_key(
                 key.public_key()).serial_number(x509.random_serial_number()).not_valid_before(

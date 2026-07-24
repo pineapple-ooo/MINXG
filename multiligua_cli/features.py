@@ -4,7 +4,7 @@ multiligua_cli/features.py — AgentHarness Feature Showcase + EXPERIMENTAL extr
 Two things live in this module:
 
 1. The **stable** feature showcase (``FEATURES``, ``print_features``,
-   ``SELLING_POINTS``, ...) — used by ``agent_harness features`` and the TUI to
+   ``SELLING_POINTS``, ...) — used by ``minxg features`` and the TUI to
    help users discover what the platform can do. Safe to call anytime.
 
 2. An **EXPERIMENTAL** secondary surface that is *not* wired into the
@@ -184,7 +184,7 @@ def print_features_table(console=None) -> None:
 
 
 def print_features(console=None) -> None:
-    """Alias for :func:`print_features_table` — the name `agent_harness features` expects."""
+    """Alias for :func:`print_features_table` — the name `minxg features` expects."""
     print_features_table(console=console)
 
 
@@ -375,7 +375,7 @@ def export_to_markdown(messages: List[Dict], output: str = None) -> str:
     """Dump a chat transcript to a markdown file and return its path. EXPERIMENTAL."""
     from datetime import datetime
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output = output or f"agent_harness_conversation_{ts}.md"
+    output = output or f"minxg_conversation_{ts}.md"
     lines = [f"# AgentHarness Conversation — {ts}", ""]
     for msg in messages:
         role = msg.get("role", "unknown")
@@ -424,10 +424,10 @@ def welcome_animation():
 
 
 class SessionManager:
-    """Save/load/list chat sessions under ~/.agent_harness/sessions. EXPERIMENTAL."""
+    """Save/load/list chat sessions under ~/.minxg/sessions. EXPERIMENTAL."""
 
     def __init__(self, sessions_dir: str = None):
-        self.sessions_dir = Path(sessions_dir or os.path.expanduser("~/.agent_harness/sessions"))
+        self.sessions_dir = Path(sessions_dir or os.path.expanduser("~/.minxg/sessions"))
         self.sessions_dir.mkdir(parents=True, exist_ok=True)
 
     def save(self, session_id: str, messages: List[Dict]):
@@ -457,10 +457,10 @@ class SessionManager:
 
 
 class QuickFeedback:
-    """Append-only local feedback log at ~/.agent_harness/feedback.jsonl. EXPERIMENTAL."""
+    """Append-only local feedback log at ~/.minxg/feedback.jsonl. EXPERIMENTAL."""
 
     def __init__(self, feedback_file: str = None):
-        self.feedback_file = Path(feedback_file or os.path.expanduser("~/.agent_harness/feedback.jsonl"))
+        self.feedback_file = Path(feedback_file or os.path.expanduser("~/.minxg/feedback.jsonl"))
         self.feedback_file.parent.mkdir(parents=True, exist_ok=True)
 
     def record(self, rating: str, comment: str = "", context: dict = None):
@@ -496,7 +496,7 @@ class SilentFeatures:
             self._experimental_warned.add(name)
 
     def auto_save(self, session_id: str, messages: List[Dict]):
-        """[EXPERIMENTAL] save a chat session to ~/.agent_harness/sessions."""
+        """[EXPERIMENTAL] save a chat session to ~/.minxg/sessions."""
         self._warn_method("auto_save")
         mgr = SessionManager()
         mgr.save(session_id, messages)
@@ -510,7 +510,7 @@ class SilentFeatures:
     def disk_usage_report(self, data_dir: Optional[str] = None) -> dict:
         """[EXPERIMENTAL] report total disk usage under `data_dir`."""
         self._warn_method("disk_usage_report")
-        d = Path(data_dir or os.path.expanduser("~/.agent_harness"))
+        d = Path(data_dir or os.path.expanduser("~/.minxg"))
         total = 0
         try:
             for f in d.rglob("*"):
@@ -523,7 +523,7 @@ class SilentFeatures:
     def rotate_logs(self, log_dir: Optional[str] = None, max_files: int = 10):
         """[EXPERIMENTAL] keep only the latest `max_files` log files."""
         self._warn_method("rotate_logs")
-        ld = Path(log_dir or os.path.expanduser("~/.agent_harness/logs"))
+        ld = Path(log_dir or os.path.expanduser("~/.minxg/logs"))
         for pat in ("*.log", "*.log.*"):
             files = sorted(ld.glob(pat), key=lambda x: x.stat().st_mtime)
             while len(files) > max_files:
@@ -547,11 +547,11 @@ class SilentFeatures:
             return False
 
     def optimize_memory_index(self):
-        """[EXPERIMENTAL] run `PRAGMA optimize` on ~/.agent_harness/memory.db if present."""
+        """[EXPERIMENTAL] run `PRAGMA optimize` on ~/.minxg/memory.db if present."""
         self._warn_method("optimize_memory_index")
         try:
             import sqlite3
-            db = Path(os.path.expanduser("~/.agent_harness/memory.db"))
+            db = Path(os.path.expanduser("~/.minxg/memory.db"))
             if db.exists():
                 with sqlite3.connect(str(db)) as conn:
                     conn.execute("PRAGMA optimize")
@@ -568,7 +568,7 @@ class SilentFeatures:
         self._warn_method("collect_metrics")
         self._stats[metric] = self._stats.get(metric, 0) + value
 
-    def check_updates(self, repo_url: str = "https://github.com/agent_harness/agent_harness"):
+    def check_updates(self, repo_url: str = "https://github.com/minxg/minxg"):
         """[EXPERIMENTAL] STUB. Always returns None until the check
         backend is implemented; callers must not rely on a version bump
         prompt from this entry point in this release."""

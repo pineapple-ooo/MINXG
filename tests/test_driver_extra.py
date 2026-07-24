@@ -1,6 +1,6 @@
-"""Extra coverage for agent_harness.driver — state, engine, and field primitives."""
+"""Extra coverage for minxg.driver — state, engine, and field primitives."""
 import pytest
-from agent_harness.driver import (
+from minxg.driver import (
     State, Operator, Identity, DriverEngine,
     arithmetic_field, parametric_field, clamp_field, smoothing_field,
     EnginePhase, StepReport,
@@ -10,8 +10,8 @@ from agent_harness.driver import (
 def test_driver_module_imports_cleanly():
     """Smoke-test: the top-level driver package imports without side-effects."""
     import importlib
-    import agent_harness.driver
-    importlib.reload(agent_harness.driver)
+    import minxg.driver
+    importlib.reload(minxg.driver)
 
 
 def test_engine_instantiates_with_minimal_state():

@@ -1,4 +1,4 @@
-"""agent_harness/five_pillars/devtools/self_evolution.py -- Self-evolution engine v2.
+"""minxg/five_pillars/devtools/self_evolution.py -- Self-evolution engine v2.
 
 The SelfEvolutionWorker lets the AI agent **learn from every task
 it completes**.  After finishing a task the AI calls
@@ -10,7 +10,7 @@ it completes**.  After finishing a task the AI calls
 * what time / token cost was incurred
 * what lessons to remember next time
 
-These records are persisted to ``~/.agent_harness/evolution.jsonl`` (one
+These records are persisted to ``~/.minxg/evolution.jsonl`` (one
 JSON object per line) so the knowledge survives across sessions.
 Before starting a new task the AI calls ``evolution_recall`` with
 keywords describing the upcoming task; the engine returns the
@@ -46,7 +46,7 @@ v2 增强 (超级无损记忆系统):
    验证)。
 
 7. **版本回滚** — evolution_rollback 回到上一个快照。每次
-   归档操作自动保存快照到 ~/.agent_harness/snapshots/。
+   归档操作自动保存快照到 ~/.minxg/snapshots/。
 
 8. **低质量记录清理** — evolution_prune 清理 outcome=failure
    且 lessons 为空的低价值记录。
@@ -57,7 +57,7 @@ O(n*m) where n=records and m=terms in the query -- fine for thousands
 of records.
 
 The evolution log lives at:
-    ~/.agent_harness/evolution.jsonl
+    ~/.minxg/evolution.jsonl
 
 Format (one JSON object per line):
     {
@@ -88,7 +88,7 @@ import shutil
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 # ── 配置 ────────────────────────────────────────────────────────────────────
@@ -108,7 +108,7 @@ BM25_B = 0.75
 
 def _evolution_dir() -> Path:
     """Return the directory for evolution data."""
-    d = Path.home() / ".agent_harness"
+    d = Path.home() / ".minxg"
     d.mkdir(parents=True, exist_ok=True)
     return d
 

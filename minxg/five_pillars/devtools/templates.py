@@ -1,4 +1,4 @@
-"""agent_harness/five_pillars/devtools/templates.py — Template library for DevForge.
+"""minxg/five_pillars/devtools/templates.py — Template library for DevForge.
 
 Pure-data template kit for the four supported platforms and
 their canonical entrypoints.  Keeping templates as data (not
@@ -224,7 +224,7 @@ if __name__ == "__main__":
 def render_entrypoint(framework: str, *,
                       app_class: str = "App",
                       title: str = "AgentHarness",
-                      package: str = "ai.agent_harness") -> str:
+                      package: str = "ai.minxg") -> str:
     """Render the canonical entry template for *framework*.
 
     Returns an empty string if *framework* is unknown so callers

@@ -1,4 +1,4 @@
-"""agent_harness/five_pillars/devtools/dev_shell.py — Unified dev shell facade.
+"""minxg/five_pillars/devtools/dev_shell.py — Unified dev shell facade.
 
 The ``dev_shell`` worker is a single facade for the typical
 *every-day* developer commands.  It does NOT replace platform-
@@ -28,7 +28,7 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 # Language → runner /linter / formatter metadata.  Each entry

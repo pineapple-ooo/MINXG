@@ -1,5 +1,5 @@
 """
-agent_harness/chaos/maps.py — Classic Discrete and Continuous Dynamical Systems
+minxg/chaos/maps.py — Classic Discrete and Continuous Dynamical Systems
 ================================================================================
 
 THE LOGISTIC MAP

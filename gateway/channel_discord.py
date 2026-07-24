@@ -151,7 +151,7 @@ class DiscordChannel(ChannelAdapter):
                     "token": self.bot_token,
                     "intents": DEFAULT_INTENTS,
                     "properties": {
-                        "os": "linux", "browser": "agent_harness", "device": "agent_harness",
+                        "os": "linux", "browser": "minxg", "device": "minxg",
                     },
                 },
             })

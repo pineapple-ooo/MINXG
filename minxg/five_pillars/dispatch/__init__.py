@@ -1,4 +1,4 @@
-"""agent_harness.five_pillars.dispatch — Execution / limits plane.
+"""minxg.five_pillars.dispatch — Execution / limits plane.
 
 system, sh_query, sh_exec, process_tools, limits_lock,
 limits_break, platform_tools, platform_registry,

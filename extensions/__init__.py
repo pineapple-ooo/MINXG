@@ -4,8 +4,8 @@ extensions - extension discovery, registry, and lifecycle.
 Every runtime extension is a first-class AgentHarness citizen: it advertises
 an EXTENSION_NAME, declares its dependencies, and exposes a
 handle_command(args) entry point that returns a POSIX exit code.
-Built-ins like ``agent_harness-adb`` ship with the package but stay disabled
-until the user opts in via ``agent_harness ext add <slug>``.
+Built-ins like ``minxg-adb`` ship with the package but stay disabled
+until the user opts in via ``minxg ext add <slug>``.
 
 The runner is intentionally narrow: it never auto-enables based on
 detected tools, so installing this project on a fresh box does not
@@ -124,7 +124,7 @@ def register_cli_extensions(subparsers) -> Dict[str, ExtensionModule]:
     argparse subcommand verb(s) it registered.
 
     This is deliberately not keyed by ``ext.name`` (the canonical
-    ``EXTENSION_NAME``, e.g. ``"agent_harness-files"``) — every builtin
+    ``EXTENSION_NAME``, e.g. ``"minxg-files"``) — every builtin
     extension's ``register_cli`` registers a short verb instead
     (``"files"``, ``"adb"``, ``"root"``, ...), so a name-keyed map
     would never match the ``cmd`` argparse actually parses and every

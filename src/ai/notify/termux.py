@@ -185,12 +185,12 @@ def notify_task_completed(
     in either case so the activity is auditable.
     """
     if not body:
-        body = "agent_harness — task finished. open Termux for details."
+        body = "minxg — task finished. open Termux for details."
     args: list[str] = ["termux-notification",
                        "--title", title,
                        "--content", body,
                        "--priority", "high",
-                       "--id", "agent_harness-task-done"]
+                       "--id", "minxg-task-done"]
     if not is_available():
         logger.info("notify: %s / %s", title, body)
         return False

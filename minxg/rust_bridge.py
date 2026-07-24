@@ -1,7 +1,7 @@
 """
-agent_harness/rust_bridge.py — Python ↔ Rust FFI via ctypes.
+minxg/rust_bridge.py — Python ↔ Rust FFI via ctypes.
 
-Loads ``libagent_harness_rust.so`` and exposes all Rust operators as Python
+Loads ``libminxg_rust.so`` and exposes all Rust operators as Python
 functions. Memory-safe: every returned ptr is wrapped in a lifetime
 guard. NULL checks are enforced at the FFI boundary (Rust side also
 checks, but Python never passes NULL — it raises ValueError).
@@ -28,22 +28,22 @@ from typing import Optional, List, Tuple, Dict, Any
 # ─── Find the shared library ──────────────────────────────────────────────────
 
 def _find_lib() -> Optional[str]:
-    """Locate libagent_harness_rust_core.so (release or debug build).
+    """Locate libminxg_rust_core.so (release or debug build).
 
     On Termux/Android, .so files under /storage/emulated/0/ (FUSE mount)
-    cannot be dlopened.  The home-dir copy (~/.agent_harness/lib/) is checked
+    cannot be dlopened.  The home-dir copy (~/.minxg/lib/) is checked
     FIRST because it lives inside the Termux data directory where the
     linker can actually load it.
     """
     candidates = [
         # Termux-safe copy (data dir, not FUSE)
-        Path.home() / ".agent_harness" / "lib" / "libagent_harness_rust_core.so",
+        Path.home() / ".minxg" / "lib" / "libminxg_rust_core.so",
         # Release build in repo
-        Path(__file__).resolve().parent.parent / "rust_core" / "target" / "release" / "libagent_harness_rust_core.so",
-        Path(__file__).resolve().parent.parent / "rust_core" / "target" / "release" / "libagent_harness_rust_core.dylib",
+        Path(__file__).resolve().parent.parent / "rust_core" / "target" / "release" / "libminxg_rust_core.so",
+        Path(__file__).resolve().parent.parent / "rust_core" / "target" / "release" / "libminxg_rust_core.dylib",
         # Debug build fallback
-        Path(__file__).resolve().parent.parent / "rust_core" / "target" / "debug" / "libagent_harness_rust_core.so",
-        Path(__file__).resolve().parent.parent / "rust_core" / "target" / "debug" / "libagent_harness_rust_core.dylib",
+        Path(__file__).resolve().parent.parent / "rust_core" / "target" / "debug" / "libminxg_rust_core.so",
+        Path(__file__).resolve().parent.parent / "rust_core" / "target" / "debug" / "libminxg_rust_core.dylib",
     ]
     for path in candidates:
         if path.exists():
@@ -51,7 +51,7 @@ def _find_lib() -> Optional[str]:
 
     # Also check alongside the package
     me = Path(__file__).resolve().parent
-    for name in ("libagent_harness_rust_core.so", "libagent_harness_rust_core.dylib"):
+    for name in ("libminxg_rust_core.so", "libminxg_rust_core.dylib"):
         if (me / name).exists():
             return str(me / name)
 
@@ -108,7 +108,7 @@ class RustLib:
         path = _find_lib()
         if not path:
             raise FileNotFoundError(
-                "libagent_harness_rust.so not found — build with: cd rust_core && cargo build --release"
+                "libminxg_rust.so not found — build with: cd rust_core && cargo build --release"
             )
         self.lib = cdll.LoadLibrary(path)
         self._sign()

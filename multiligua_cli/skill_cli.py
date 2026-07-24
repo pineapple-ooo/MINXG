@@ -1,39 +1,39 @@
 """
-multiligua_cli/skill_cli.py — `agent_harness skill ...` subcommand dispatch.
+multiligua_cli/skill_cli.py — `minxg skill ...` subcommand dispatch.
 
-Before this file existed, `agent_harness skill` wasn't registered with argparse
+Before this file existed, `minxg skill` wasn't registered with argparse
 at all — despite being listed in `CORE_COMMANDS` and advertised in the
-README (`agent_harness skill list`), running it just failed with
+README (`minxg skill list`), running it just failed with
 "invalid choice: 'skill'". The actual skill logic already existed
 behind `tools/skill_manager_tool.py` (only reachable from inside a chat
 session via the LLM's function-calling), and the DEFAULT_SKILLS_DIR it
 pointed at didn't even exist in the shipped package. This file, plus
-agent_harness/core_ops/skill_registry.py, is the real implementation both of
+minxg/core_ops/skill_registry.py, is the real implementation both of
 those gaps were pointing at.
 
 Subcommands:
 
-    agent_harness skill list [--category NAME] [--installed]
-    agent_harness skill view <name>
-    agent_harness skill search <query> [--tag TAG] [--catalog URL-or-path]
-    agent_harness skill install <source> [--yes] [--as NAME]
-    agent_harness skill new <name> [--description TEXT] [--author TEXT]
-    agent_harness skill remove <name>
-    agent_harness skill publish <name>
+    minxg skill list [--category NAME] [--installed]
+    minxg skill view <name>
+    minxg skill search <query> [--tag TAG] [--catalog URL-or-path]
+    minxg skill install <source> [--yes] [--as NAME]
+    minxg skill new <name> [--description TEXT] [--author TEXT]
+    minxg skill remove <name>
+    minxg skill publish <name>
 """
 from __future__ import annotations
 
 import argparse
 from typing import Optional
 
-from agent_harness.core_ops import skill_registry as sr
+from minxg.core_ops import skill_registry as sr
 from multiligua_cli.utils import (
     print_dim, print_error, print_info, print_success, print_warning,
 )
 
 
 def _show_help() -> int:
-    print_info("agent_harness skill <action> — manage AgentHarness skills (markdown instruction bundles)")
+    print_info("minxg skill <action> — manage AgentHarness skills (markdown instruction bundles)")
     print()
     for line in (
         "  list [--category NAME] [--installed]   list available skills",
@@ -55,7 +55,7 @@ def _cmd_list(args: argparse.Namespace) -> int:
     if installed_only:
         installed = sr.list_installed()
         if not installed:
-            print_info("No skills installed. Try `agent_harness skill search <topic>`.")
+            print_info("No skills installed. Try `minxg skill search <topic>`.")
             return 0
         for name, meta in sorted(installed.items()):
             print_success(f"{name}  v{meta.get('version', '?')}  ({meta.get('source', '?')})")
@@ -66,7 +66,7 @@ def _cmd_list(args: argparse.Namespace) -> int:
         skills = [s for s in skills if s.category == category]
     if not skills:
         print_info("No skills found. Bundled skills ship with AgentHarness; "
-                    "install more with `agent_harness skill install <source>`.")
+                    "install more with `minxg skill install <source>`.")
         return 0
     for s in sorted(skills, key=lambda s: (s.category, s.name)):
         print_success(f"[{s.category}] {s.name}  v{s.version} — {s.description}")
@@ -154,8 +154,8 @@ def _cmd_new(args: argparse.Namespace) -> int:
         print_error(str(e))
         return 1
     print_success(f"Created {path / 'SKILL.md'}")
-    print_info("Edit it, then `agent_harness skill view "
-               f"{args.name}` to preview or `agent_harness skill publish {args.name}` when ready.")
+    print_info("Edit it, then `minxg skill view "
+               f"{args.name}` to preview or `minxg skill publish {args.name}` when ready.")
     return 0
 
 

@@ -6,7 +6,7 @@ Two extension roots:
   - extensions/builtin/    — ships inside the package; builtins are kept
                              EXTENSION_ENABLED = False at the source so they
                              never auto-attach. Users opt in explicitly with
-                             `agent_harness ext add <slug>`, which sets their state
+                             `minxg ext add <slug>`, which sets their state
                              to True in extensions/user/<name>.state.
   - extensions/user/       — drop-in directory; everything goes through
                              the same validator and is opt-in by default
@@ -60,7 +60,7 @@ SUPPORTED_EXTENSIONS = (".py", ".zip", ".tar.gz", ".tgz", ".json")
 # This is the 0.16.0 "extension interface strengthening" change — the
 # contract is now driven by a readable JSON file rather than scattered
 # attribute strings.
-_MANIFEST_CANDIDATES = ("manifest.json", "agent_harness.json", "extension.json")
+_MANIFEST_CANDIDATES = ("manifest.json", "minxg.json", "extension.json")
 
 
 class ExtensionModule:
@@ -149,7 +149,7 @@ def set_extension_enabled(name: str, enabled: bool) -> None:
 
 
 def _read_manifest(ext_root: Path) -> Dict[str, Any]:
-    """Look for ``manifest.json`` / ``agent_harness.json`` / ``extension.json``
+    """Look for ``manifest.json`` / ``minxg.json`` / ``extension.json``
     inside ``ext_root`` and return its parsed contents.
 
     The manifest is the 0.16.0 way extensions declare name/version/
@@ -176,7 +176,7 @@ def _read_manifest(ext_root: Path) -> Dict[str, Any]:
 
 def _extract_zip(zip_path: Path) -> Optional[Path]:
     try:
-        tmp = tempfile.TemporaryDirectory(prefix="agent_harness_ext_")
+        tmp = tempfile.TemporaryDirectory(prefix="minxg_ext_")
         _TEMP_DIRS.append(tmp)
         with zipfile.ZipFile(zip_path, "r") as zf:
             zf.extractall(tmp.name)
@@ -188,7 +188,7 @@ def _extract_zip(zip_path: Path) -> Optional[Path]:
 
 def _extract_targz(tar_path: Path) -> Optional[Path]:
     try:
-        tmp = tempfile.TemporaryDirectory(prefix="agent_harness_ext_")
+        tmp = tempfile.TemporaryDirectory(prefix="minxg_ext_")
         _TEMP_DIRS.append(tmp)
         with tarfile.open(tar_path, "r:*") as tf:
             tf.extractall(tmp.name)
@@ -277,14 +277,14 @@ def _load_json_manifest_extension(json_file: Path,
     This is the 0.16.0 "drop-in manifest" path — packages that travel
     with only a JSON file (e.g. drop-in metadata-only stubs, or
     declarations of vendor plugins that ship elsewhere) are picked up
-    here. File name MUST end in ``.manifest.json`` / ``.agent_harness.json`` /
+    here. File name MUST end in ``.manifest.json`` / ``.minxg.json`` /
     ``.extension.json`` to keep the heuristic narrow.
     """
     if json_file.suffix != ".json":
         return []
     stem = json_file.name.lower()
     if not any(stem.endswith(s) for s in (
-        ".manifest.json", ".agent_harness.json", ".extension.json",
+        ".manifest.json", ".minxg.json", ".extension.json",
     )):
         return []
     try:
@@ -307,7 +307,7 @@ def _load_json_manifest_extension(json_file: Path,
             self._payload = payload_
         def handle_command(self, args):  # noqa: ANN001
             sys.stderr.write(
-                f"[agent_harness.ext] {name} is a manifest-only entry — "
+                f"[minxg.ext] {name} is a manifest-only entry — "
                 f"no executable handler is registered.\n"
             )
             return 1
@@ -446,7 +446,7 @@ def discover_extensions() -> List[ExtensionModule]:
 
 
 def reload_extensions() -> List[ExtensionModule]:
-    """Force a fresh discovery. Used by `agent_harness ext add/remove`."""
+    """Force a fresh discovery. Used by `minxg ext add/remove`."""
     to_pop = [k for k in sys.modules if k.startswith("extensions._dynamic.")]
     for k in to_pop:
         del sys.modules[k]
@@ -458,7 +458,7 @@ def reload_extensions() -> List[ExtensionModule]:
 def rescan_all() -> int:
     """Alias for ``reload_extensions`` that returns a count.
 
-    Used by the experimental ``agent_harness ext-reload`` verb.
+    Used by the experimental ``minxg ext-reload`` verb.
     """
     return len(reload_extensions())
 

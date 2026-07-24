@@ -18,7 +18,7 @@ import pytest
 # NOTE: Tool bloat removal (工具虚胖优化) removed @tool decorators.
 # Tests below that depend on dynamic tool registration are marked xfail.
 
-from agent_harness.five_pillars.aggregate.text_kit import (
+from minxg.five_pillars.aggregate.text_kit import (
     TextKitWorker, _ROUTES,
 )
 
@@ -184,7 +184,7 @@ async def test_text_op_missing_op_arg_returns_error():
 def test_legacy_text_tools_worker_still_exists():
     """make sure we did NOT delete the old TextToolsWorker —
     only added a parallel facade."""
-    from agent_harness.five_pillars.scalar.text_tools import TextToolsWorker
+    from minxg.five_pillars.scalar.text_tools import TextToolsWorker
     worker = TextToolsWorker()
     name_set = set(worker.tools.keys())
     # Old design: every method was a separate tool. Some are now redundant

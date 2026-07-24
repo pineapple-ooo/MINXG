@@ -1,5 +1,5 @@
 """
-agent_harness/network_adv.py — Advanced network operations v1.0.0
+minxg/network_adv.py — Advanced network operations v1.0.0
 
 Extended network toolkit: ping, traceroute, DNS, HTTP methods, websocket,
 SSL verification, port scanning, WHOIS, GeoIP, speed testing.
@@ -16,8 +16,8 @@ from typing import Any, Dict, List, Optional, Tuple
 from urllib.request import urlopen, Request
 from urllib.error import URLError
 
-from agent_harness.base import BaseWorker, tool
-from agent_harness.utils.network_safety import validate_url
+from minxg.base import BaseWorker, tool
+from minxg.utils.network_safety import validate_url
 
 
 class NetworkAdvWorker(BaseWorker):

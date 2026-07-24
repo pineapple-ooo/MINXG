@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 _DEFAULT_MAX_READ_CHARS = 100_000
 _max_read_chars_cached: Optional[int] = None
 
-from agent_harness.core_ops.file_safety import (
+from minxg.core_ops.file_safety import (
     is_blocked_path as _is_blocked_path,
     is_binary_file as _is_binary_file,
     MAX_READABLE_BYTES as _MAX_READABLE_BYTES,

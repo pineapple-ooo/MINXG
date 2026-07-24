@@ -1,5 +1,5 @@
 """
-agent_harness/cat/yoneda.py — The Yoneda Lemma and Representable Functors
+minxg/cat/yoneda.py — The Yoneda Lemma and Representable Functors
 ===========================================================================
 
 THE YONEDA LEMMA — Most important result in category theory

@@ -1,5 +1,5 @@
 """
-agent_harness.contracts.agent.temporal — Temporal Planning & Knowledge Distillation
+minxg.contracts.agent.temporal — Temporal Planning & Knowledge Distillation
 ===========================================================================
 
 Bold design: agents that plan over time and distill knowledge into

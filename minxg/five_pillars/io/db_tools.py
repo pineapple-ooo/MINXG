@@ -4,7 +4,7 @@ from __future__ import annotations
 from typing import Dict, List
 import sqlite3
 import json as _json
-from agent_harness.base import BaseWorker, tool
+from minxg.base import BaseWorker, tool
 
 
 class DbToolsWorker(BaseWorker):

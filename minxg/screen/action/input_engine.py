@@ -1,4 +1,4 @@
-"""agent_harness.screen.action.input_engine — screen input via ADB + termux-api.
+"""minxg.screen.action.input_engine — screen input via ADB + termux-api.
 
 Opens a complete input bridge: tap, long_press, swipe, type, keyevent,
 and composite actions (clear+type, slide_up, retry_tap).

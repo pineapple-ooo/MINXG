@@ -1,4 +1,4 @@
-"""agent_harness.five_pillars.aggregate — Encoders / batch plane.
+"""minxg.five_pillars.aggregate — Encoders / batch plane.
 
 encoding_tools, crypto_tools, data_tools, template_tools,
 i18n_tools, ml_tools, benchmark_tools, math_adv, text_adv.

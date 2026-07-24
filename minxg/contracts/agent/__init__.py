@@ -1,5 +1,5 @@
 """
-agent_harness.contracts.agent — Autonomous Agent Runtime
+minxg.contracts.agent — Autonomous Agent Runtime
 ==================================================
 
 Bold design: AgentHarness as a self-directing agent work platform, not just a

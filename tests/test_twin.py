@@ -1,11 +1,11 @@
-"""Tests for agent_harness.twin Python<->Rust emitter."""
+"""Tests for minxg.twin Python<->Rust emitter."""
 import os
 import shutil
 import subprocess
 import tempfile
 import textwrap
 import pytest
-from agent_harness.twin import python_to_rust, rust_to_python, UnsupportedTwinOp
+from minxg.twin import python_to_rust, rust_to_python, UnsupportedTwinOp
 
 
 SIMPLE_PY = textwrap.dedent("""
@@ -78,9 +78,9 @@ def test_python_to_rust_emitted_function_compiles_when_rustc_present():
         pytest.skip("rustc not installed")
     # Use a writable temp dir: Termux carts ``/tmp`` around as a
     # symlink that ``rustc`` cannot create its scratch subdirs under,
-    # but ``tempfile.gettempdir()`` (the same one ``agent_harness.contracts.
+    # but ``tempfile.gettempdir()`` (the same one ``minxg.contracts.
     # runtime._exec.run`` uses) returns the platform-correct path.
-    out_dir = tempfile.mkdtemp(prefix="agent_harness_twin_")
+    out_dir = tempfile.mkdtemp(prefix="minxg_twin_")
     out_path = os.path.join(out_dir, "twin_test")
     # The crate has to compile as a single file accepted by ``rustc
     # -``. Replace the *leading* ``pub fn`` so the inner function

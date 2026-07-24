@@ -35,7 +35,7 @@ _CACHE: Dict[str, Dict[str, str]] = {}
 # ==============================================================
 _DEFAULTS: Dict[str, str] = {
     # Cheatsheet one-liners
-    "cmd_agent_harness":      "Start TUI chat (default)",
+    "cmd_minxg":      "Start TUI chat (default)",
     "cmd_docs":       "Open local docs server",
     "cmd_open":       "Start API gateway",
     "cmd_setup":      "Run setup wizard",

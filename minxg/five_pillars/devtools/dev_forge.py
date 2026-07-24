@@ -1,4 +1,4 @@
-"""agent_harness/five_pillars/devtools/dev_forge.py — Multi-platform dev forge.
+"""minxg/five_pillars/devtools/dev_forge.py — Multi-platform dev forge.
 
 The superset worker introduced in v0.18.0.  Replaces the
 role of ``android_forge`` for anyone targeting more than just
@@ -53,14 +53,14 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from agent_harness.base import BaseWorker, tool
-from agent_harness.five_pillars.devtools.templates import (
+from minxg.base import BaseWorker, tool
+from minxg.five_pillars.devtools.templates import (
     PLATFORMS, PLATFORM_DISPLAY, FRAMEWORKS,
     render_entrypoint, build_command,
 )
 
 
-_BUILD_LABEL = "agent_harness-quad-forge"
+_BUILD_LABEL = "minxg-quad-forge"
 
 
 def _validate_pkg(pkg: str) -> Tuple[bool, str]:
@@ -214,7 +214,7 @@ class QuadForgeWorker(BaseWorker):
             fw,
             app_class=_app_class(blueprint),
             title=blueprint.get("title", "AgentHarness"),
-            package=blueprint.get("package", "ai.agent_harness"),
+            package=blueprint.get("package", "ai.minxg"),
         )
 
         created: List[str] = []
@@ -224,7 +224,7 @@ class QuadForgeWorker(BaseWorker):
             entry.write_text(entry_text)
             created.append(str(entry))
 
-        manifest_path = root / "agent_harness-manifest.json"
+        manifest_path = root / "minxg-manifest.json"
         manifest_path.write_text(json.dumps(blueprint, indent=2,
                                              sort_keys=True))
         created.append(str(manifest_path))
@@ -318,10 +318,10 @@ class QuadForgeWorker(BaseWorker):
     )
     async def forge_status(self, root_path: str) -> Dict[str, Any]:
         root = Path(root_path).expanduser()
-        manifest_file = root / "agent_harness-manifest.json"
+        manifest_file = root / "minxg-manifest.json"
         if not manifest_file.exists():
             return {"status": "error",
-                    "error": "no agent_harness-manifest.json",
+                    "error": "no minxg-manifest.json",
                     "hint": "call forge_scaffold first"}
 
         bp = json.loads(manifest_file.read_text())

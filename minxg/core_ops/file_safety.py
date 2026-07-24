@@ -1,9 +1,9 @@
-"""agent_harness/core_ops/file_safety.py — Shared file-operation safety checks.
+"""minxg/core_ops/file_safety.py — Shared file-operation safety checks.
 
 Before this module existed, AgentHarness had *two* independent implementations
 of "read a file": one behind the chat-agent's function-calling registry
 (``tools/file_tools.py``) and one behind the MCP worker protocol
-(``agent_harness/workers/file/file_workers.py``). Only the first one guarded
+(``minxg/workers/file/file_workers.py``). Only the first one guarded
 against blocked device paths (``/dev/zero`` and friends — reading these
 blocks forever or returns unbounded data), binary files, and unbounded
 memory use on huge files. The MCP-exposed one had none of that.

@@ -1,4 +1,4 @@
-"""agent_harness/sandbox.py — restricted execution for rule actions and conditions.
+"""minxg/sandbox.py — restricted execution for rule actions and conditions.
 
 This module provides a safer alternative to raw ``eval``/``exec`` by
 restricting the execution environment to a known-safe subset of Python:

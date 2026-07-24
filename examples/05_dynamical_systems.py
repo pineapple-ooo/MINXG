@@ -5,7 +5,7 @@ Quantify the predictability horizon of any iterative process. The
 Lyapunov exponent is positive for chaos, negative for stable attractors.
 """
 import random
-from agent_harness.chaos import (
+from minxg.chaos import (
     logistic_map, logistic_lyapunov, lorenz,
     sierpinski_gasket, koch_snowflake, dragon_curve,
     kaplan_yorke_dimension, feigenbaum_constant,
