@@ -1,0 +1,2 @@
+[console_scripts]
+minxg = multiligua_cli.main:main

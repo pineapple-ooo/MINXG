@@ -1,0 +1,907 @@
+"""
+multiligua_cli/setup.py — AgentHarness Setup Wizard.
+
+Blue-premium themed configuration wizard matching the TUI chat aesthetic.
+
+Flow (v0.19.x):
+  Quick tier — 4 steps: provider + model + AI limits + save
+  Full tier  — 6 steps: + mode, gateway, environment, browser search
+
+All visual elements use the same deep-navy / bright-cyan / gold-accent
+palette as ``tui_chat.py`` so the product looks consistent end-to-end.
+"""
+
+import json
+import os
+import sys
+from pathlib import Path
+from typing import Dict, Any, List, Optional
+
+from multiligua_cli.i18n import T, set_lang, get_lang, LANGUAGES, LANG_NAMES, LANG_CODES
+from multiligua_cli.providers import (
+    REASONING_LEVELS, REASONING_BY_PROVIDER, resolve_reasoning_level,
+)
+from multiligua_cli.wizard_ui import (
+    clear_screen, print_banner as _wizard_banner,
+    print_success, print_error, print_info, print_warning,
+    AgentHarnessMenu, prompt, prompt_yes_no, prompt_choice,
+    Colors, HAS_RICH, console,
+)
+
+__version__ = "0.0.0+unknown"
+try:
+    from agent_harness import VERSION as __version__
+except Exception:
+    pass
+
+from multiligua_cli.providers import AI_PROVIDERS
+from multiligua_cli.platforms import PLATFORMS, PLATFORM_ORDER
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Blue-premium theme constants  (mirrors tui_chat.py)
+# ═══════════════════════════════════════════════════════════════════
+
+_C_BG_DEEP  = "rgb(10,30,80)"
+_C_BG_PANEL = "rgb(16,42,105)"
+_C_ACCENT   = "bright_cyan"
+_C_BLUE_MID = "deep_sky_blue3"
+_C_BLUE_DIM = "rgb(45,85,155)"
+_C_GOLD     = "gold3"
+
+_A_BG_DEEP  = "\033[48;5;17m"
+_A_BG_PANEL = "\033[48;5;18m"
+_A_BLUE     = "\033[38;5;75m"
+_A_CYAN     = "\033[38;5;51m"
+_A_DIM_BLUE = "\033[38;5;60m"
+_A_GOLD     = "\033[38;5;220m"
+_A_BOLD     = "\033[1m"
+_A_DIM      = "\033[2m"
+_A_RESET    = "\033[0m"
+
+TOTAL_STEPS = 6
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Custom blue-premium visual helpers
+# ═══════════════════════════════════════════════════════════════════
+
+try:
+    from rich.panel import Panel
+    from rich.text import Text
+    from rich.table import Table
+    from rich.console import Group
+    from rich import box
+except ImportError:
+    pass
+
+
+def _step_progress(step: int, total: int, title: str) -> None:
+    """Blue-accented step header replacing wizard_ui's plain version."""
+    if HAS_RICH:
+        console.print()
+        console.rule(
+            f"  [bold {_C_ACCENT}]Step {step}/{total}[/]  ·  "
+            f"[bold white]{title}[/]",
+            style="bright_blue",
+        )
+        console.print()
+    else:
+        line = "─" * 54
+        sys.stdout.write(f"\n{_A_BLUE}{line}{_A_RESET}\n")
+        sys.stdout.write(
+            f"  {_A_CYAN}{_A_BOLD}Step {step}/{total}{_A_RESET}"
+            f"  ·  {_A_BOLD}{title}{_A_RESET}\n"
+        )
+        sys.stdout.write(f"{_A_BLUE}{line}{_A_RESET}\n\n")
+        sys.stdout.flush()
+
+
+def _print_section(title: str) -> None:
+    """Blue ▸ marker for sub-sections within a step."""
+    if HAS_RICH:
+        console.print(f"\n  [bold {_C_ACCENT}]▸[/] [bold]{title}[/]")
+    else:
+        sys.stdout.write(f"\n  {_A_CYAN}{_A_BOLD}▸{_A_RESET} {_A_BOLD}{title}{_A_RESET}\n")
+        sys.stdout.flush()
+
+
+def _print_kv(label: str, value: str, indent: int = 0) -> None:
+    """Aligned key→value with blue label, cyan value."""
+    pad = " " * indent
+    if HAS_RICH:
+        console.print(
+            f"{pad}  [{_C_BLUE_DIM}]{label:<22}[/] "
+            f"[{_C_ACCENT}]{value}[/]"
+        )
+    else:
+        sys.stdout.write(
+            f"{pad}  {_A_DIM_BLUE}{label:<22}{_A_RESET} "
+            f"{_A_CYAN}{value}{_A_RESET}\n"
+        )
+        sys.stdout.flush()
+
+
+def _print_setup_banner() -> None:
+    """Blue-premium brand panel matching tui_chat.py — setup variant."""
+    version = __version__
+
+    if HAS_RICH:
+        brand = Text()
+        brand.append(f"  ◆  AgentHarness", style=f"bold {_C_GOLD} on {_C_BG_DEEP}")
+        brand.append(
+            f"\n     Multilingual Intelligence eXchange Gateway",
+            style=f"dim white on {_C_BG_DEEP}",
+        )
+        brand.append(
+            f"\n     Setup Wizard  ·  Interactive Configuration",
+            style=f"bold white on {_C_BG_DEEP}",
+        )
+        brand.append(
+            f"\n     Version {version}",
+            style=f"dim blue on {_C_BG_DEEP}",
+        )
+
+        console.print()
+        console.print(Panel(
+            brand,
+            border_style="bright_blue",
+            padding=(1, 2),
+            width=72,
+            title=f"[bold {_C_ACCENT}]◆ setup[/]",
+            subtitle=f"[dim]v{version}[/dim]",
+        ))
+
+        # Compact blue notice
+        notice = Text()
+        notice.append(
+            "  This wizard configures your AI provider, model, and\n"
+            "  runtime settings. All changes are saved to config.yaml\n"
+            "  and can be re-run anytime with: agent_harness setup\n",
+            style=f"dim white on {_C_BG_PANEL}",
+        )
+        console.print(Panel(
+            notice,
+            border_style=_C_BLUE_MID,
+            padding=(0, 2),
+            width=72,
+        ))
+        console.print()
+    else:
+        bar = "═" * 68
+        sys.stdout.write("\n")
+        sys.stdout.write(f"{_A_BLUE}╔{bar}╗{_A_RESET}\n")
+        line = f"  {_A_GOLD}{_A_BOLD}◆  AgentHarness{_A_RESET}  {_A_DIM}Multilingual Intelligence eXchange Gateway{_A_RESET}"
+        sys.stdout.write(f"{_A_BLUE}║{_A_RESET}{_A_BG_DEEP}{line}{' ' * max(0, 68 - 56)}{_A_RESET}{_A_BLUE}║{_A_RESET}\n")
+        line = f"     Setup Wizard  ·  Interactive Configuration"
+        sys.stdout.write(f"{_A_BLUE}║{_A_RESET}{_A_BG_DEEP}{_A_BOLD}{line}{' ' * (68 - len(line))}{_A_RESET}{_A_BLUE}║{_A_RESET}\n")
+        line = f"     Version {version}"
+        sys.stdout.write(f"{_A_BLUE}║{_A_RESET}{_A_BG_DEEP}{_A_DIM}{line}{' ' * (68 - len(line))}{_A_RESET}{_A_BLUE}║{_A_RESET}\n")
+        sys.stdout.write(f"{_A_BLUE}╚{bar}╝{_A_RESET}\n\n")
+        for ln in [
+            "  This wizard configures your AI provider, model, and",
+            "  runtime settings. Re-run anytime with: agent_harness setup",
+        ]:
+            sys.stdout.write(f"{_A_DIM_BLUE}{ln}{_A_RESET}\n")
+        sys.stdout.write("\n")
+    sys.stdout.flush()
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Path helpers
+# ═══════════════════════════════════════════════════════════════════
+
+
+def _project_root() -> Path:
+    return Path(__file__).parent.parent.resolve()
+
+
+def _config_path() -> Path:
+    return _project_root() / "config.yaml"
+
+
+def _env_path() -> Path:
+    return _project_root() / ".env"
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Config load / save
+# ═══════════════════════════════════════════════════════════════════
+
+
+def load_existing_config() -> Dict[str, Any]:
+    config_path = _config_path()
+    if config_path.exists():
+        try:
+            import yaml
+            with open(config_path) as f:
+                config = yaml.safe_load(f)
+                if config:
+                    return config
+        except Exception as e:
+            print_warning(f"Load failed: {e}")
+    return {}
+
+
+def save_config(config: Dict[str, Any]) -> None:
+    config_path = _config_path()
+    config_path.parent.mkdir(parents=True, exist_ok=True)
+    import yaml
+    try:
+        tmp = config_path.with_suffix(config_path.suffix + ".tmp")
+        with open(tmp, "w") as f:
+            yaml.dump(config, f, default_flow_style=False,
+                      allow_unicode=True, sort_keys=False)
+        os.replace(tmp, config_path)
+    except Exception:
+        # Fallback — direct write
+        with open(config_path, "w") as f:
+            yaml.dump(config, f, default_flow_style=False,
+                      allow_unicode=True, sort_keys=False)
+    print_success(f"Config saved → {config_path}")
+
+
+def save_env(key: str, value: str) -> None:
+    """Save a key=value pair to the .env file, preserving existing entries."""
+    env_path = _env_path()
+    env_path.parent.mkdir(parents=True, exist_ok=True)
+    env_vars: dict[str, str] = {}
+    if env_path.exists():
+        with open(env_path) as f:
+            for line in f:
+                line = line.strip()
+                if line and "=" in line and not line.startswith("#"):
+                    k, _, v = line.partition("=")
+                    env_vars[k] = v
+    env_vars[key] = value
+    with open(env_path, "w") as f:
+        for k, v in env_vars.items():
+            f.write(f"{k}={v}\n")
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Model fetching
+# ═══════════════════════════════════════════════════════════════════
+
+
+def _fetch_models(base_url: str, api_key: str) -> List[str]:
+    """Fetch available models from the provider's /models endpoint."""
+    import ssl
+    try:
+        import urllib.request
+        url = base_url.rstrip("/") + "/models"
+        req = urllib.request.Request(url)
+        req.add_header("Accept", "application/json")
+        if api_key:
+            req.add_header("Authorization", f"Bearer {api_key}")
+        ctx = ssl.create_default_context()
+        with urllib.request.urlopen(req, timeout=10, context=ctx) as resp:
+            data = json.loads(resp.read().decode())
+            if isinstance(data, dict):
+                models = data.get("data", data.get("models", []))
+                if not models:
+                    return []
+                names = []
+                for m in models:
+                    n = m.get("id", m.get("name", "")) if isinstance(m, dict) else str(m)
+                    if n:
+                        names.append(n)
+                return names[:50]
+    except Exception:
+        pass
+    return []
+
+
+def _prompt_model_with_fetch(
+    provider_info: dict,
+    existing_model: str | None,
+    base_url: str,
+    api_key: str,
+) -> str:
+    """Interactive model picker — uses AgentHarnessMenu when models are fetched,
+    falls back to manual text entry."""
+    default_model = existing_model or provider_info["default_model"]
+    fetched = _fetch_models(base_url, api_key)
+
+    if fetched and len(fetched) > 1:
+        # ── Interactive menu
+        descs = [f"from {provider_info['name']}" for _ in fetched]
+        menu = AgentHarnessMenu("Select model", fetched, descs)
+        try:
+            menu.selected = fetched.index(default_model) if default_model in fetched else 0
+        except ValueError:
+            menu.selected = 0
+        idx = menu.run()
+        if idx is not None:
+            return fetched[idx]
+        # User cancelled menu → fall through to manual entry
+
+    if fetched == []:
+        print_warning("Could not fetch models from provider — enter manually")
+    elif len(fetched) == 1:
+        print_info(f"Only one model available: {fetched[0]}")
+        return fetched[0]
+
+    return prompt("Enter model name", default_model)
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Step 1 — Language
+# ═══════════════════════════════════════════════════════════════════
+
+
+def setup_language(config: Dict[str, Any], existing: Dict[str, Any]) -> None:
+    """Step 1: Language — hardcoded to English."""
+    _step_progress(1, TOTAL_STEPS, "Language")
+    config["lang"] = "en"
+    print_success("Language: English")
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Step 2 — AI Provider + Model + Key + URL
+# ═══════════════════════════════════════════════════════════════════
+
+
+def setup_ai_provider(config: Dict[str, Any], existing: Dict[str, Any]) -> None:
+    _step_progress(2, TOTAL_STEPS, "AI Provider")
+
+    # ── Provider selection
+    provider_names = [f"{p['emoji']} {p['name']}" for p in AI_PROVIDERS.values()]
+    provider_descriptions = [p["description"] for p in AI_PROVIDERS.values()]
+
+    existing_provider = existing.get("ai", {}).get("provider")
+    default_idx = 0
+    if existing_provider and existing_provider in AI_PROVIDERS:
+        provider_keys = list(AI_PROVIDERS.keys())
+        if existing_provider in provider_keys:
+            default_idx = provider_keys.index(existing_provider)
+
+    selected = prompt_choice(
+        "Select AI provider", provider_names, provider_descriptions, default_idx
+    )
+    provider_key = list(AI_PROVIDERS.keys())[selected]
+    provider_info = AI_PROVIDERS[provider_key]
+
+    config["ai"] = config.get("ai", {})
+    config["ai"]["provider"] = provider_key
+    print_success(f"Provider → {provider_info['name']}")
+
+    if provider_key == "local":
+        print_info("Local mode — set base_url to your server endpoint")
+        config["ai"]["model"] = ""
+        config["ai"]["base_url"] = ""
+        config["ai"]["api_key"] = ""
+        return
+
+    # ── API URL
+    _print_section("API URL")
+    base_url = prompt(
+        "Enter API URL (or Enter to skip)",
+        existing.get("ai", {}).get("base_url") or provider_info["default_url"],
+    )
+    config["ai"]["base_url"] = base_url
+    print_success("API URL configured")
+
+    # ── API Key
+    if provider_info["needs_api_key"]:
+        _print_section("API Key")
+        existing_key = existing.get("ai", {}).get("api_key", "")
+        key_hint = ("***" + existing_key[-4:]) if existing_key else ""
+        api_key = prompt("Enter API key", key_hint, password=True)
+        config["ai"]["api_key"] = api_key
+        print_success("API key configured")
+
+    # ── Model selection (interactive)
+    _print_section("Model Selection")
+    model = _prompt_model_with_fetch(
+        provider_info,
+        existing.get("ai", {}).get("model"),
+        base_url,
+        config["ai"].get("api_key", ""),
+    )
+    config["ai"]["model"] = model
+    print_success(f"Model → {model}")
+
+    # ── Reasoning effort
+    _print_section("Reasoning Effort")
+    supported_levels = REASONING_BY_PROVIDER.get(provider_key)
+    level_names = [name for name, _ in REASONING_LEVELS]
+    level_descs = [desc for _, desc in REASONING_LEVELS]
+    if supported_levels:
+        ordered = [n for n in level_names if n in supported_levels] + [
+            n for n in level_names if n not in supported_levels
+        ]
+    else:
+        ordered = level_names
+    existing_level = existing.get("ai", {}).get("reasoning_effort") or "medium"
+    default_idx = 0
+    for i, n in enumerate(ordered):
+        if resolve_reasoning_level(provider_key, existing_level) == n:
+            default_idx = i
+            break
+    selected_idx = prompt_choice(
+        "Select reasoning effort",
+        ordered, level_descs, default=default_idx,
+    )
+    config["ai"]["reasoning_effort"] = ordered[selected_idx]
+    print_success(f"Reasoning → {config['ai']['reasoning_effort']}")
+
+    # ── Environment sub-settings
+    _print_section("Generation Parameters")
+    existing_mt = existing.get("ai", {}).get("max_tokens")
+    max_tok = prompt("Max tokens", str(existing_mt or 0))
+    config["ai"]["max_tokens"] = int(max_tok) if max_tok and int(max_tok) > 0 else 0
+
+    existing_cc = existing.get("ai", {}).get("concurrency")
+    cc = prompt("Max concurrency", str(existing_cc or 1))
+    config["ai"]["concurrency"] = int(cc) if cc else 1
+
+    existing_mtc = existing.get("ai", {}).get("max_tool_calls")
+    mtc = prompt("Max tool calls per round", str(existing_mtc or 0))
+    config["ai"]["max_tool_calls"] = int(mtc) if mtc else 0
+
+    existing_temp = existing.get("ai", {}).get("temperature", 0.3)
+    temp = prompt("Temperature", str(existing_temp))
+    config["ai"]["temperature"] = float(temp) if temp else 0.3
+
+    print_success("Provider configured")
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Step 3 — AI Core Limits
+# ═══════════════════════════════════════════════════════════════════
+
+
+def setup_ai_limits(config: Dict[str, Any], existing: Dict[str, Any]) -> None:
+    """Step 3: AI core limits — max_tokens, context window, concurrency.
+
+    Always runs in both Quick and Full tiers because these values
+    govern how fast the AI can dispatch tasks.
+    """
+    _step_progress(3, TOTAL_STEPS, "AI Core Limits")
+
+    ai = config.setdefault("ai", {})
+
+    # ── max_tokens
+    _print_section("Max Output Tokens")
+    default_mt = str(existing.get("ai", {}).get("max_tokens", 4096))
+    mt = prompt("Maximum output tokens per response", default_mt)
+    try:
+        ai["max_tokens"] = int(mt)
+    except ValueError:
+        ai["max_tokens"] = 4096
+    print_success(f"max_tokens = {ai['max_tokens']}")
+
+    # ── context_window
+    _print_section("Context Window")
+    default_cw = str(existing.get("ai", {}).get("context_window", 32768))
+    cw = prompt("Context window size (tokens of history to retain)", default_cw)
+    try:
+        ai["context_window"] = int(cw)
+    except ValueError:
+        ai["context_window"] = 32768
+    print_success(f"context_window = {ai['context_window']}")
+
+    # ── concurrency
+    _print_section("Concurrency")
+    default_cc = str(existing.get("ai", {}).get("concurrency", 4))
+    cc = prompt("Parallel tool-call concurrency (1-32)", default_cc)
+    try:
+        ai["concurrency"] = max(1, min(32, int(cc)))
+    except ValueError:
+        ai["concurrency"] = 4
+    print_success(f"concurrency = {ai['concurrency']}")
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Step (dead path) — Platforms
+# ═══════════════════════════════════════════════════════════════════
+
+
+def setup_platforms(config: Dict[str, Any], existing: Dict[str, Any]) -> None:
+    """Dead path — kept for compatibility. Platforms are auto-detected."""
+    print_info("Platforms are auto-detected at runtime — skipping.")
+    config["platforms"] = existing.get("platforms", {})
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Step 4 — Gateway
+# ═══════════════════════════════════════════════════════════════════
+
+
+def setup_gateway(config: Dict[str, Any], existing: Dict[str, Any]) -> None:
+    _step_progress(4, TOTAL_STEPS, "Gateway")
+
+    existing_gw = existing.get("gateway", {})
+
+    host = prompt("Gateway host", existing_gw.get("host", "0.0.0.0"))
+    port = prompt("Gateway port", str(existing_gw.get("port", 19001)))
+
+    config["gateway"] = {
+        "host": host,
+        "port": int(port) if port.isdigit() else 19001,
+    }
+
+    auto = prompt_yes_no(
+        "Auto-start gateway on launch?",
+        default=existing_gw.get("auto_start", False),
+    )
+    config["gateway"]["auto_start"] = auto
+
+    print_success("Gateway configured")
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Step 5 — Environment
+# ═══════════════════════════════════════════════════════════════════
+
+
+def setup_environment(config: Dict[str, Any], existing: Dict[str, Any]) -> None:
+    _step_progress(5, TOTAL_STEPS, "Environment")
+
+    existing_env = existing.get("environment", {})
+
+    # ── Log level
+    _print_section("Log Level")
+    log_levels = ["DEBUG", "INFO", "WARNING", "ERROR"]
+    log_descs = [
+        "Debug (all messages)",
+        "Info (normal operation)",
+        "Warning",
+        "Error only",
+    ]
+    existing_log = existing_env.get("log_level", "INFO")
+    log_idx = log_levels.index(existing_log) if existing_log in log_levels else 1
+    selected_log = prompt_choice("Log level", log_levels, log_descs, default=log_idx)
+
+    # ── Debug mode
+    debug = prompt_yes_no("Enable debug mode?", default=existing_env.get("debug", False))
+
+    # ── Workers
+    _print_section("Workers")
+    workers_port = prompt("Workers RPC port", str(existing_env.get("workers_port", 19001)))
+    workers_autostart = prompt_yes_no(
+        "Auto-start workers on launch?",
+        default=existing_env.get("workers_autostart", True),
+    )
+    health_interval = prompt(
+        "Health check interval (seconds)",
+        str(existing_env.get("health_check_interval", 60)),
+    )
+
+    # ── Performance
+    _print_section("Performance Optimization")
+    print_info("Mobile optimization reduces memory/CPU usage")
+    existing_perf = existing.get("perf", {})
+    mobile_opt = prompt_yes_no(
+        "Performance Optimization",
+        default=existing_perf.get("mobile_optimization", True),
+    )
+    config["perf"] = {"mobile_optimization": mobile_opt}
+    if mobile_opt:
+        print_success("Mobile optimization enabled")
+    else:
+        print_warning("Mobile optimization disabled")
+
+    config["environment"] = {
+        "log_level": log_levels[selected_log],
+        "debug": debug,
+        "workers_port": int(workers_port) if workers_port.isdigit() else 19001,
+        "workers_autostart": workers_autostart,
+        "health_check_interval": int(health_interval) if health_interval.isdigit() else 60,
+    }
+
+    print_success("Environment configured")
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Step 6 — Browser Search
+# ═══════════════════════════════════════════════════════════════════
+
+
+def setup_browser_search(config: Dict[str, Any], existing: Dict[str, Any]) -> None:
+    """Browser search configuration (final prompt step)."""
+    _step_progress(6, TOTAL_STEPS, "Browser Search")
+
+    existing_bs = existing.get("browser_search", {})
+
+    enabled = prompt_yes_no(
+        "Enable browser search for AI",
+        default=existing_bs.get("enabled", False),
+    )
+    if not enabled:
+        config["browser_search"] = {"enabled": False}
+        print_info("Browser search disabled")
+        return
+
+    _print_section("Search Method")
+    api_types = ["User's own browser", "Custom AI search API"]
+    api_type_idx = 0 if existing_bs.get("api_type") == "user" else 1
+    selected_api = prompt_choice(
+        "Search method",
+        api_types,
+        ["Use system browser", "Use AI search API endpoint"],
+        default=api_type_idx,
+    )
+    api_type = "user" if selected_api == 0 else "api"
+
+    config["browser_search"] = {"enabled": True, "api_type": api_type}
+
+    if api_type == "api":
+        _print_section("API Configuration")
+        api_url = prompt("API URL", existing_bs.get("api_url", ""))
+        config["browser_search"]["api_url"] = api_url
+
+        api_key = prompt("API Key", existing_bs.get("api_key", ""), password=True)
+        if api_key:
+            config["browser_search"]["api_key"] = api_key
+
+        model = prompt("Model (optional)", existing_bs.get("model", ""))
+        if model:
+            config["browser_search"]["model"] = model
+
+    print_success("Browser search configured")
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Summary — blue-premium review panel
+# ═══════════════════════════════════════════════════════════════════
+
+
+def show_summary(config: Dict[str, Any]) -> None:
+    """Blue-themed summary panel with aligned key→value table."""
+    if HAS_RICH:
+        # ── Build a Rich table for clean alignment
+        t = Table(
+            show_header=False,
+            box=None,
+            padding=(0, 1),
+            width=64,
+        )
+        t.add_column(style=f"dim {_C_BLUE_DIM}", justify="right", width=22)
+        t.add_column(style=f"bold {_C_ACCENT}")
+
+        ai = config.get("ai", {})
+        t.add_row("Language", config.get("lang", "en"))
+        t.add_row("Provider", ai.get("provider", "—"))
+        t.add_row("Model", ai.get("model", "—"))
+        t.add_row("API URL", ai.get("base_url", "—") or "—")
+        if ai.get("max_tokens"):
+            t.add_row("Max Tokens", str(ai["max_tokens"]))
+        if ai.get("temperature") is not None:
+            t.add_row("Temperature", str(ai["temperature"]))
+        if ai.get("reasoning_effort"):
+            t.add_row("Reasoning", str(ai["reasoning_effort"]))
+        if ai.get("context_window"):
+            t.add_row("Context Window", str(ai["context_window"]))
+        if ai.get("concurrency"):
+            t.add_row("Concurrency", str(ai["concurrency"]))
+
+        gw = config.get("gateway", {})
+        if gw:
+            t.add_row("Gateway", f"{gw.get('host', '0.0.0.0')}:{gw.get('port', 19001)}")
+
+        env = config.get("environment", {})
+        if env:
+            t.add_row("Log Level", env.get("log_level", "INFO"))
+            t.add_row("Debug", str(env.get("debug", False)))
+
+        perf = config.get("perf", {})
+        if perf:
+            t.add_row(
+                "Performance",
+                "enabled" if perf.get("mobile_optimization", True) else "disabled",
+            )
+
+        bs = config.get("browser_search", {})
+        if bs.get("enabled"):
+            t.add_row("Browser Search", f"enabled ({bs.get('api_type', 'user')})")
+        else:
+            t.add_row("Browser Search", "disabled")
+
+        if config.get("mode"):
+            t.add_row("Usage Mode", str(config["mode"]))
+
+        console.print()
+        console.print(Panel(
+            t,
+            title=f"[bold {_C_ACCENT}]◆ Configuration Review[/]",
+            border_style="bright_blue",
+            padding=(1, 2),
+            width=72,
+        ))
+        console.print()
+    else:
+        # ── ANSI fallback
+        line = "─" * 54
+        sys.stdout.write(f"\n{_A_BLUE}{line}{_A_RESET}\n")
+        sys.stdout.write(
+            f"  {_A_CYAN}{_A_BOLD}◆ Configuration Review{_A_RESET}\n"
+        )
+        sys.stdout.write(f"{_A_BLUE}{line}{_A_RESET}\n\n")
+
+        ai = config.get("ai", {})
+        _print_kv("Language", config.get("lang", "en"))
+        _print_kv("Provider", ai.get("provider", "—"))
+        _print_kv("Model", ai.get("model", "—"))
+        _print_kv("API URL", ai.get("base_url", "—") or "—")
+        if ai.get("max_tokens"):
+            _print_kv("Max Tokens", str(ai["max_tokens"]))
+        if ai.get("temperature") is not None:
+            _print_kv("Temperature", str(ai["temperature"]))
+        if ai.get("reasoning_effort"):
+            _print_kv("Reasoning", str(ai["reasoning_effort"]))
+
+        gw = config.get("gateway", {})
+        if gw:
+            _print_kv("Gateway", f"{gw.get('host', '0.0.0.0')}:{gw.get('port', 19001)}")
+
+        env = config.get("environment", {})
+        if env:
+            _print_kv("Log Level", env.get("log_level", "INFO"))
+            _print_kv("Debug", str(env.get("debug", False)))
+
+        perf = config.get("perf", {})
+        if perf:
+            _print_kv(
+                "Performance",
+                "enabled" if perf.get("mobile_optimization", True) else "disabled",
+            )
+
+        bs = config.get("browser_search", {})
+        if bs.get("enabled"):
+            _print_kv("Browser Search", f"enabled ({bs.get('api_type', 'user')})")
+        else:
+            _print_kv("Browser Search", "disabled")
+
+        sys.stdout.write(f"\n{_A_BLUE}{line}{_A_RESET}\n\n")
+        sys.stdout.flush()
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Post-setup hints — blue celebration panel
+# ═══════════════════════════════════════════════════════════════════
+
+
+def _post_setup_hints(config: Dict[str, Any]) -> None:
+    """Blue celebration panel + quick-reference hint table after save."""
+    print()
+
+    if HAS_RICH:
+        # ── Celebration panel
+        console.print(Panel.fit(
+            f"[bold {_C_ACCENT}]✓ Setup Complete[/]\n"
+            f"[dim]Your configuration is saved. Re-run with:[/]\n"
+            f"[bold]agent_harness setup[/]",
+            title=f"[bold {_C_ACCENT}]AgentHarness[/]",
+            border_style="bright_blue",
+            padding=(1, 4),
+        ))
+        print()
+
+        # ── Quick-reference table
+        t = Table.grid(padding=(0, 3))
+        t.add_column(style=f"bold {_C_ACCENT}", justify="right")
+        t.add_column(style="dim")
+        t.add_row("agent_harness",               "start the TUI chat")
+        t.add_row("agent_harness chat",          "alias for the chat CLI")
+        t.add_row("agent_harness gateway start", "OpenAI-compatible v1 endpoint")
+        t.add_row("agent_harness doctor",        "self-check (config + tools + extensions)")
+        t.add_row("agent_harness --help",        "command cheatsheet")
+        t.add_row("agent_harness -v status",     "runtime status with verbose logging")
+        console.print(t)
+    else:
+        bar = "═" * 54
+        sys.stdout.write(f"{_A_BLUE}╔{bar}╗{_A_RESET}\n")
+        sys.stdout.write(
+            f"{_A_BLUE}║{_A_RESET}{_A_BG_DEEP}  {_A_CYAN}{_A_BOLD}✓ Setup Complete{_A_RESET}"
+            f"{' ' * (54 - 18)}{_A_RESET}{_A_BLUE}║{_A_RESET}\n"
+        )
+        sys.stdout.write(
+            f"{_A_BLUE}║{_A_RESET}{_A_BG_DEEP}{_A_DIM}  Config saved. Re-run with: agent_harness setup"
+            f"{' ' * max(0, 54 - 42)}{_A_RESET}{_A_BLUE}║{_A_RESET}\n"
+        )
+        sys.stdout.write(f"{_A_BLUE}╠{bar}╣{_A_RESET}\n")
+        hints = [
+            ("agent_harness",               "start the TUI chat"),
+            ("agent_harness chat",          "alias for the chat CLI"),
+            ("agent_harness gateway start", "OpenAI-compatible v1 endpoint"),
+            ("agent_harness doctor",        "self-check (config + tools + extensions)"),
+            ("agent_harness --help",        "command cheatsheet"),
+            ("agent_harness -v status",     "runtime status with verbose logging"),
+        ]
+        for cmd, desc in hints:
+            row = f"  {_A_CYAN}{cmd:<22}{_A_RESET} {_A_DIM_BLUE}{desc}{_A_RESET}"
+            sys.stdout.write(f"{_A_BLUE}║{_A_RESET}{row}{' ' * max(0, 54 - 24 - len(desc))}{_A_BLUE}║{_A_RESET}\n")
+        sys.stdout.write(f"{_A_BLUE}╚{bar}╝{_A_RESET}\n")
+
+    print()
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  Main entry point
+# ═══════════════════════════════════════════════════════════════════
+
+
+def run_setup():
+    """Main wizard entry.
+
+    v0.19.x — two tiers: **Quick** (4 steps: provider + model +
+    max_tokens/context/concurrency + save) and **Full** (the
+    original 6-step flow that also configures mode, gateway,
+    environment, browser search).
+    """
+    clear_screen()
+    _print_setup_banner()
+
+    existing = load_existing_config()
+    if existing:
+        print_info("Found existing config — will prompt for changes.")
+
+    # ── Tier selection
+    tier_choices = [
+        "Quick  (4 steps — provider, model, AI limits, save)",
+        "Full   (6 steps — mode, gateway, environment, browser search)",
+    ]
+    tier_descs = [
+        "Fast path — gets the AI core working in under a minute.",
+        "Everything — mode, gateway port, env, browser search.",
+    ]
+    tier_idx = prompt_choice("Choose wizard tier", tier_choices, tier_descs, default=0)
+    quick = (tier_idx == 0)
+    print_success(f"Tier: {'Quick' if quick else 'Full'}")
+
+    config: Dict[str, Any] = {}
+
+    # ── Step 1 — language
+    setup_language(config, existing)
+
+    # ── Step 2 — AI provider + model + key + URL
+    setup_ai_provider(config, existing)
+
+    # ── Step 3 — AI core limits (always run)
+    setup_ai_limits(config, existing)
+
+    if not quick:
+        # Full flow — steps 4-6
+        _step_progress(4, TOTAL_STEPS + 1, "Usage Mode")
+        mode_options = [
+            (chr(0x1F4AC), "Chat CLI (default)"),
+            (chr(0x1F310), "API Gateway"),
+            (chr(0x2699) + chr(0xFE0F), "Both (chat + gateway)"),
+        ]
+        mode_choices = [f"{e} {n}" for e, n in mode_options]
+        mode_descs = [
+            "Talk to the model directly from your terminal",
+            "Expose an OpenAI-compatible v1 endpoint for other tools",
+            "Local chat + an OpenAI-compatible HTTP endpoint on $PORT",
+        ]
+        mode_idx = prompt_choice(
+            "Pick a usage mode", mode_choices, mode_descs, default=0
+        )
+        config["mode"] = ("chat", "gateway", "both")[mode_idx]
+        print_success(f"Mode → {config['mode']}")
+
+        if config["mode"] in ("gateway", "both"):
+            setup_gateway(config, existing)
+
+        setup_environment(config, existing)
+        setup_browser_search(config, existing)
+
+    # ── Review + save
+    show_summary(config)
+
+    if prompt_yes_no("Save configuration?", default=True):
+        save_config(config)
+        if config.get("ai", {}).get("api_key"):
+            save_env("AI_API_KEY", config["ai"]["api_key"])
+        _post_setup_hints(config)
+    else:
+        print_info("Setup cancelled — no changes saved.")
+
+    print()
+    print_success("Goodbye!")
+
+
+if __name__ == "__main__":
+    run_setup()
