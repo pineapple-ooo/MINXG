@@ -1,8 +1,0 @@
-agent
-extensions
-gateway
-minxg
-multiligua_cli
-multiling
-skills
-tools
