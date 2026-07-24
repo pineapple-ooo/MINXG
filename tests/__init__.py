@@ -1,0 +1,1 @@
+"""AgentHarness Test Suite — v3.0. Full project coverage including non-Python files."""

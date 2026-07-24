@@ -1,0 +1,88 @@
+# docker-compose.yml — AgentHarness v0.18.3
+#
+# Because if hermes-agent has one and we don't, the user will notice.
+#
+# Services:
+#   - agent_harness-gateway  — AI gateway with tool dispatch
+#   - rust-core      — standalone Rust compute worker (optional, same image)
+#   - health-monitor — cron-driven health check + dead-target sweeper
+#
+# Profiles:
+#   docker compose --profile gateway up          # gateway only
+#   docker compose --profile full up             # all services
+#   docker compose --profile dev up              # dev mode (volume mounts)
+#
+# Port mapping:
+#   Gateway: 8080 → host (OpenAI-compatible API)
+#   Monitor: internal only, watches gateway health
+
+version: "3.9"
+
+services:
+  agent_harness-gateway:
+    image: agent_harness:0.18.3
+    build:
+      context: .
+      dockerfile: Dockerfile
+    profiles: ["gateway", "full", "dev"]
+    container_name: agent_harness-gateway
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - agent_harness_data:/data
+      # Dev mode: mount source for live reload
+      - type: bind
+        source: ./agent_harness
+        target: /app/agent_harness
+        profile: ["dev"]
+      - type: bind
+        source: ./multiligua_cli
+        target: /app/multiligua_cli
+        profile: ["dev"]
+    environment:
+      - AgentHarness_PROFILE=${AgentHarness_PROFILE:-container}
+      - AgentHarness_API_KEY=${AgentHarness_API_KEY:-}
+      - AgentHarness_MODEL=${AgentHarness_MODEL:-}
+      - AgentHarness_LOG_LEVEL=${AgentHarness_LOG_LEVEL:-INFO}
+    healthcheck:
+      test: ["CMD", "python", "-c", "from agent_harness import VERSION; print(VERSION)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - agent_harness-net
+
+  rust-core-worker:
+    image: agent_harness:0.18.3
+    profiles: ["full"]
+    container_name: agent_harness-rust-core
+    restart: unless-stopped
+    entrypoint: ["python", "-c", "from agent_harness.rust_bridge import rust_core_version; print(rust_core_version())"]
+    depends_on:
+      agent_harness-gateway:
+        condition: service_healthy
+    networks:
+      - agent_harness-net
+
+  health-monitor:
+    image: agent_harness:0.18.3
+    profiles: ["full"]
+    container_name: agent_harness-health-monitor
+    restart: unless-stopped
+    entrypoint: ["./scripts/health_monitor.sh"]
+    depends_on:
+      agent_harness-gateway:
+        condition: service_healthy
+    volumes:
+      - ./scripts:/app/scripts:ro
+    networks:
+      - agent_harness-net
+
+volumes:
+  agent_harness_data:
+    driver: local
+
+networks:
+  agent_harness-net:
+    driver: bridge

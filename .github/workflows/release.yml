@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - "*.*.*"          # 匹配日期版 tag，如 2026.07.25，也兼容未来可能的语义化版本
+      - "v*.*.*"          # 匹配 v0.12.2 这种 tag
   workflow_dispatch:        # 也允许在网页手动点按钮触发
 
 permissions:
@@ -73,7 +73,7 @@ jobs:
           import os, re, pathlib
           ver = os.environ["VERSION"]
           text = pathlib.Path("CHANGELOG.md").read_text(encoding="utf-8")
-          m = re.search(rf"^## \\[{re.escape(ver)}\\].*?(?=^## \\[|\\Z)", text, re.M | re.S)
+          m = re.search(rf"^## \[{re.escape(ver)}\].*?(?=^## \[|\Z)", text, re.M | re.S)
           if m:
               notes = m.group(0).rstrip() + "\n"
           else:

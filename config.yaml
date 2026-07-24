@@ -1,0 +1,15 @@
+lang: en
+ai:
+  provider: custom
+  base_url: https://token.sensenova.cn/v1
+  api_key: '«redacted»'
+  model: ssssdde
+  capabilities:
+    vision: false
+    function_calling: true
+    streaming: true
+vision:
+  enabled: false
+workers:
+  host: 127.0.0.1
+  port: 19001
